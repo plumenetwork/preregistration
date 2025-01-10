@@ -3,7 +3,7 @@ import { isAddress } from "viem";
 
 export const useIsUserRegistered = (address?: string) => {
   return useQuery({
-    queryKey: ["isUserRegistered"],
+    queryKey: ["isUserRegistered", address],
     queryFn: async () => {
       const response = await fetch(`/api/sign?address=${address}`, {
         method: "GET",

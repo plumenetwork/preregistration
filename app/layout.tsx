@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { TopNav } from "./components/TopNav";
 import { AppProviders } from "./components/AppProviders";
+import { ToastContainer } from "react-toastify";
 
 export const lufga = localFont({
   src: [
@@ -64,6 +65,12 @@ export default function RootLayout({
               <TopNav />
             </div>
             {children}
+            <ToastContainer
+              position="bottom-right"
+              hideProgressBar
+              toastClassName="custom-toast"
+              closeButton={false}
+            />
           </AppProviders>
         </div>
       </body>
