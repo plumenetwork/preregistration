@@ -33,7 +33,7 @@ export default function Home() {
           <div className="text-[40px] mb-4 font-bold text-center">
             Register for PlumeDrop I
           </div>
-          <div className="text-[#747474] text-lg">
+          <div className="text-[#747474] text-lg text-center font-500">
             Ahead of the Plume live release, PlumeDrop I rewards early
             contributors who’ve been a part of the journey this far. Learn more
           </div>
@@ -69,7 +69,13 @@ export default function Home() {
                   idx === 2 && "rounded-br-[24px] rounded-bl-[24px]"
                 )}
               >
-                <Image src={image} alt="" width={40} height={40} />
+                <Image
+                  src={image}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="w-10 h-10"
+                />
                 <div className="flex flex-col gap-1">
                   <div className="font-[500] text-lg">{title}</div>
                   <div className="text-[#747474] font-[500]">{description}</div>
@@ -83,6 +89,80 @@ export default function Home() {
             className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
             onClick={() => {
               setCurrentPane(RegistrationPane.ABOUT);
+            }}
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (currentPane === "ABOUT") {
+    return (
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
+        <div>
+          <div className="text-[40px] mb-4 font-bold text-center">
+            About Plume
+          </div>
+          <div className="text-[#747474] text-lg text-center font-[500]">
+            PlumeDrop I is directly associated to Plume, the first fully modular
+            L1 chain tailored for real-world assets.
+          </div>
+        </div>
+
+        <ul className="flex flex-col">
+          {[
+            {
+              image: "/images/plume-about-icon-1.avif",
+              title: "Building RWAfi",
+              description:
+                "Plume is focused on bridging the real world onchain to enable real asset-backed, crypto native use cases.",
+            },
+            {
+              image: "/images/plume-about-icon-2.avif",
+              title: "Comprehensive Ecosystem",
+              description:
+                "RWAfi on Plume benefits from built-in compliance solutions, liquidity, and tokenization, all in one seamless flow.",
+            },
+            {
+              image: "/images/plume-about-icon-3.avif",
+              title: "Institutional-Grade Applications",
+              description:
+                "Plume is built on robust, scalable architecture that supports the broader effort of sustaining a thriving onchain economy.",
+            },
+          ].map(({ image, title, description }, idx) => {
+            return (
+              <li
+                key={idx}
+                className={clsx(
+                  "border p-6 flex items-center gap-4",
+                  idx === 0 && "rounded-tr-[24px] rounded-tl-[24px]",
+                  idx === 1 && "border-t-0 border-b-0",
+                  idx === 2 && "rounded-br-[24px] rounded-bl-[24px]"
+                )}
+              >
+                <Image
+                  src={image}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="w-10 h-10"
+                />
+                <div className="flex flex-col gap-1">
+                  <div className="font-[500] text-lg">{title}</div>
+                  <div className="text-[#747474] font-[500]">{description}</div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div>
+          <button
+            className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
+            onClick={() => {
+              setCurrentPane(RegistrationPane.MEET);
             }}
           >
             Continue

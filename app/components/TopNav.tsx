@@ -2,7 +2,6 @@
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { XIcon } from "lucide-react";
-import Link from "next/link";
 import { useDisconnect } from "wagmi";
 
 export const TopNav = () => {
@@ -10,7 +9,8 @@ export const TopNav = () => {
 
   return (
     <div className="rounded-full border-[#F0F0F0] border px-8 py-5 flex items-center justify-between">
-      <Link className="flex items-center gap-1" href="/">
+      {/* eslint-disable-next-line */}
+      <a className="flex items-center gap-1" href="/">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="32"
@@ -40,7 +40,7 @@ export const TopNav = () => {
           />
         </svg>
         <div className="font-black text-xl">Plume</div>
-      </Link>
+      </a>
       <ConnectButton.Custom>
         {({ account, openConnectModal, authenticationStatus, mounted }) => {
           if (!account || !mounted) {
