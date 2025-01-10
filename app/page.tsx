@@ -3,6 +3,12 @@
 import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useAccount, useSignMessage } from "wagmi";
+import { generateMessageToSign } from "./lib/shared/crypto";
+import { useMutation } from "@tanstack/react-query";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useIsUserRegistered } from "./hooks/useIsUserRegistered";
+import Link from "next/link";
 
 const RegistrationPane = {
   DEFAULT: "DEFAULT",
@@ -16,9 +22,32 @@ type RegistrationPaneType =
   (typeof RegistrationPane)[keyof typeof RegistrationPane];
 
 export default function Home() {
+  const { signMessageAsync } = useSignMessage();
+  const { address } = useAccount();
   const [currentPane, setCurrentPane] = useState<RegistrationPaneType>(
     RegistrationPane.DEFAULT
   );
+  const { isPending, mutateAsync } = useMutation({
+    mutationKey: ["sign"],
+    mutationFn: async ({
+      message,
+      signature,
+      address,
+    }: {
+      message: string;
+      signature: string;
+      address: string;
+    }) => {
+      return fetch("/api/sign", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message, signature, address }),
+      });
+    },
+  });
+  const { isFetching, isLoading, data } = useIsUserRegistered(address);
 
   useEffect(() => {
     // scroll to top
@@ -32,6 +61,24 @@ export default function Home() {
       behavior: "smooth",
     });
   }, [currentPane]);
+
+  if (data?.registered || currentPane === "FINISHED") {
+    return (
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
+        <div>
+          <Link
+            href="https://x.com/plumenetwork"
+            target="_blank"
+            rel="noopener noreferrer"
+            passHref
+            className="flex text-center justify-center w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Follow Plume on X
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   if (currentPane === "DEFAULT") {
     return (
@@ -97,16 +144,30 @@ export default function Home() {
             );
           })}
         </ul>
-        <div>
-          <button
-            className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
-            onClick={() => {
-              setCurrentPane(RegistrationPane.ABOUT);
-            }}
-          >
-            Continue
-          </button>
-        </div>
+        <ConnectButton.Custom>
+          {({ account, openConnectModal, mounted, authenticationStatus }) => {
+            return (
+              <button
+                className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
+                disabled={
+                  !mounted ||
+                  authenticationStatus === "loading" ||
+                  isFetching ||
+                  isLoading
+                }
+                onClick={() => {
+                  if (account) {
+                    setCurrentPane(RegistrationPane.ABOUT);
+                  } else {
+                    openConnectModal();
+                  }
+                }}
+              >
+                {account ? "Continue" : "Connect Wallet"}
+              </button>
+            );
+          }}
+        </ConnectButton.Custom>
       </div>
     );
   }
@@ -179,6 +240,58 @@ export default function Home() {
             }}
           >
             Continue
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (currentPane === "MEET") {
+    return (
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
+        <div>
+          <button
+            className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
+            onClick={() => {
+              setCurrentPane(RegistrationPane.REGISTER);
+            }}
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (currentPane === "REGISTER") {
+    return (
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
+        <div>
+          <button
+            className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled={isPending}
+            onClick={async () => {
+              if (!address) {
+                return;
+              }
+
+              const { message } = generateMessageToSign();
+              const sig = await signMessageAsync({
+                message,
+              });
+
+              await mutateAsync({
+                message,
+                signature: sig,
+                address,
+              });
+
+              // Once done we can move to final step
+
+              setCurrentPane(RegistrationPane.FINISHED);
+            }}
+          >
+            Submit
           </button>
         </div>
       </div>

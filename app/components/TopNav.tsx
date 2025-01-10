@@ -58,7 +58,7 @@ export const TopNav = () => {
           } else {
             return (
               <button
-                className="border border-[#F0F0F0] flex items-center gap-2 rounded-full px-3 py-2 hover:bg-[#F0F0F0]"
+                className="border border-[#F0F0F0] flex items-center gap-2 rounded-full px-3 py-2 hover:bg-[#F0F0F0] h-10"
                 onClick={() => {
                   disconnect();
                 }}
