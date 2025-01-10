@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const RegistrationPane = {
   DEFAULT: "DEFAULT",
@@ -19,6 +19,19 @@ export default function Home() {
   const [currentPane, setCurrentPane] = useState<RegistrationPaneType>(
     RegistrationPane.DEFAULT
   );
+
+  useEffect(() => {
+    // scroll to top
+
+    if (currentPane === "DEFAULT") {
+      return;
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentPane]);
 
   if (currentPane === "DEFAULT") {
     return (
