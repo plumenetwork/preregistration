@@ -46,7 +46,7 @@ export const TopNav = () => {
           if (!account || !mounted) {
             return (
               <button
-                className="bg-[#111111] px-4 py-2 rounded-full text-[#F0F0F0]"
+                className="bg-[#111111] px-4 py-2 rounded-full text-[#F0F0F0] hover:opactiy-80"
                 disabled={!mounted || authenticationStatus === "loading"}
                 onClick={() => {
                   openConnectModal();
