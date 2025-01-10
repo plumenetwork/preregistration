@@ -149,7 +149,7 @@ export default function Home() {
           {({ account, openConnectModal, mounted, authenticationStatus }) => {
             return (
               <button
-                className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
+                className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 flex justify-center"
                 disabled={
                   !mounted ||
                   authenticationStatus === "loading" ||
@@ -168,7 +168,15 @@ export default function Home() {
                   }
                 }}
               >
-                {account ? "Continue" : "Connect Wallet"}
+                {!mounted ? (
+                  <div className="h-[28px] flex items-center">
+                    <Loader2Icon size={16} className="animate-spin" />
+                  </div>
+                ) : account ? (
+                  "Continue"
+                ) : (
+                  "Connect Wallet"
+                )}
               </button>
             );
           }}
