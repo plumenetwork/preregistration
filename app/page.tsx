@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useIsUserRegistered } from "./hooks/useIsUserRegistered";
 import Link from "next/link";
+import { Loader2Icon } from "lucide-react";
 
 const RegistrationPane = {
   DEFAULT: "DEFAULT",
@@ -291,7 +292,13 @@ export default function Home() {
               setCurrentPane(RegistrationPane.FINISHED);
             }}
           >
-            Submit
+            {isPending ? (
+              <div className="flex gap-2 items-center justify-center">
+                <Loader2Icon size={16} className="animate-spin" /> Submitting
+              </div>
+            ) : (
+              "Submit"
+            )}
           </button>
         </div>
       </div>

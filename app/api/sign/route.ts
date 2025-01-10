@@ -14,6 +14,17 @@ export const POST = async (req: NextRequest) => {
     signature,
   });
 
+  // Register the user
+  await prisma.user.upsert({
+    where: {
+      walletAddress: address,
+    },
+    update: {},
+    create: {
+      walletAddress: address,
+    },
+  });
+
   if (!isAddressEqual(recoveredAddress, address)) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
