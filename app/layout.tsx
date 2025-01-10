@@ -6,7 +6,7 @@ import { TopNav } from "./components/TopNav";
 import { AppProviders } from "./components/AppProviders";
 import { ToastContainer } from "react-toastify";
 
-export const lufga = localFont({
+const lufga = localFont({
   src: [
     {
       path: "./fonts/Lufga-Regular.woff2",
