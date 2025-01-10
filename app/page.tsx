@@ -63,7 +63,7 @@ export default function Home() {
     });
   }, [currentPane]);
 
-  if (data?.registered || currentPane === "FINISHED") {
+  if (currentPane === "FINISHED") {
     return (
       <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
         <div>
@@ -158,7 +158,11 @@ export default function Home() {
                 }
                 onClick={() => {
                   if (account) {
-                    setCurrentPane(RegistrationPane.ABOUT);
+                    if (data?.registered) {
+                      setCurrentPane(RegistrationPane.FINISHED);
+                    } else {
+                      setCurrentPane(RegistrationPane.ABOUT);
+                    }
                   } else {
                     openConnectModal();
                   }
