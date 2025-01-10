@@ -1,0 +1,28 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("POSTGRES_PRISMA_URL")
+  directUrl  = env("POSTGRES_URL_NON_POOLING")
+  extensions = [citext]
+}
+
+model User {
+  id               String  @id @unique @default(uuid())
+  walletAddress    String  @unique @db.Citext
+  twitterId        String?
+  twitterName      String?
+  discordId        String?
+  discordName      String?
+  cex              String?
+  cexId            String?
+  cexWalletAddress String? @db.Citext
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([walletAddress])
+}
