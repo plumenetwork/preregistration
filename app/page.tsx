@@ -1,101 +1,96 @@
+"use client";
+
+import clsx from "clsx";
 import Image from "next/image";
+import { useState } from "react";
+
+const RegistrationPane = {
+  DEFAULT: "DEFAULT",
+  ABOUT: "ABOUT",
+  MEET: "MEET",
+  REGISTER: "REGISTER",
+  FINISHED: "FINISHED",
+} as const;
+
+type RegistrationPaneType =
+  (typeof RegistrationPane)[keyof typeof RegistrationPane];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  const [currentPane, setCurrentPane] = useState<RegistrationPaneType>(
+    RegistrationPane.DEFAULT
   );
+
+  if (currentPane === "DEFAULT") {
+    return (
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
+        <div className="w-full aspect-[544/320] relative">
+          <Image src="/images/plume-default-banner.avif" alt="" layout="fill" />
+        </div>
+        <div>
+          <div className="text-lg text-[#FF3D00] mb-2 font-[500] text-center">
+            Plume’s First Official Token Airdrop
+          </div>
+          <div className="text-[40px] mb-4 font-bold text-center">
+            Register for PlumeDrop I
+          </div>
+          <div className="text-[#747474] text-lg">
+            Ahead of the Plume live release, PlumeDrop I rewards early
+            contributors who’ve been a part of the journey this far. Learn more
+          </div>
+        </div>
+        <ul className="flex flex-col">
+          {[
+            {
+              image: "/images/plume-default-icon-1.avif",
+              title: "Testnet Users",
+              description:
+                "Participants who’ve contributed considerable testing and engagement across our Testnet campaign.",
+            },
+            {
+              image: "/images/plume-default-icon-2.avif",
+              title: "Pre-Deposit Users",
+              description:
+                "Participants who’ve contributed funds into the Plume Vault and into the Nest Pre-Deposit.",
+            },
+            {
+              image: "/images/plume-default-icon-3.avif",
+              title: "Engaged Protocols & Communities",
+              description:
+                "Individuals and protocols who’ve helped lay out the foundation for the Plume ecosystem up to today.",
+            },
+          ].map(({ image, title, description }, idx) => {
+            return (
+              <li
+                key={idx}
+                className={clsx(
+                  "border p-6 flex items-center gap-4",
+                  idx === 0 && "rounded-tr-[24px] rounded-tl-[24px]",
+                  idx === 1 && "border-t-0 border-b-0",
+                  idx === 2 && "rounded-br-[24px] rounded-bl-[24px]"
+                )}
+              >
+                <Image src={image} alt="" width={40} height={40} />
+                <div className="flex flex-col gap-1">
+                  <div className="font-[500] text-lg">{title}</div>
+                  <div className="text-[#747474] font-[500]">{description}</div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <div>
+          <button
+            className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
+            onClick={() => {
+              setCurrentPane(RegistrationPane.ABOUT);
+            }}
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return <div />;
 }
