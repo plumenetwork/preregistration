@@ -6,6 +6,7 @@ import { TopNav } from "./components/TopNav";
 import { AppProviders } from "./components/AppProviders";
 import { ToastContainer } from "react-toastify";
 import Image from "next/image";
+import { Suspense } from "react";
 
 const lufga = localFont({
   src: [
@@ -72,7 +73,7 @@ export default function RootLayout({
               height={600}
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]"
             />
-            {children}
+            <Suspense>{children}</Suspense>
             <ToastContainer
               position="bottom-right"
               hideProgressBar
