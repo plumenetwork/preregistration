@@ -62,8 +62,13 @@ export default function Home() {
     if (address !== previousAddress) {
       setMessage("");
       setSignature("");
+
+      // User disconnected and not on register step, send them back to first step
+      if (!address && currentPane !== "REGISTER") {
+        setCurrentPane(RegistrationPane.DEFAULT);
+      }
     }
-  }, [previousAddress, address]);
+  }, [previousAddress, address, currentPane]);
 
   useEffect(() => {
     // scroll to top
@@ -90,11 +95,11 @@ export default function Home() {
         />
         <div>
           <div className="text-[40px] mb-4 font-bold text-center">
-            You’re All Set!
+            You&apos;re All Set!
           </div>
-          <div className="text-[#747474] text-lg text-center font-500">
-            Thank you for registering for PlumeDrop I. We’ll keep you posted on
-            updates as Plume approaches its live release.
+          <div className="text-[#747474] text-lg text-center font-[500]">
+            Thank you for registering for PlumeDrop I. We&apos;ll keep you
+            posted on updates as Plume approaches its live release.
           </div>
         </div>
 
@@ -121,14 +126,15 @@ export default function Home() {
         </div>
         <div>
           <div className="text-lg text-[#FF3D00] mb-2 font-[500] text-center">
-            Plume’s First Official Token Airdrop
+            Season 1 of Plume&apos;s Official Token Airdrop
           </div>
           <div className="text-[40px] mb-4 font-bold text-center">
-            Register for PlumeDrop I
+            Register for PlumeDrop
           </div>
-          <div className="text-[#747474] text-lg text-center font-500">
-            Ahead of the Plume live release, PlumeDrop I rewards early
-            contributors who’ve been a part of the journey this far. Learn more
+          <div className="text-[#747474] text-lg text-center font-[500]">
+            Plume&apos;s first official token airdrop, PlumeDrop, rewards early
+            contributors who&apos;ve been a part of the journey this far. Learn
+            more
           </div>
         </div>
         <ul className="flex flex-col">
@@ -235,7 +241,7 @@ export default function Home() {
             About Plume
           </div>
           <div className="text-[#747474] text-lg text-center font-[500]">
-            PlumeDrop I is directly associated to Plume, the first fully modular
+            PlumeDrop is directly associated to Plume, the first fully modular
             L1 chain tailored for real-world assets.
           </div>
         </div>
@@ -312,10 +318,10 @@ export default function Home() {
           <div className="text-[40px] mb-4 font-bold text-center">
             Meet <span className="text-[#FF3D00]">$PLUME</span>
           </div>
-          <div className="text-[#747474] text-lg text-center font-500">
-            PlumeDrop I will distribute $PLUME, the official RWAfi ecosystem
-            token on Plume, used in the future to achieve long-term objectives
-            including:
+          <div className="text-[#747474] text-lg text-center font-[500]">
+            PlumeDrop will distribute $PLUME, the official RWAfi ecosystem token
+            on Plume, designed to align stakeholders across the ecosystem and
+            unlock long term objectives.
           </div>
         </div>
 
@@ -325,19 +331,25 @@ export default function Home() {
               image: "/images/plume-meet-icon-1.avif",
               title: "Transaction Costs",
               description:
-                "Powering low-cost, efficient transactions across the Plume ecosystem for seamless UX.",
+                "Power low-cost (>$0.01), efficient transactions across the Plume ecosystem for a seamless user experience.",
             },
             {
               image: "/images/plume-meet-icon-2.avif",
-              title: "Governance & Decentralization",
+              title: "Ecosystem Liquidity",
               description:
-                "Empowering holders to participate in governance and gradually decentralizing decision-making.",
+                "By seeding initial liquidity and reserve funds, $PLUME empowers thousands of traders, lenders, and users from day one.",
             },
             {
               image: "/images/plume-meet-icon-3.avif",
-              title: "Future Utilities",
+              title: "Decentralized Governance",
               description:
-                "Continuous support to innovation and deeper integrations with real-world assets as the ecosystem evolves.",
+                "Empower with the community with active participation in decision-making and help shape the future of Plume.",
+            },
+            {
+              image: "/images/plume-meet-icon-4.avif",
+              title: "Staking as Security",
+              description:
+                "By staking $PLUME, representatives and validators secure the network against even the most sophisticated threats while earning staking rewards in return.",
             },
           ].map(({ image, title, description }, idx) => {
             return (
@@ -346,8 +358,8 @@ export default function Home() {
                 className={clsx(
                   "border p-6 flex items-center gap-4",
                   idx === 0 && "rounded-tr-[24px] rounded-tl-[24px]",
-                  idx === 1 && "border-t-0 border-b-0",
-                  idx === 2 && "rounded-br-[24px] rounded-bl-[24px]"
+                  idx !== 0 && idx !== 3 && "border-t-0 border-b-0",
+                  idx === 3 && "rounded-br-[24px] rounded-bl-[24px]"
                 )}
               >
                 <Image
@@ -383,15 +395,11 @@ export default function Home() {
   if (currentPane === "REGISTER") {
     return (
       <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
-        <div className="w-full aspect-[544/320] relative">
-          <Image src="/images/plume-meet-banner.avif" alt="" layout="fill" />
-        </div>
-
         <div>
           <div className="text-[40px] mb-4 font-bold text-center">
             Register to Claim
           </div>
-          <div className="text-[#747474] text-lg text-center font-500">
+          <div className="text-[#747474] text-lg text-center font-[500]">
             To be able to claim, individuals must fill out this form and agree
             to the PlumeDrop Terms of Service.
           </div>
@@ -400,7 +408,7 @@ export default function Home() {
         <ul className="flex flex-col">
           <li
             className={clsx(
-              "border p-6 flex items-center gap-4 rounded-[24px] justify-between"
+              "border p-6 flex items-center gap-4 rounded-tr-[24px] rounded-tl-[24px] justify-between"
             )}
           >
             <div className="flex flex-col gap-1">
@@ -444,10 +452,29 @@ export default function Home() {
               }}
             </ConnectButton.Custom>
           </li>
+
+          <li
+            className={clsx(
+              "border border-t-0 p-6 flex items-center gap-4 rounded-br-[24px] rounded-bl-[24px] justify-between"
+            )}
+          >
+            <div className="flex flex-col gap-1">
+              <div className="font-[500] text-lg">Connect to X</div>
+              <div className="text-[#747474] font-[500]">Optional</div>
+            </div>
+            <button
+              className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111]"
+              onClick={() => {
+                // Handle twitter connect
+              }}
+            >
+              Connect X
+            </button>
+          </li>
         </ul>
         <div className="bg-[#F9F9F9] rounded-[24px] p-6 flex gap-4 items-center">
           <div className="text-lg font-[500] text-[#747474]">
-            I confirm that I’ve read and agree with the PlumeDrop’s{" "}
+            I confirm that I&apos;ve read and agree with the PlumeDrop&apos;s{" "}
             <Link href="" target="_blank" className="underline text-[#111111]">
               Terms of Service
             </Link>
@@ -467,7 +494,7 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="bg-[#111111] text-[#F0F0F0] py-2 px-4 rounded-full h-10"
+                className="bg-[#111111] text-[#F0F0F0] py-2 px-4 rounded-full h-10 hover:!opacity-80"
                 onClick={async () => {
                   const { message } = generateMessageToSign();
                   try {
