@@ -3,6 +3,7 @@ import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 export const users = pgTable("user", {
   id: serial("id").primaryKey(),
   walletAddress: text("walletAddress").unique(),
+  signature: text("signature"),
   twitterId: text("twitterId"),
   twitterName: text("twitterName"),
   discordId: text("discordId"),

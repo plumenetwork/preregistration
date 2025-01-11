@@ -1,10 +1,5 @@
-import { v4 as uuid } from "uuid";
-
-export const generateMessageToSign = (nonce?: string) => {
+export const generateMessageToSign = () => {
   return {
-    // TODO signature message
-    message: `This signature is required to prove that you are the owner of this account. nonce: ${
-      nonce || uuid()
-    }`,
+    message: `By signing this message, I confirm that I have read and agreed to the Plume Airdrop Terms of Service. This does not cost any gas to sign.`,
   };
 };

@@ -15,11 +15,12 @@ export const POST = async (req: NextRequest) => {
     signature,
   });
 
-  // Register the user
+  // Register the user, also store the signature
   await db
     .insert(users)
     .values({
       walletAddress: address,
+      signature,
     })
     .onConflictDoNothing();
 
