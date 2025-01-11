@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const TermsPage = () => {
   return (
-    <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[720px] w-full mx-auto mt-16">
+    <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[720px] w-full mx-auto mt-16 bg-white">
       <Image
         src="/images/plume-about-logo.avif"
         alt=""

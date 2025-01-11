@@ -85,7 +85,7 @@ export default function Home() {
 
   if (currentPane === "FINISHED") {
     return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
         <Image
           alt=""
           src="/images/plume-logo.avif"
@@ -120,7 +120,7 @@ export default function Home() {
 
   if (currentPane === "DEFAULT") {
     return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
         <div className="w-full aspect-[544/320] relative">
           <Image src="/images/plume-default-banner.avif" alt="" layout="fill" />
         </div>
@@ -228,7 +228,7 @@ export default function Home() {
 
   if (currentPane === "ABOUT") {
     return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
         <Image
           alt=""
           src="/images/plume-about-logo.avif"
@@ -309,7 +309,7 @@ export default function Home() {
 
   if (currentPane === "MEET") {
     return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
         <div className="w-full aspect-[544/320] relative">
           <Image src="/images/plume-meet-banner.avif" alt="" layout="fill" />
         </div>
@@ -394,7 +394,7 @@ export default function Home() {
 
   if (currentPane === "REGISTER") {
     return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16">
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
         <div>
           <div className="text-[40px] mb-4 font-bold text-center">
             Register to Claim

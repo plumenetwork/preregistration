@@ -5,6 +5,7 @@ import "./globals.css";
 import { TopNav } from "./components/TopNav";
 import { AppProviders } from "./components/AppProviders";
 import { ToastContainer } from "react-toastify";
+import Image from "next/image";
 
 const lufga = localFont({
   src: [
@@ -64,6 +65,13 @@ export default function RootLayout({
             <div className="max-w-[1200px] mx-auto w-full mt-8">
               <TopNav />
             </div>
+            <Image
+              src="/images/plume-bg.avif"
+              alt=""
+              width={1200}
+              height={600}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]"
+            />
             {children}
             <ToastContainer
               position="bottom-right"
