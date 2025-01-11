@@ -332,7 +332,11 @@ export default function Home() {
           <span className="text-[#111111]">Disclaimer</span>: Registering to
           claim does not automatically make you eligible for rewards. Final
           PlumeDrop allocation subject to eligibility verification.{" "}
-          <Link target="_blank" href="/" className="text-[#111111]">
+          <Link
+            target="_blank"
+            href="https://plumenetwork.xyz/blog/plume-drop-faq"
+            className="text-[#111111]"
+          >
             Learn more
           </Link>
         </div>

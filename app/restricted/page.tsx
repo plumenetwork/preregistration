@@ -25,7 +25,7 @@ const RestrictedPage = () => {
         </div>
         <div>
           <Link
-            href="/"
+            href="https://plumenetwork.xyz/blog/plume-drop-faq"
             className="font-[500] text-sm border border-[#F0F0F0] rounded-full py-2 px-4"
             target="_blank"
           >

@@ -43,11 +43,9 @@ const lufga = localFont({
   ],
 });
 
-// TODO: Update title/description
 export const metadata: Metadata = {
-  title: "Plume Mainnet",
-  description:
-    "Plume Mainnet: Dive into the Plume ecosystem! Earn Plume Feathers by completing daily tasks, engage with the community, and mint exclusive NFTs. Join the adventure today!",
+  title: "Plume Airdrop Pre Registration",
+  description: "Please register for the Plume Airdrop",
   openGraph: {
     images: [{ url: DefaultBanner.src }],
   },
