@@ -18,6 +18,7 @@ import { useTwitterConnect } from "./hooks/useTwitterConnect";
 import { useSearchParams } from "next/navigation";
 import { useTwitterDisconnect } from "./hooks/useTwitterDisconnect";
 import { useIsMounted } from "./hooks/useIsMounted";
+import { TwitterErrorToast } from "./components/TwitterErrorToast";
 
 const RegistrationPane = {
   DEFAULT: "DEFAULT",
@@ -39,6 +40,7 @@ export default function Home() {
   const twitterEncryptedId = searchParams.get("tid");
   const twitterEncryptedUsername = searchParams.get("tname");
   const twitterUsername = searchParams.get("rtname");
+  const twitterError = searchParams.get("twitterError");
   const { mutateAsync: getTwitterConnectUrl, isPending: isFetchingTwitterUrl } =
     useTwitterConnect();
   const {
@@ -53,6 +55,12 @@ export default function Home() {
   );
   const [finishedRegistration, setFinishedRegistration] = useState(false);
   const mounted = useIsMounted();
+
+  useEffect(() => {
+    if (twitterError) {
+      toast(<TwitterErrorToast />);
+    }
+  }, [twitterError]);
 
   const { isPending, mutateAsync } = useMutation({
     mutationKey: ["sign"],

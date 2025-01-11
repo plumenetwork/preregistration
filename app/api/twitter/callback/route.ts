@@ -60,6 +60,7 @@ export const GET = async (request: NextRequest) => {
     url.search = searchParams.toString();
   } catch (e) {
     console.error(e);
+
     searchParams.set("twitterError", "true");
 
     url.search = searchParams.toString();
