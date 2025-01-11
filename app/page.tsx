@@ -475,7 +475,11 @@ export default function Home() {
         <div className="bg-[#F9F9F9] rounded-[24px] p-6 flex gap-4 items-center">
           <div className="text-lg font-[500] text-[#747474]">
             I confirm that I&apos;ve read and agree with the PlumeDrop&apos;s{" "}
-            <Link href="" target="_blank" className="underline text-[#111111]">
+            <Link
+              href="/terms"
+              target="_blank"
+              className="underline text-[#111111]"
+            >
               Terms of Service
             </Link>
           </div>
