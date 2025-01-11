@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Plume Terms of Service",
+  description: "Plume Terms of Service",
+};
 
 const TermsPage = () => {
   return (
