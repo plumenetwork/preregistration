@@ -5,7 +5,7 @@ export const useIsUserRegistered = (address?: string) => {
   return useQuery({
     queryKey: ["isUserRegistered", address],
     queryFn: async () => {
-      const response = await fetch(`/api/sign?address=${address}`, {
+      const response = await fetch(`/api/sign-read?address=${address}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

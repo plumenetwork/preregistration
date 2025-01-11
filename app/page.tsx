@@ -47,7 +47,7 @@ export default function Home() {
       signature: string;
       address: string;
     }) => {
-      return fetch("/api/sign", {
+      return fetch("/api/sign-write", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
