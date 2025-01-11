@@ -14,6 +14,10 @@ import { usePrevious } from "@uidotdev/usehooks";
 import { AnimatePresence, motion } from "motion/react";
 import { toast } from "react-toastify";
 import { SignedMessageToast } from "./components/SignedMessageToast";
+import { useTwitterConnect } from "./hooks/useTwitterConnect";
+import { useSearchParams } from "next/navigation";
+import { useTwitterDisconnect } from "./hooks/useTwitterDisconnect";
+import { useIsMounted } from "./hooks/useIsMounted";
 
 const RegistrationPane = {
   DEFAULT: "DEFAULT",
@@ -30,29 +34,53 @@ export default function Home() {
   const { signMessageAsync } = useSignMessage();
   const { disconnect } = useDisconnect();
   const { address } = useAccount();
-  const [currentPane, setCurrentPane] = useState<RegistrationPaneType>(
-    RegistrationPane.DEFAULT
-  );
+  const searchParams = useSearchParams();
+  const shouldShowRegisterStep = searchParams.get("step") === "twitter";
+  const twitterEncryptedId = searchParams.get("tid");
+  const twitterEncryptedUsername = searchParams.get("tname");
+  const twitterUsername = searchParams.get("rtname");
+  const { mutateAsync: getTwitterConnectUrl, isPending: isFetchingTwitterUrl } =
+    useTwitterConnect();
+  const {
+    mutateAsync: disconnectTwitter,
+    isPending: isDisconnectingFromTwitter,
+  } = useTwitterDisconnect();
   const [message, setMessage] = useState("");
   const [signature, setSignature] = useState("");
   const previousAddress = usePrevious(address);
+  const [currentPane, setCurrentPane] = useState<RegistrationPaneType>(
+    RegistrationPane.DEFAULT
+  );
+  const [finishedRegistration, setFinishedRegistration] = useState(false);
+  const mounted = useIsMounted();
+
   const { isPending, mutateAsync } = useMutation({
     mutationKey: ["sign"],
     mutationFn: async ({
       message,
       signature,
       address,
+      twitterEncryptedId,
+      twitterEncryptedUsername,
     }: {
       message: string;
       signature: string;
       address: string;
+      twitterEncryptedId?: string | null;
+      twitterEncryptedUsername?: string | null;
     }) => {
       return fetch("/api/sign-write", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message, signature, address }),
+        body: JSON.stringify({
+          message,
+          signature,
+          address,
+          twitterEncryptedUsername: twitterEncryptedUsername || null,
+          twitterEncryptedId: twitterEncryptedId || null,
+        }),
       });
     },
   });
@@ -82,6 +110,227 @@ export default function Home() {
       behavior: "smooth",
     });
   }, [currentPane]);
+
+  if (
+    (shouldShowRegisterStep && !finishedRegistration) ||
+    currentPane === "REGISTER"
+  ) {
+    return (
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
+        <div>
+          <div className="text-[40px] mb-4 font-bold text-center">
+            Register to Claim
+          </div>
+          <div className="text-[#747474] text-lg text-center font-[500]">
+            To be able to claim, individuals must fill out this form and agree
+            to the PlumeDrop Terms of Service.
+          </div>
+        </div>
+
+        <ul className="flex flex-col">
+          <li
+            className={clsx(
+              "border p-6 flex items-center gap-4 rounded-tr-[24px] rounded-tl-[24px] justify-between"
+            )}
+          >
+            <div className="flex flex-col gap-1">
+              <div className="font-[500] text-lg">Connect Wallet</div>
+              <div className="text-[#747474] font-[500]">Required</div>
+            </div>
+
+            <ConnectButton.Custom>
+              {({
+                account,
+                mounted,
+                authenticationStatus,
+                openConnectModal,
+              }) => {
+                if (!account || !mounted) {
+                  return (
+                    <button
+                      className="bg-[#111111] px-4 py-2 rounded-full text-[#F0F0F0]"
+                      disabled={!mounted || authenticationStatus === "loading"}
+                      onClick={() => {
+                        openConnectModal();
+                      }}
+                    >
+                      Connect wallet
+                    </button>
+                  );
+                } else {
+                  return (
+                    <button
+                      className="border border-[#111111] flex items-center gap-2 rounded-full px-3 py-2 hover:bg-[#F0F0F0] h-10"
+                      onClick={() => {
+                        disconnect();
+                      }}
+                    >
+                      {account.address.slice(0, 6)}...
+                      {account.address.slice(-4)}
+                      <XIcon size={16} />
+                    </button>
+                  );
+                }
+              }}
+            </ConnectButton.Custom>
+          </li>
+
+          <li
+            className={clsx(
+              "border border-t-0 p-6 flex items-center gap-4 rounded-br-[24px] rounded-bl-[24px] justify-between"
+            )}
+          >
+            <div className="flex flex-col gap-1">
+              <div className="font-[500] text-lg">Connect to X</div>
+              <div className="text-[#747474] font-[500]">Optional</div>
+            </div>
+            {!twitterUsername ? (
+              <button
+                className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
+                disabled={isFetchingTwitterUrl}
+                onClick={async () => {
+                  const { url } = await getTwitterConnectUrl();
+
+                  window.location.href = url;
+                }}
+              >
+                {isFetchingTwitterUrl ? (
+                  <div className="flex gap-2 items-center justify-center">
+                    <Loader2Icon
+                      size={16}
+                      className="animate-spin text-[#111111]"
+                    />
+                    Connecting
+                  </div>
+                ) : (
+                  "Connect X"
+                )}
+              </button>
+            ) : (
+              <button
+                className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
+                onClick={async () => {
+                  await disconnectTwitter();
+
+                  console.log("relogging");
+
+                  window.location.href = "/?step=twitter";
+                }}
+              >
+                {isDisconnectingFromTwitter ? (
+                  <div className="flex gap-2 items-center justify-center">
+                    <Loader2Icon
+                      size={16}
+                      className="animate-spin text-[#111111]"
+                    />
+                    Disconnecting
+                  </div>
+                ) : (
+                  <div className="flex gap-2 items-center justify-center">
+                    {twitterUsername}
+                    <XIcon size={16} />
+                  </div>
+                )}
+              </button>
+            )}
+          </li>
+        </ul>
+        <div className="bg-[#F9F9F9] rounded-[24px] p-6 flex gap-4 items-center">
+          <div className="text-lg font-[500] text-[#747474]">
+            I confirm that I&apos;ve read and agree with the PlumeDrop&apos;s{" "}
+            <Link
+              href="/terms"
+              target="_blank"
+              className="underline text-[#111111]"
+            >
+              Terms of Service
+            </Link>
+          </div>
+          <AnimatePresence>
+            {signature ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="bg-[#FFFFFF] text-[#111111] py-2 px-4 flex gap-1.5 items-center rounded-full"
+              >
+                <CheckCircleIcon size={12} /> Signed
+              </motion.div>
+            ) : (
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="bg-[#111111] text-[#F0F0F0] py-2 px-4 rounded-full h-10 hover:!opacity-80 disabled:!opacity-40 disabled:cursor-not-allowed"
+                disabled={!mounted || !address}
+                onClick={async () => {
+                  const { message } = generateMessageToSign();
+                  try {
+                    const sig = await signMessageAsync({
+                      message,
+                    });
+
+                    setMessage(message);
+                    setSignature(sig);
+                    toast(<SignedMessageToast />);
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+              >
+                Sign
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <div>
+          <button
+            className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-[#E7E7E7] disabled:text-[#111111]"
+            disabled={isPending || !address || !signature}
+            onClick={async () => {
+              if (!address) {
+                return;
+              }
+
+              await mutateAsync({
+                message,
+                signature,
+                address,
+                twitterEncryptedId: twitterEncryptedId || null,
+                twitterEncryptedUsername: twitterEncryptedUsername || null,
+              });
+
+              // Once done we can move to final step
+
+              setFinishedRegistration(true);
+              setCurrentPane(RegistrationPane.FINISHED);
+            }}
+          >
+            {isPending ? (
+              <div className="flex gap-2 items-center justify-center">
+                <Loader2Icon
+                  size={16}
+                  className="animate-spin text-[#111111]"
+                />
+                Submitting
+              </div>
+            ) : (
+              "Submit"
+            )}
+          </button>
+        </div>
+        <div className="text-[#747474] text-sm font-[500]">
+          <span className="text-[#111111]">Disclaimer</span>: Registering to
+          claim does not automatically make you eligible for rewards. Final
+          PlumeDrop allocation subject to eligibility verification.{" "}
+          <Link target="_blank" href="/" className="text-[#111111]">
+            Learn more
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   if (currentPane === "FINISHED") {
     return (
@@ -387,179 +636,6 @@ export default function Home() {
           >
             Continue
           </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (currentPane === "REGISTER") {
-    return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
-        <div>
-          <div className="text-[40px] mb-4 font-bold text-center">
-            Register to Claim
-          </div>
-          <div className="text-[#747474] text-lg text-center font-[500]">
-            To be able to claim, individuals must fill out this form and agree
-            to the PlumeDrop Terms of Service.
-          </div>
-        </div>
-
-        <ul className="flex flex-col">
-          <li
-            className={clsx(
-              "border p-6 flex items-center gap-4 rounded-tr-[24px] rounded-tl-[24px] justify-between"
-            )}
-          >
-            <div className="flex flex-col gap-1">
-              <div className="font-[500] text-lg">Connect Wallet</div>
-              <div className="text-[#747474] font-[500]">Required</div>
-            </div>
-
-            <ConnectButton.Custom>
-              {({
-                account,
-                mounted,
-                authenticationStatus,
-                openConnectModal,
-              }) => {
-                if (!account || !mounted) {
-                  return (
-                    <button
-                      className="bg-[#111111] px-4 py-2 rounded-full text-[#F0F0F0]"
-                      disabled={!mounted || authenticationStatus === "loading"}
-                      onClick={() => {
-                        openConnectModal();
-                      }}
-                    >
-                      Connect wallet
-                    </button>
-                  );
-                } else {
-                  return (
-                    <button
-                      className="border border-[#111111] flex items-center gap-2 rounded-full px-3 py-2 hover:bg-[#F0F0F0] h-10"
-                      onClick={() => {
-                        disconnect();
-                      }}
-                    >
-                      {account.address.slice(0, 6)}...
-                      {account.address.slice(-4)}
-                      <XIcon size={16} />
-                    </button>
-                  );
-                }
-              }}
-            </ConnectButton.Custom>
-          </li>
-
-          <li
-            className={clsx(
-              "border border-t-0 p-6 flex items-center gap-4 rounded-br-[24px] rounded-bl-[24px] justify-between"
-            )}
-          >
-            <div className="flex flex-col gap-1">
-              <div className="font-[500] text-lg">Connect to X</div>
-              <div className="text-[#747474] font-[500]">Optional</div>
-            </div>
-            <button
-              className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111]"
-              onClick={() => {
-                // Handle twitter connect
-              }}
-            >
-              Connect X
-            </button>
-          </li>
-        </ul>
-        <div className="bg-[#F9F9F9] rounded-[24px] p-6 flex gap-4 items-center">
-          <div className="text-lg font-[500] text-[#747474]">
-            I confirm that I&apos;ve read and agree with the PlumeDrop&apos;s{" "}
-            <Link
-              href="/terms"
-              target="_blank"
-              className="underline text-[#111111]"
-            >
-              Terms of Service
-            </Link>
-          </div>
-          <AnimatePresence>
-            {signature ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="bg-[#FFFFFF] text-[#111111] py-2 px-4 flex gap-1.5 items-center rounded-full"
-              >
-                <CheckCircleIcon size={12} /> Signed
-              </motion.div>
-            ) : (
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="bg-[#111111] text-[#F0F0F0] py-2 px-4 rounded-full h-10 hover:!opacity-80"
-                onClick={async () => {
-                  const { message } = generateMessageToSign();
-                  try {
-                    const sig = await signMessageAsync({
-                      message,
-                    });
-
-                    setMessage(message);
-                    setSignature(sig);
-                    toast(<SignedMessageToast />);
-                  } catch (e) {
-                    console.error(e);
-                  }
-                }}
-              >
-                Sign
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
-
-        <div>
-          <button
-            className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-[#E7E7E7] disabled:text-[#111111]"
-            disabled={isPending || !address || !signature}
-            onClick={async () => {
-              if (!address) {
-                return;
-              }
-
-              await mutateAsync({
-                message,
-                signature,
-                address,
-              });
-
-              // Once done we can move to final step
-
-              setCurrentPane(RegistrationPane.FINISHED);
-            }}
-          >
-            {isPending ? (
-              <div className="flex gap-2 items-center justify-center">
-                <Loader2Icon
-                  size={16}
-                  className="animate-spin text-[#111111]"
-                />
-                Submitting
-              </div>
-            ) : (
-              "Submit"
-            )}
-          </button>
-        </div>
-        <div className="text-[#747474] text-sm font-[500]">
-          <span className="text-[#111111]">Disclaimer</span>: Registering to
-          claim does not automatically make you eligible for rewards. Final
-          PlumeDrop allocation subject to eligibility verification.{" "}
-          <Link target="_blank" href="/" className="text-[#111111]">
-            Learn more
-          </Link>
         </div>
       </div>
     );
