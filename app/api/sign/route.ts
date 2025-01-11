@@ -1,4 +1,6 @@
-import { prisma } from "@/app/lib/server/prisma";
+import { db } from "@/app/drizzle/drizzle";
+import { users } from "@/app/drizzle/schema";
+import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { Address, Hex, isAddressEqual, recoverMessageAddress } from "viem";
 
@@ -15,15 +17,12 @@ export const POST = async (req: NextRequest) => {
   });
 
   // Register the user
-  await prisma.user.upsert({
-    where: {
+  await db
+    .insert(users)
+    .values({
       walletAddress: address,
-    },
-    update: {},
-    create: {
-      walletAddress: address,
-    },
-  });
+    })
+    .onConflictDoNothing();
 
   if (!isAddressEqual(recoveredAddress, address)) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
@@ -39,13 +38,12 @@ export const GET = async (req: NextRequest) => {
     address: Address;
   };
 
-  const user = await prisma.user.findFirst({
-    where: {
-      walletAddress: address,
-    },
-  });
+  const allUsers = await db
+    .select()
+    .from(users)
+    .where(eq(users.walletAddress, address));
 
-  if (user) {
+  if (allUsers.length) {
     return NextResponse.json({ registered: true }, { status: 200 });
   }
 
