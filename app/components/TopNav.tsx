@@ -1,14 +1,24 @@
 "use client";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { XIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "lucide-react";
 import { useDisconnect } from "wagmi";
+import { topNavPaneList, usePreregStore } from "../store";
+import { useShallow } from "zustand/react/shallow";
+import clsx from "clsx";
 
 export const TopNav = () => {
   const { disconnect } = useDisconnect();
+  const [currentPane, setCurrentPane] = usePreregStore(
+    useShallow((state) => [state.currentPane, state.setCurrentPane])
+  );
+
+  const shouldShowNav = topNavPaneList.includes(currentPane);
+
+  console.log("shouldShowNav", shouldShowNav);
 
   return (
-    <div className="rounded-full border-[#F0F0F0] border px-8 py-5 flex items-center justify-between">
+    <div className="rounded-full border-[#F0F0F0] border px-8 py-5 flex items-center justify-between relative">
       {/* eslint-disable-next-line */}
       <a className="flex items-center gap-1" href="/">
         <svg
@@ -41,6 +51,52 @@ export const TopNav = () => {
         </svg>
         <div className="font-black text-xl">plume</div>
       </a>
+      {shouldShowNav && (
+        <div className="gap-2 items-center hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <button
+            className="px-3 py-1.5 border border-[#F0F0F0] rounded-full disabled:opacity-40 disabled:cursor-not-allowed bg-white hover:bg-[#F0F0F0]"
+            disabled={topNavPaneList.indexOf(currentPane) === 0}
+            onClick={() => {
+              const currentPaneInListIdx = topNavPaneList.indexOf(currentPane);
+              setCurrentPane(topNavPaneList[currentPaneInListIdx - 1]);
+            }}
+          >
+            <ChevronLeftIcon size={20} />
+          </button>
+          <ul className="flex items-center gap-2">
+            {topNavPaneList.map((pane, idx) => {
+              const currentPaneInListIdx = topNavPaneList.indexOf(currentPane);
+
+              return (
+                <button
+                  key={pane}
+                  className={clsx(
+                    "w-16 rounded-full h-[6px]",
+                    currentPaneInListIdx >= idx
+                      ? "bg-[#111111]"
+                      : "bg-[#F0F0F0]"
+                  )}
+                  onClick={() => {
+                    setCurrentPane(pane);
+                  }}
+                />
+              );
+            })}
+          </ul>
+          <button
+            className="px-3 py-1.5 border border-[#F0F0F0] rounded-full  disabled:opacity-40 disabled:cursor-not-allowed  bg-white hover:bg-[#F0F0F0]"
+            disabled={
+              topNavPaneList.indexOf(currentPane) === topNavPaneList.length - 1
+            }
+            onClick={() => {
+              const currentPaneInListIdx = topNavPaneList.indexOf(currentPane);
+              setCurrentPane(topNavPaneList[currentPaneInListIdx + 1]);
+            }}
+          >
+            <ChevronRightIcon size={20} />
+          </button>
+        </div>
+      )}
       <ConnectButton.Custom>
         {({ account, openConnectModal, authenticationStatus, mounted }) => {
           if (!account || !mounted) {

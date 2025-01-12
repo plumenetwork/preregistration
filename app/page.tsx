@@ -19,17 +19,8 @@ import { useSearchParams } from "next/navigation";
 import { useTwitterDisconnect } from "./hooks/useTwitterDisconnect";
 import { useIsMounted } from "./hooks/useIsMounted";
 import { TwitterErrorToast } from "./components/TwitterErrorToast";
-
-const RegistrationPane = {
-  DEFAULT: "DEFAULT",
-  ABOUT: "ABOUT",
-  MEET: "MEET",
-  REGISTER: "REGISTER",
-  FINISHED: "FINISHED",
-} as const;
-
-type RegistrationPaneType =
-  (typeof RegistrationPane)[keyof typeof RegistrationPane];
+import { usePreregStore } from "./store";
+import { useShallow } from "zustand/react/shallow";
 
 export default function Home() {
   const { signMessageAsync } = useSignMessage();
@@ -50,8 +41,8 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [signature, setSignature] = useState("");
   const previousAddress = usePrevious(address);
-  const [currentPane, setCurrentPane] = useState<RegistrationPaneType>(
-    RegistrationPane.DEFAULT
+  const [currentPane, setCurrentPane] = usePreregStore(
+    useShallow((state) => [state.currentPane, state.setCurrentPane])
   );
   const [finishedRegistration, setFinishedRegistration] = useState(false);
   const mounted = useIsMounted();
@@ -101,7 +92,7 @@ export default function Home() {
 
       // User disconnected and not on register step, send them back to first step
       if (!address && currentPane !== "REGISTER") {
-        setCurrentPane(RegistrationPane.DEFAULT);
+        setCurrentPane("DEFAULT");
       }
     }
   }, [previousAddress, address, currentPane]);
@@ -310,7 +301,7 @@ export default function Home() {
               // Once done we can move to final step
 
               setFinishedRegistration(true);
-              setCurrentPane(RegistrationPane.FINISHED);
+              setCurrentPane("FINISHED");
             }}
           >
             {isPending ? (
@@ -463,9 +454,9 @@ export default function Home() {
                 onClick={() => {
                   if (account) {
                     if (data?.registered) {
-                      setCurrentPane(RegistrationPane.FINISHED);
+                      setCurrentPane("FINISHED");
                     } else {
-                      setCurrentPane(RegistrationPane.ABOUT);
+                      setCurrentPane("ABOUT");
                     }
                   } else {
                     openConnectModal();
@@ -507,8 +498,10 @@ export default function Home() {
             About Plume
           </div>
           <div className="text-[#747474] text-lg text-center font-[500]">
-            PlumeDrop is directly associated to Plume, the first fully modular
-            L1 chain tailored for real-world assets.
+            Plume is the public blockchain for scaling RWAs. The Plume Airdrop
+            marks the start of the next chapter of crypto, one in which funds,
+            institutions and owners of real world assets can now access the
+            rails of crypto and RWAfi as pioneered by Plume.
           </div>
         </div>
 
@@ -563,7 +556,7 @@ export default function Home() {
           <button
             className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
             onClick={() => {
-              setCurrentPane(RegistrationPane.MEET);
+              setCurrentPane("MEET");
             }}
           >
             Continue
@@ -585,9 +578,9 @@ export default function Home() {
             Meet <span className="text-[#FF3D00]">$PLUME</span>
           </div>
           <div className="text-[#747474] text-lg text-center font-[500]">
-            PlumeDrop will distribute $PLUME, the official RWAfi ecosystem token
-            on Plume, designed to align stakeholders across the ecosystem and
-            unlock long term objectives.
+            Plume&apos;s Airdrop will distribute $PLUME, the official RWAfi
+            ecosystem token on Plume, designed to align stakeholders across the
+            ecosystem and enable Plume&apos;s long term vision.
           </div>
         </div>
 
@@ -649,7 +642,7 @@ export default function Home() {
           <button
             className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
             onClick={() => {
-              setCurrentPane(RegistrationPane.REGISTER);
+              setCurrentPane("REGISTER");
             }}
           >
             Continue
