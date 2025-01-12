@@ -391,8 +391,8 @@ export default function Home() {
             Register for Plume&apos;s Airdrop
           </div>
           <div className="text-[#747474] text-lg text-center font-[500]">
-            Plume&apos;s first official token airdrop, PlumeDrop, rewards early
-            contributors who&apos;ve been a part of the journey thus far.{" "}
+            Plume&apos;s first official airdrop rewards early contributors
+            who&apos;ve been a part of the journey thus far.
             <Link
               target="_blank"
               href="https://plumenetwork.xyz/blog/plume-drop-faq"
