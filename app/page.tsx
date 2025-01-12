@@ -124,7 +124,7 @@ export default function Home() {
     currentPane === "REGISTER"
   ) {
     return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
+      <div className="md:p-12 p-5 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto md:mt-16 mt-5 bg-white">
         <div>
           <div className="text-[40px] mb-4 font-bold text-center">
             Register to Claim
@@ -143,7 +143,6 @@ export default function Home() {
           >
             <div className="flex flex-col gap-1">
               <div className="font-[500] text-lg">Connect Wallet</div>
-              <div className="text-[#747474] font-[500]">Required</div>
             </div>
 
             <ConnectButton.Custom>
@@ -190,7 +189,6 @@ export default function Home() {
           >
             <div className="flex flex-col gap-1">
               <div className="font-[500] text-lg">Connect to X</div>
-              <div className="text-[#747474] font-[500]">Optional</div>
             </div>
             {!twitterUsername ? (
               <button
@@ -346,7 +344,7 @@ export default function Home() {
 
   if (currentPane === "FINISHED") {
     return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
+      <div className="md:p-12 p-5 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto md:mt-16 mt-5 bg-white">
         <Image
           alt=""
           src="/images/plume-logo.avif"
@@ -381,7 +379,7 @@ export default function Home() {
 
   if (currentPane === "DEFAULT") {
     return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
+      <div className="md:p-12 p-5 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto md:mt-16 mt-5 bg-white">
         <div className="w-full aspect-[544/320] relative">
           <Image src="/images/plume-default-banner.avif" alt="" layout="fill" />
         </div>
@@ -390,11 +388,11 @@ export default function Home() {
             Season 1 of Plume&apos;s Official Token Airdrop
           </div>
           <div className="text-[40px] mb-4 font-bold text-center">
-            Register for PlumeDrop
+            Register for Plume&apos;s Airdrop
           </div>
           <div className="text-[#747474] text-lg text-center font-[500]">
             Plume&apos;s first official token airdrop, PlumeDrop, rewards early
-            contributors who&apos;ve been a part of the journey this far. Learn
+            contributors who&apos;ve been a part of the journey thus far. Learn
             more
           </div>
         </div>
@@ -410,7 +408,7 @@ export default function Home() {
               image: "/images/plume-default-icon-2.avif",
               title: "Pre-Deposit Users",
               description:
-                "Participants who’ve contributed funds into the Plume Vault and into the Nest Pre-Deposit.",
+                "Participants who’ve contributed funds into the Plume Vault and into the into the Nest Pre-Deposit vault.",
             },
             {
               image: "/images/plume-default-icon-3.avif",
@@ -489,7 +487,7 @@ export default function Home() {
 
   if (currentPane === "ABOUT") {
     return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
+      <div className="md:p-12 p-5 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto md:mt-16 mt-5 bg-white">
         <Image
           alt=""
           src="/images/plume-about-logo.avif"
@@ -570,7 +568,7 @@ export default function Home() {
 
   if (currentPane === "MEET") {
     return (
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto mt-16 bg-white">
+      <div className="md:p-12 p-5 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto md:mt-16 mt-5 bg-white">
         <div className="w-full aspect-[544/320] relative">
           <Image src="/images/plume-meet-banner.avif" alt="" layout="fill" />
         </div>
@@ -619,7 +617,8 @@ export default function Home() {
                 className={clsx(
                   "border p-6 flex items-center gap-4",
                   idx === 0 && "rounded-tr-[24px] rounded-tl-[24px]",
-                  idx !== 0 && idx !== 3 && "border-t-0 border-b-0",
+                  idx === 1 && "border-t-0",
+                  idx === 2 && "border-b-0 border-t-0",
                   idx === 3 && "rounded-br-[24px] rounded-bl-[24px]"
                 )}
               >

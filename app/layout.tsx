@@ -59,7 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lufga.className} antialiased`}>
-        <div className="px-10 pb-[300px]">
+        <div className="px-2 md:px-10 pb-[300px]">
           <AppProviders>
             <div className="max-w-[1200px] mx-auto w-full mt-8">
               <TopNav />

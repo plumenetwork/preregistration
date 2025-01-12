@@ -39,7 +39,7 @@ export const TopNav = () => {
             fill="#272727"
           />
         </svg>
-        <div className="font-black text-xl">Plume</div>
+        <div className="font-black text-xl">plume</div>
       </a>
       <ConnectButton.Custom>
         {({ account, openConnectModal, authenticationStatus, mounted }) => {
