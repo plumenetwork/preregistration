@@ -392,14 +392,15 @@ export default function Home() {
           </div>
           <div className="text-[#747474] text-lg text-center font-[500]">
             Plume&apos;s first official token airdrop, PlumeDrop, rewards early
-            contributors who&apos;ve been a part of the journey thus far.
+            contributors who&apos;ve been a part of the journey thus far.{" "}
             <Link
               target="_blank"
               href="https://plumenetwork.xyz/blog/plume-drop-faq"
-              className="underline"
+              className="underline whitespace-nowrap"
             >
               Learn more
             </Link>
+            .
           </div>
         </div>
         <ul className="flex flex-col">
