@@ -21,6 +21,7 @@ import { useIsMounted } from "./hooks/useIsMounted";
 import { TwitterErrorToast } from "./components/TwitterErrorToast";
 import { usePreregStore } from "./store";
 import { useShallow } from "zustand/react/shallow";
+import { PaneLayout } from "./components/PaneLayout";
 
 export default function Home() {
   const { signMessageAsync } = useSignMessage();
@@ -115,540 +116,405 @@ export default function Home() {
     currentPane === "REGISTER"
   ) {
     return (
-      <div className="md:p-12 p-5 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto md:mt-16 mt-5 bg-white">
-        <div>
-          <div className="text-[40px] mb-4 font-bold text-center">
-            Register to Claim
-          </div>
-          <div className="text-[#747474] text-lg text-center font-[500]">
-            To be able to claim, individuals must fill out this form and agree
-            to the PlumeDrop Terms of Service.
-          </div>
-        </div>
-
-        <ul className="flex flex-col">
-          <li
-            className={clsx(
-              "border p-6 flex items-center gap-4 rounded-tr-[24px] rounded-tl-[24px] justify-between"
-            )}
-          >
-            <div className="flex flex-col gap-1">
-              <div className="font-[500] text-lg">Connect Wallet</div>
+      <PaneLayout
+        content={
+          <div className="flex flex-col pb-[100px] mt-[100px]">
+            <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
+              Request Form
             </div>
-
-            <ConnectButton.Custom>
-              {({
-                account,
-                mounted,
-                authenticationStatus,
-                openConnectModal,
-              }) => {
-                if (!account || !mounted) {
-                  return (
-                    <button
-                      className="bg-[#111111] px-4 py-2 rounded-full text-[#F0F0F0]"
-                      disabled={!mounted || authenticationStatus === "loading"}
-                      onClick={() => {
-                        openConnectModal();
-                      }}
-                    >
-                      Connect wallet
-                    </button>
-                  );
-                } else {
-                  return (
-                    <button
-                      className="border border-[#111111] flex items-center gap-2 rounded-full px-3 py-2 hover:bg-[#F0F0F0] h-10"
-                      onClick={() => {
-                        disconnect();
-                      }}
-                    >
-                      {account.address.slice(0, 6)}...
-                      {account.address.slice(-4)}
-                      <XIcon size={16} />
-                    </button>
-                  );
+            <div className="font-bold text-[42px] md:text-[48px] lg:text-[56px] mb-4">
+              Register to Claim
+            </div>
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px]">
+              To be able to claim, individuals must fill out this form and agree
+              to the Plume Airdrop Terms of Service.
+            </div>
+            <ul className="flex flex-col gap-3">
+              <li
+                className={
+                  "p-6 flex items-center gap-4 justify-between shadow-md rounded-[16px] border border-[#F0F0F0]"
                 }
-              }}
-            </ConnectButton.Custom>
-          </li>
-
-          <li
-            className={clsx(
-              "border border-t-0 p-6 flex items-center gap-4 rounded-br-[24px] rounded-bl-[24px] justify-between"
-            )}
-          >
-            <div className="flex flex-col gap-1">
-              <div className="font-[500] text-lg">Connect to X</div>
-            </div>
-            {!twitterUsername ? (
-              <button
-                className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
-                disabled={isFetchingTwitterUrl}
-                onClick={async () => {
-                  const { url } = await getTwitterConnectUrl();
-
-                  window.location.href = url;
-                }}
               >
-                {isFetchingTwitterUrl ? (
-                  <div className="flex gap-2 items-center justify-center">
-                    <Loader2Icon
-                      size={16}
-                      className="animate-spin text-[#111111]"
-                    />
-                    Connecting
-                  </div>
+                <div className="flex flex-col gap-1">
+                  <div className="font-[500] text-lg">Connect Wallet</div>
+                </div>
+
+                <ConnectButton.Custom>
+                  {({
+                    account,
+                    mounted,
+                    authenticationStatus,
+                    openConnectModal,
+                  }) => {
+                    if (!account || !mounted) {
+                      return (
+                        <button
+                          className="bg-[#111111] px-4 py-2 rounded-full text-[#F0F0F0]"
+                          disabled={
+                            !mounted || authenticationStatus === "loading"
+                          }
+                          onClick={() => {
+                            openConnectModal();
+                          }}
+                        >
+                          Connect wallet
+                        </button>
+                      );
+                    } else {
+                      return (
+                        <button
+                          className="border border-[#111111] flex items-center gap-2 rounded-full px-3 py-2 hover:bg-[#F0F0F0] h-10"
+                          onClick={() => {
+                            disconnect();
+                          }}
+                        >
+                          {account.address.slice(0, 6)}...
+                          {account.address.slice(-4)}
+                          <XIcon size={16} />
+                        </button>
+                      );
+                    }
+                  }}
+                </ConnectButton.Custom>
+              </li>
+
+              <li className="p-6 flex items-center gap-4 justify-between shadow-md rounded-[16px] border border-[#F0F0F0]">
+                <div className="flex flex-col gap-1">
+                  <div className="font-[500] text-lg">Connect to X</div>
+                </div>
+                {!twitterUsername ? (
+                  <button
+                    className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
+                    disabled={isFetchingTwitterUrl}
+                    onClick={async () => {
+                      const { url } = await getTwitterConnectUrl();
+
+                      window.location.href = url;
+                    }}
+                  >
+                    {isFetchingTwitterUrl ? (
+                      <div className="flex gap-2 items-center justify-center">
+                        <Loader2Icon
+                          size={16}
+                          className="animate-spin text-[#111111]"
+                        />
+                        Connecting
+                      </div>
+                    ) : (
+                      "Connect X"
+                    )}
+                  </button>
                 ) : (
-                  "Connect X"
+                  <button
+                    className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
+                    onClick={async () => {
+                      await disconnectTwitter();
+
+                      console.log("relogging");
+
+                      window.location.href = "/?step=twitter";
+                    }}
+                  >
+                    {isDisconnectingFromTwitter ? (
+                      <div className="flex gap-2 items-center justify-center">
+                        <Loader2Icon
+                          size={16}
+                          className="animate-spin text-[#111111]"
+                        />
+                        Disconnecting
+                      </div>
+                    ) : (
+                      <div className="flex gap-2 items-center justify-center">
+                        {twitterUsername}
+                        <XIcon size={16} />
+                      </div>
+                    )}
+                  </button>
                 )}
-              </button>
-            ) : (
+              </li>
+
+              <li className="p-6 flex items-center gap-4 justify-between shadow-md rounded-[16px] border border-[#F0F0F0]">
+                <div className="text-lg font-[500] text-[#747474]">
+                  I confirm that I&apos;ve read and agree with the
+                  PlumeDrop&apos;s{" "}
+                  <Link
+                    href="/terms"
+                    target="_blank"
+                    className="underline text-[#111111]"
+                  >
+                    Terms of Service
+                  </Link>
+                </div>
+                <AnimatePresence>
+                  {signature ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="bg-[#FFFFFF] text-[#111111] py-2 px-4 flex gap-1.5 items-center rounded-full"
+                    >
+                      <CheckCircleIcon size={12} /> Signed
+                    </motion.div>
+                  ) : (
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="bg-[#111111] text-[#F0F0F0] py-2 px-4 rounded-full h-10 hover:!opacity-80 disabled:!opacity-40 disabled:cursor-not-allowed"
+                      disabled={!mounted || !address}
+                      onClick={async () => {
+                        const { message } = generateMessageToSign();
+                        try {
+                          const sig = await signMessageAsync({
+                            message,
+                          });
+
+                          setMessage(message);
+                          setSignature(sig);
+                          toast(<SignedMessageToast />);
+                        } catch (e) {
+                          console.error(e);
+                        }
+                      }}
+                    >
+                      Sign
+                    </motion.button>
+                  )}
+                </AnimatePresence>
+              </li>
+            </ul>
+            <div className="mt-8">
               <button
-                className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
+                className="font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-[#E7E7E7] disabled:text-[#111111]"
+                disabled={isPending || !address || !signature}
                 onClick={async () => {
-                  await disconnectTwitter();
-
-                  console.log("relogging");
-
-                  window.location.href = "/?step=twitter";
-                }}
-              >
-                {isDisconnectingFromTwitter ? (
-                  <div className="flex gap-2 items-center justify-center">
-                    <Loader2Icon
-                      size={16}
-                      className="animate-spin text-[#111111]"
-                    />
-                    Disconnecting
-                  </div>
-                ) : (
-                  <div className="flex gap-2 items-center justify-center">
-                    {twitterUsername}
-                    <XIcon size={16} />
-                  </div>
-                )}
-              </button>
-            )}
-          </li>
-        </ul>
-        <div className="bg-[#F9F9F9] rounded-[24px] p-6 flex gap-4 items-center">
-          <div className="text-lg font-[500] text-[#747474]">
-            I confirm that I&apos;ve read and agree with the PlumeDrop&apos;s{" "}
-            <Link
-              href="/terms"
-              target="_blank"
-              className="underline text-[#111111]"
-            >
-              Terms of Service
-            </Link>
-          </div>
-          <AnimatePresence>
-            {signature ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="bg-[#FFFFFF] text-[#111111] py-2 px-4 flex gap-1.5 items-center rounded-full"
-              >
-                <CheckCircleIcon size={12} /> Signed
-              </motion.div>
-            ) : (
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="bg-[#111111] text-[#F0F0F0] py-2 px-4 rounded-full h-10 hover:!opacity-80 disabled:!opacity-40 disabled:cursor-not-allowed"
-                disabled={!mounted || !address}
-                onClick={async () => {
-                  const { message } = generateMessageToSign();
-                  try {
-                    const sig = await signMessageAsync({
-                      message,
-                    });
-
-                    setMessage(message);
-                    setSignature(sig);
-                    toast(<SignedMessageToast />);
-                  } catch (e) {
-                    console.error(e);
+                  if (!address) {
+                    return;
                   }
+
+                  await mutateAsync({
+                    message,
+                    signature,
+                    address,
+                    twitterEncryptedId: twitterEncryptedId || null,
+                    twitterEncryptedUsername: twitterEncryptedUsername || null,
+                  });
+
+                  // Once done we can move to final step
+
+                  setFinishedRegistration(true);
+                  setCurrentPane("FINISHED");
                 }}
               >
-                Sign
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
-
-        <div>
-          <button
-            className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-[#E7E7E7] disabled:text-[#111111]"
-            disabled={isPending || !address || !signature}
-            onClick={async () => {
-              if (!address) {
-                return;
-              }
-
-              await mutateAsync({
-                message,
-                signature,
-                address,
-                twitterEncryptedId: twitterEncryptedId || null,
-                twitterEncryptedUsername: twitterEncryptedUsername || null,
-              });
-
-              // Once done we can move to final step
-
-              setFinishedRegistration(true);
-              setCurrentPane("FINISHED");
-            }}
-          >
-            {isPending ? (
-              <div className="flex gap-2 items-center justify-center">
-                <Loader2Icon
-                  size={16}
-                  className="animate-spin text-[#111111]"
-                />
-                Submitting
-              </div>
-            ) : (
-              "Submit"
-            )}
-          </button>
-        </div>
-        <div className="text-[#747474] text-sm font-[500]">
-          <span className="text-[#111111]">Disclaimer</span>: Registering to
-          claim does not automatically make you eligible for rewards. Final
-          PlumeDrop allocation subject to eligibility verification.{" "}
-          <Link
-            target="_blank"
-            href="https://plumenetwork.xyz/blog/plume-drop-faq"
-            className="text-[#111111]"
-          >
-            Learn more
-          </Link>
-        </div>
-      </div>
+                {isPending ? (
+                  <div className="flex gap-2 items-center justify-center">
+                    <Loader2Icon
+                      size={16}
+                      className="animate-spin text-[#111111]"
+                    />
+                    Submitting
+                  </div>
+                ) : (
+                  "Submit"
+                )}
+              </button>
+            </div>
+            {/* <div className="text-[#747474] text-sm font-[500]">
+              <span className="text-[#111111]">Disclaimer</span>: Registering to
+              claim does not automatically make you eligible for rewards. Final
+              PlumeDrop allocation subject to eligibility verification.{" "}
+              <Link
+                target="_blank"
+                href="https://plumenetwork.xyz/blog/plume-drop-faq"
+                className="text-[#111111]"
+              >
+                Learn more
+              </Link>
+            </div> */}
+          </div>
+        }
+        image="/images/plume-bg-3.avif"
+      />
     );
   }
 
   if (currentPane === "FINISHED") {
     return (
-      <div className="md:p-12 p-5 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto md:mt-16 mt-5 bg-white">
-        <Image
-          alt=""
-          src="/images/plume-logo.avif"
-          className="mx-auto"
-          width={64}
-          height={64}
-        />
-        <div>
-          <div className="text-[40px] mb-4 font-bold text-center">
-            You&apos;re All Set!
+      <PaneLayout
+        content={
+          <div className="flex flex-col pb-[100px]">
+            <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
+              You’re all set
+            </div>
+            <div className="font-bold text-[42px] md:text-[48px] lg:text-[56px] mb-4">
+              You&apos;re Registered
+            </div>
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px]">
+              Thank you for registering to the Plume Airdrop. Stay tuned for
+              updates as Plume approaches its live release.
+            </div>
+            <div>
+              <Link
+                href="https://x.com/plumenetwork"
+                target="_blank"
+                rel="noopener noreferrer"
+                passHref
+                className="w-auto text-center justify-center font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Follow Plume on X
+              </Link>
+            </div>
           </div>
-          <div className="text-[#747474] text-lg text-center font-[500]">
-            Thank you for registering for PlumeDrop I. We&apos;ll keep you
-            posted on updates as Plume approaches its live release.
-          </div>
-        </div>
-
-        <div>
-          <Link
-            href="https://x.com/plumenetwork"
-            target="_blank"
-            rel="noopener noreferrer"
-            passHref
-            className="flex text-center justify-center w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            Follow Plume on X
-          </Link>
-        </div>
-      </div>
+        }
+        image="/images/plume-bg-1.avif"
+      />
     );
   }
 
   if (currentPane === "DEFAULT") {
     return (
-      <div className="md:p-12 p-5 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto md:mt-16 mt-5 bg-white">
-        <div className="w-full aspect-[544/320] relative">
-          <Image src="/images/plume-default-banner.avif" alt="" layout="fill" />
-        </div>
-        <div>
-          <div className="text-lg text-[#FF3D00] mb-2 font-[500] text-center">
-            Season 1 of Plume&apos;s Official Token Airdrop
-          </div>
-          <div className="text-[40px] mb-4 font-bold text-center">
-            Register for Plume&apos;s Airdrop
-          </div>
-          <div className="text-[#747474] text-lg text-center font-[500]">
-            Plume&apos;s first official airdrop rewards early contributors
-            who&apos;ve been a part of the journey thus far.
-            <Link
-              target="_blank"
-              href="https://plumenetwork.xyz/blog/plume-drop-faq"
-              className="underline whitespace-nowrap"
-            >
-              Learn more
-            </Link>
-            .
-          </div>
-        </div>
-        <ul className="flex flex-col">
-          {[
-            {
-              image: "/images/plume-default-icon-1.avif",
-              title: "Testnet Users",
-              description:
-                "Participants who’ve contributed considerable testing and engagement across our Testnet campaign.",
-            },
-            {
-              image: "/images/plume-default-icon-2.avif",
-              title: "Pre-Deposit Users",
-              description:
-                "Participants who’ve contributed funds into the Plume Vault and into the into the Nest Pre-Deposit vault.",
-            },
-            {
-              image: "/images/plume-default-icon-3.avif",
-              title: "Engaged Protocols & Communities",
-              description:
-                "Individuals and protocols who’ve helped lay out the foundation for the Plume ecosystem up to today.",
-            },
-          ].map(({ image, title, description }, idx) => {
-            return (
-              <li
-                key={idx}
-                className={clsx(
-                  "border p-6 flex items-center gap-4",
-                  idx === 0 && "rounded-tr-[24px] rounded-tl-[24px]",
-                  idx === 1 && "border-t-0 border-b-0",
-                  idx === 2 && "rounded-br-[24px] rounded-bl-[24px]"
-                )}
-              >
-                <Image
-                  src={image}
-                  alt=""
-                  width={40}
-                  height={40}
-                  className="w-10 h-10"
-                />
-                <div className="flex flex-col gap-1">
-                  <div className="font-[500] text-lg">{title}</div>
-                  <div className="text-[#747474] font-[500]">{description}</div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-        <ConnectButton.Custom>
-          {({ account, openConnectModal, mounted, authenticationStatus }) => {
-            return (
-              <button
-                className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 flex justify-center disabled:bg-[#E7E7E7] disabled:opacity-40 disabled:cursor-not-allowed disabled:text-[#111111]"
-                disabled={
-                  !mounted ||
-                  authenticationStatus === "loading" ||
-                  isFetching ||
-                  isLoading
-                }
-                onClick={() => {
-                  if (account) {
-                    if (data?.registered) {
-                      setCurrentPane("FINISHED");
-                    } else {
-                      setCurrentPane("ABOUT");
-                    }
-                  } else {
-                    openConnectModal();
-                  }
+      <PaneLayout
+        content={
+          <div className="flex flex-col pb-[100px] mt-[100px]">
+            <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
+              Registration Form
+            </div>
+            <div className="font-bold text-[42px] md:text-[48px] lg:text-[56px] mb-4">
+              Plume Airdrop
+            </div>
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px]">
+              Plume&apos;s first official Airdrop rewards early contributors
+              who’ve been a part of the journey thus far.
+            </div>
+            <div>
+              <ConnectButton.Custom>
+                {({
+                  account,
+                  openConnectModal,
+                  mounted,
+                  authenticationStatus,
+                }) => {
+                  return (
+                    <button
+                      className="font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 flex justify-center disabled:bg-[#E7E7E7] disabled:opacity-40 disabled:cursor-not-allowed disabled:text-[#111111]"
+                      disabled={
+                        !mounted ||
+                        authenticationStatus === "loading" ||
+                        isFetching ||
+                        isLoading
+                      }
+                      onClick={() => {
+                        if (account) {
+                          if (data?.registered) {
+                            setCurrentPane("FINISHED");
+                          } else {
+                            setCurrentPane("ABOUT");
+                          }
+                        } else {
+                          openConnectModal();
+                        }
+                      }}
+                    >
+                      {!mounted || isFetching || isLoading ? (
+                        <div className="h-[28px] flex items-center">
+                          <Loader2Icon
+                            size={16}
+                            className="animate-spin text-[#111111]"
+                          />
+                        </div>
+                      ) : account ? (
+                        "Get Started"
+                      ) : (
+                        "Connect Wallet"
+                      )}
+                    </button>
+                  );
                 }}
-              >
-                {!mounted || isFetching || isLoading ? (
-                  <div className="h-[28px] flex items-center">
-                    <Loader2Icon
-                      size={16}
-                      className="animate-spin text-[#111111]"
-                    />
-                  </div>
-                ) : account ? (
-                  "Continue"
-                ) : (
-                  "Connect Wallet"
-                )}
-              </button>
-            );
-          }}
-        </ConnectButton.Custom>
-      </div>
+              </ConnectButton.Custom>
+            </div>
+          </div>
+        }
+        image="/images/plume-bg-1.avif"
+      />
     );
   }
 
   if (currentPane === "ABOUT") {
     return (
-      <div className="md:p-12 p-5 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto md:mt-16 mt-5 bg-white">
-        <Image
-          alt=""
-          src="/images/plume-about-logo.avif"
-          className="mx-auto"
-          width={64}
-          height={64}
-        />
-        <div>
-          <div className="text-[40px] mb-4 font-bold text-center">
-            About Plume
-          </div>
-          <div className="text-[#747474] text-lg text-center font-[500]">
-            Plume is the public blockchain for scaling RWAs. The Plume Airdrop
-            marks the start of the next chapter of crypto, one in which funds,
-            institutions and owners of real world assets can now access the
-            rails of crypto and RWAfi as pioneered by Plume.
-          </div>
-        </div>
-
-        <ul className="flex flex-col">
-          {[
-            {
-              image: "/images/plume-about-icon-1.avif",
-              title: "Building RWAfi",
-              description:
-                "Plume is focused on bridging the real world onchain to enable real asset-backed, crypto native use cases.",
-            },
-            {
-              image: "/images/plume-about-icon-2.avif",
-              title: "Comprehensive Ecosystem",
-              description:
-                "RWAfi on Plume benefits from built-in compliance solutions, liquidity, and tokenization, all in one seamless flow.",
-            },
-            {
-              image: "/images/plume-about-icon-3.avif",
-              title: "Institutional-Grade Applications",
-              description:
-                "Plume is built on robust, scalable architecture that supports the broader effort of sustaining a thriving onchain economy.",
-            },
-          ].map(({ image, title, description }, idx) => {
-            return (
-              <li
-                key={idx}
-                className={clsx(
-                  "border p-6 flex items-center gap-4",
-                  idx === 0 && "rounded-tr-[24px] rounded-tl-[24px]",
-                  idx === 1 && "border-t-0 border-b-0",
-                  idx === 2 && "rounded-br-[24px] rounded-bl-[24px]"
-                )}
+      <PaneLayout
+        content={
+          <div className="flex flex-col pb-[100px] mt-[100px]">
+            <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
+              About Plume
+            </div>
+            <div className="font-bold text-[42px] md:text-[48px] lg:text-[56px] mb-4">
+              The L1 for RWAs
+            </div>
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px]">
+              Plume is the first Layer 1 blockchain designed to unlock the full
+              potential of real-world assets (RWAs) by making them composable,
+              liquid, and accessible within a secure and compliant ecosystem.
+            </div>
+            <div className="flex items-center gap-4">
+              <Link
+                target="_blank"
+                href="https://plumenetwork.xyz/blog/plume-drop-faq"
+                className="font-[500] text-lg hover:opacity-80 bg-white text-[#111111] border border-[#F0F0F0] rounded-full py-4 px-8 flex justify-center disabled:bg-[#E7E7E7] disabled:opacity-40 disabled:cursor-not-allowed disabled:text-[#111111]"
               >
-                <Image
-                  src={image}
-                  alt=""
-                  width={40}
-                  height={40}
-                  className="w-10 h-10"
-                />
-                <div className="flex flex-col gap-1">
-                  <div className="font-[500] text-lg">{title}</div>
-                  <div className="text-[#747474] font-[500]">{description}</div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+                About Plume
+              </Link>
 
-        <div>
-          <button
-            className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
-            onClick={() => {
-              setCurrentPane("MEET");
-            }}
-          >
-            Continue
-          </button>
-        </div>
-      </div>
+              <button
+                className="font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 flex justify-center disabled:bg-[#E7E7E7] disabled:opacity-40 disabled:cursor-not-allowed disabled:text-[#111111]"
+                onClick={() => {
+                  setCurrentPane("MEET");
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        }
+        image="/images/plume-bg-2.avif"
+      />
     );
   }
 
   if (currentPane === "MEET") {
     return (
-      <div className="md:p-12 p-5 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[640px] w-full mx-auto md:mt-16 mt-5 bg-white">
-        <div className="w-full aspect-[544/320] relative">
-          <Image src="/images/plume-meet-banner.avif" alt="" layout="fill" />
-        </div>
-
-        <div>
-          <div className="text-[40px] mb-4 font-bold text-center">
-            Meet <span className="text-[#FF3D00]">$PLUME</span>
-          </div>
-          <div className="text-[#747474] text-lg text-center font-[500]">
-            Plume&apos;s Airdrop will distribute $PLUME, the official RWAfi
-            ecosystem token on Plume, designed to align stakeholders across the
-            ecosystem and enable Plume&apos;s long term vision.
-          </div>
-        </div>
-
-        <ul className="flex flex-col">
-          {[
-            {
-              image: "/images/plume-meet-icon-1.avif",
-              title: "Transaction Costs",
-              description:
-                "Power low-cost (>$0.01), efficient transactions across the Plume ecosystem for a seamless user experience.",
-            },
-            {
-              image: "/images/plume-meet-icon-2.avif",
-              title: "Ecosystem Liquidity",
-              description:
-                "By seeding initial liquidity and reserve funds, $PLUME empowers thousands of traders, lenders, and users from day one.",
-            },
-            {
-              image: "/images/plume-meet-icon-3.avif",
-              title: "Decentralized Governance",
-              description:
-                "Empower with the community with active participation in decision-making and help shape the future of Plume.",
-            },
-            {
-              image: "/images/plume-meet-icon-4.avif",
-              title: "Staking as Security",
-              description:
-                "By staking $PLUME, representatives and validators secure the network against even the most sophisticated threats while earning staking rewards in return.",
-            },
-          ].map(({ image, title, description }, idx) => {
-            return (
-              <li
-                key={idx}
-                className={clsx(
-                  "border p-6 flex items-center gap-4",
-                  idx === 0 && "rounded-tr-[24px] rounded-tl-[24px]",
-                  idx === 1 && "border-t-0",
-                  idx === 2 && "border-b-0 border-t-0",
-                  idx === 3 && "rounded-br-[24px] rounded-bl-[24px]"
-                )}
+      <PaneLayout
+        content={
+          <div className="flex flex-col pb-[100px] mt-[100px]">
+            <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
+              The Plume Token
+            </div>
+            <div className="font-bold text-[42px] md:text-[48px] lg:text-[56px] mb-4">
+              $PLUME is here
+            </div>
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px]">
+              $PLUME is designed to secure and power the Plume RWA Chain and
+              broader RWAfi.
+              <br />
+              <br />
+              <span className="text-[#922100]">
+                The Plume Airdrop will be the first official airdrop of $PLUME,
+                supporting our effort of building a unified RWAfi ecosystem.
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                className="font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 flex justify-center disabled:bg-[#E7E7E7] disabled:opacity-40 disabled:cursor-not-allowed disabled:text-[#111111]"
+                onClick={() => {
+                  setCurrentPane("REGISTER");
+                }}
               >
-                <Image
-                  src={image}
-                  alt=""
-                  width={40}
-                  height={40}
-                  className="w-10 h-10"
-                />
-                <div className="flex flex-col gap-1">
-                  <div className="font-[500] text-lg">{title}</div>
-                  <div className="text-[#747474] font-[500]">{description}</div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-
-        <div>
-          <button
-            className="w-full font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8"
-            onClick={() => {
-              setCurrentPane("REGISTER");
-            }}
-          >
-            Continue
-          </button>
-        </div>
-      </div>
+                Continue
+              </button>
+            </div>
+          </div>
+        }
+        image="/images/plume-bg-3.avif"
+      />
     );
   }
 

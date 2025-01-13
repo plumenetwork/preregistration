@@ -10,6 +10,13 @@ export const metadata: Metadata = {
 const RestrictedPage = () => {
   return (
     <div className="flex items-center justify-center">
+      <Image
+        src="/images/plume-bg.avif"
+        alt=""
+        width={1000}
+        height={500}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]"
+      />
       <div className="flex flex-col gap-4 justify-center text-center max-w-[560px] w-full mt-[100px] border border-[#F0F0F0] bg-[#FFFFFF] rounded-[16px] p-10">
         <Image
           src="/images/plume-unavailable.avif"
@@ -18,7 +25,9 @@ const RestrictedPage = () => {
           width={48}
           height={48}
         />
-        <div className="font-semibold text-[20px]">PlumeDrop Unavailable</div>
+        <div className="font-semibold text-[20px]">
+          Plume Airdrop Unavailable
+        </div>
         <div className="text-[#515154]">
           This program is unavailable to users in your region due to regulatory
           measures.

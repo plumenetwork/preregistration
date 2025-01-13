@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import DefaultBanner from "../public/images/default.avif";
 import localFont from "next/font/local";
 import "./globals.css";
-import { TopNav } from "./components/TopNav";
 import { AppProviders } from "./components/AppProviders";
 import { ToastContainer } from "react-toastify";
-import Image from "next/image";
 import { Suspense } from "react";
 
 const lufga = localFont({
@@ -59,25 +57,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lufga.className} antialiased`}>
-        <div className="px-2 md:px-10 pb-[300px]">
+        <div className="">
           <AppProviders>
-            <div className="max-w-[1200px] mx-auto w-full mt-8">
-              <TopNav />
-            </div>
-            <Image
-              src="/images/plume-bg.avif"
-              alt=""
-              width={1200}
-              height={600}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]"
-            />
-            <Suspense>{children}</Suspense>
-            <ToastContainer
-              position="bottom-right"
-              hideProgressBar
-              toastClassName="custom-toast"
-              closeButton={false}
-            />
+            <Suspense>
+              {children}
+              <ToastContainer
+                position="bottom-right"
+                hideProgressBar
+                toastClassName="custom-toast"
+                closeButton={false}
+              />
+            </Suspense>
           </AppProviders>
         </div>
       </body>
