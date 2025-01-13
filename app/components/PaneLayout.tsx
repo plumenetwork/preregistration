@@ -118,6 +118,7 @@ export const PaneLayout = ({ content, image }: Props) => {
                 alt=""
                 src={image}
                 fill
+                priority
                 className="object-cover rounded-[24px]"
               />
             </div>
