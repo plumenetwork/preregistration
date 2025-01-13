@@ -113,7 +113,7 @@ export const PaneLayout = ({ content, image }: Props) => {
             <div className="basis-[100%] lg:basis-[50%] flex flex-col lg:justify-center px-3 md:px-6">
               {content}
             </div>
-            <div className="basis-[50%] hidden lg:flex relative">
+            <div className="basis-[50%] hidden lg:flex relative h-[calc(100vh-60px)]">
               <Image
                 alt=""
                 src={image}

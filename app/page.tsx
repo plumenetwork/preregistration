@@ -140,7 +140,7 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px] mt-[100px]">
+          <div className="flex flex-col pb-[100px] mt-8 lg:mt-[100px]">
             <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
               Request Form
             </div>
@@ -478,7 +478,7 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px] mt-[100px]">
+          <div className="flex flex-col pb-[100px] mt-8 lg:mt-[100px]">
             <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
               Registration Form
             </div>
@@ -546,7 +546,7 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px] mt-[100px]">
+          <div className="flex flex-col pb-[100px] mt-8 lg:mt-[100px]">
             <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
               About Plume
             </div>
@@ -587,7 +587,7 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px] mt-[100px]">
+          <div className="flex flex-col pb-[100px] mt-8 lg:mt-[100px]">
             <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
               The Plume Token
             </div>
