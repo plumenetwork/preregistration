@@ -1,7 +1,5 @@
 "use client";
 
-import clsx from "clsx";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
 import { generateMessageToSign } from "./lib/shared/crypto";
