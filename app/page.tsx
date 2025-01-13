@@ -17,9 +17,12 @@ import { useSearchParams } from "next/navigation";
 import { useTwitterDisconnect } from "./hooks/useTwitterDisconnect";
 import { useIsMounted } from "./hooks/useIsMounted";
 import { TwitterErrorToast } from "./components/TwitterErrorToast";
+import { DiscordErrorToast } from "./components/DiscordErrorToast";
 import { usePreregStore } from "./store";
 import { useShallow } from "zustand/react/shallow";
 import { PaneLayout } from "./components/PaneLayout";
+import { useDiscordConnect } from "./hooks/useDiscordConnect";
+import { useDiscordDisconnect } from "./hooks/useDiscordDisconnect";
 
 export default function Home() {
   const { signMessageAsync } = useSignMessage();
@@ -31,12 +34,23 @@ export default function Home() {
   const twitterEncryptedUsername = searchParams.get("tname");
   const twitterUsername = searchParams.get("rtname");
   const twitterError = searchParams.get("twitterError");
+  const discordEncryptedId = searchParams.get("did");
+  const discordEncryptedUsername = searchParams.get("dname");
+  const discordUsername = searchParams.get("rdname");
+  const discordError = searchParams.get("discordError");
+
   const { mutateAsync: getTwitterConnectUrl, isPending: isFetchingTwitterUrl } =
     useTwitterConnect();
+  const { mutateAsync: getDiscordConnectUrl, isPending: isFetchingDiscordUrl } =
+    useDiscordConnect();
   const {
     mutateAsync: disconnectTwitter,
     isPending: isDisconnectingFromTwitter,
   } = useTwitterDisconnect();
+  const {
+    mutateAsync: disconnectDiscord,
+    isPending: isDisconnectingFromDiscord,
+  } = useDiscordDisconnect();
   const [message, setMessage] = useState("");
   const [signature, setSignature] = useState("");
   const previousAddress = usePrevious(address);
@@ -50,7 +64,11 @@ export default function Home() {
     if (twitterError) {
       toast(<TwitterErrorToast />);
     }
-  }, [twitterError]);
+
+    if (discordError) {
+      toast(<DiscordErrorToast />);
+    }
+  }, [twitterError, discordError]);
 
   const { isPending, mutateAsync } = useMutation({
     mutationKey: ["sign"],
@@ -60,12 +78,16 @@ export default function Home() {
       address,
       twitterEncryptedId,
       twitterEncryptedUsername,
+      discordEncryptedId,
+      discordEncryptedUsername,
     }: {
       message: string;
       signature: string;
       address: string;
       twitterEncryptedId?: string | null;
       twitterEncryptedUsername?: string | null;
+      discordEncryptedId?: string | null;
+      discordEncryptedUsername?: string | null;
     }) => {
       return fetch("/api/sign-write", {
         method: "POST",
@@ -78,6 +100,8 @@ export default function Home() {
           address,
           twitterEncryptedUsername: twitterEncryptedUsername || null,
           twitterEncryptedId: twitterEncryptedId || null,
+          discordEncryptedUsername: discordEncryptedUsername || null,
+          discordEncryptedId: discordEncryptedId || null,
         }),
       });
     },
@@ -208,9 +232,21 @@ export default function Home() {
                     onClick={async () => {
                       await disconnectTwitter();
 
-                      console.log("relogging");
+                      const params = new URLSearchParams();
 
-                      window.location.href = "/?step=twitter";
+                      if (discordEncryptedId) {
+                        params.set("did", discordEncryptedId);
+                      }
+
+                      if (discordEncryptedUsername) {
+                        params.set("dname", discordEncryptedUsername);
+                      }
+
+                      if (discordUsername) {
+                        params.set("rdname", discordUsername);
+                      }
+
+                      window.location.href = `/?step=twitter&${params.toString()}`;
                     }}
                   >
                     {isDisconnectingFromTwitter ? (
@@ -224,6 +260,73 @@ export default function Home() {
                     ) : (
                       <div className="flex gap-2 items-center justify-center">
                         {twitterUsername}
+                        <XIcon size={16} />
+                      </div>
+                    )}
+                  </button>
+                )}
+              </li>
+
+              <li className="p-6 flex items-center gap-4 justify-between shadow-md rounded-[16px] border border-[#F0F0F0]">
+                <div className="flex flex-col gap-1">
+                  <div className="font-[500] text-lg">Connect to Discord</div>
+                </div>
+                {!discordUsername ? (
+                  <button
+                    className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
+                    disabled={isFetchingDiscordUrl}
+                    onClick={async () => {
+                      const { url } = await getDiscordConnectUrl();
+
+                      window.location.href = url;
+                    }}
+                  >
+                    {isFetchingDiscordUrl ? (
+                      <div className="flex gap-2 items-center justify-center">
+                        <Loader2Icon
+                          size={16}
+                          className="animate-spin text-[#111111]"
+                        />
+                        Connecting
+                      </div>
+                    ) : (
+                      "Connect Discord"
+                    )}
+                  </button>
+                ) : (
+                  <button
+                    className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
+                    onClick={async () => {
+                      await disconnectDiscord();
+
+                      const params = new URLSearchParams();
+
+                      if (twitterEncryptedId) {
+                        params.set("tid", twitterEncryptedId);
+                      }
+
+                      if (twitterEncryptedUsername) {
+                        params.set("tname", twitterEncryptedUsername);
+                      }
+
+                      if (twitterUsername) {
+                        params.set("rtname", twitterUsername);
+                      }
+
+                      window.location.href = `/?step=twitter&${params.toString()}`;
+                    }}
+                  >
+                    {isDisconnectingFromDiscord ? (
+                      <div className="flex gap-2 items-center justify-center">
+                        <Loader2Icon
+                          size={16}
+                          className="animate-spin text-[#111111]"
+                        />
+                        Disconnecting
+                      </div>
+                    ) : (
+                      <div className="flex gap-2 items-center justify-center">
+                        {discordUsername}
                         <XIcon size={16} />
                       </div>
                     )}
@@ -296,6 +399,8 @@ export default function Home() {
                     address,
                     twitterEncryptedId: twitterEncryptedId || null,
                     twitterEncryptedUsername: twitterEncryptedUsername || null,
+                    discordEncryptedId: discordEncryptedId || null,
+                    discordEncryptedUsername: discordEncryptedUsername || null,
                   });
 
                   // Once done we can move to final step

@@ -1,8 +1,10 @@
+import { retrieveDiscordInfoFromCookies } from "@/app/lib/server/discord";
 import {
   getCallbackUrl,
   getCodeVerifier,
   oauthLogin,
   signData,
+  storeTwitterInfoInCookies,
 } from "@/app/lib/server/twitter";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,11 +18,22 @@ export const GET = async (request: NextRequest) => {
   const { origin } = new URL(request.url);
 
   const url = request.nextUrl.clone();
-  const searchParams = new URLSearchParams(url.search);
+  const searchParams = new URLSearchParams("");
   url.pathname = "/";
-  searchParams.delete("state");
-  searchParams.delete("code");
   searchParams.set("step", "twitter");
+  const discordInfo = await retrieveDiscordInfoFromCookies();
+
+  if (discordInfo?.did) {
+    searchParams.set("did", discordInfo.did);
+  }
+
+  if (discordInfo?.dname) {
+    searchParams.set("dname", discordInfo.dname);
+  }
+
+  if (discordInfo?.rdname) {
+    searchParams.set("rdname", discordInfo.rdname);
+  }
 
   if (!code) {
     searchParams.set("twitterError", "true");
@@ -55,6 +68,12 @@ export const GET = async (request: NextRequest) => {
       searchParams.set("tid", await signData(data.id));
       searchParams.set("tname", await signData(data.username));
       searchParams.set("rtname", data.username);
+
+      await storeTwitterInfoInCookies({
+        tid: await signData(data.id),
+        tname: await signData(data.username),
+        rtname: data.username,
+      });
     }
 
     url.search = searchParams.toString();

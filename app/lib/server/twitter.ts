@@ -3,6 +3,7 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
 export const TWITTER_SECRET_COOKIE_KEY = "tws";
+export const TWITTER_INFO_COOKIE_KEY = "twi";
 
 export const twitterClient = new TwitterApi({
   clientId: process.env.TWITTER_CLIENT_ID!,
@@ -85,4 +86,52 @@ export const clearTwitterCookies = async () => {
     secure: true,
     httpOnly: true,
   });
+
+  (await cookies()).set(TWITTER_INFO_COOKIE_KEY, "", {
+    expires: new Date(0),
+    sameSite: "lax",
+    secure: true,
+    httpOnly: true,
+  });
+};
+
+export const storeTwitterInfoInCookies = async ({
+  tid,
+  tname,
+  rtname,
+}: {
+  tid: string | null;
+  tname: string | null;
+  rtname: string | null;
+}) => {
+  (await cookies()).set(
+    TWITTER_INFO_COOKIE_KEY,
+    await signData({
+      tid,
+      tname,
+      rtname,
+    }),
+    {
+      expires: new Date(Date.now() + 1000 * 60 * 10),
+      sameSite: "lax",
+      secure: true,
+      httpOnly: true,
+    }
+  );
+};
+
+export const retrieveTwitterInfoFromCookies = async () => {
+  const twitterInfoEncoded = (await cookies()).get(
+    TWITTER_INFO_COOKIE_KEY
+  )?.value;
+
+  if (twitterInfoEncoded) {
+    return (await decodeData(twitterInfoEncoded)) as {
+      tid: string | null;
+      tname: string | null;
+      rtname: string | null;
+    };
+  }
+
+  return null;
 };

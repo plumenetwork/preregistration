@@ -11,12 +11,16 @@ export const POST = async (req: NextRequest) => {
     address,
     twitterEncryptedId,
     twitterEncryptedUsername,
+    discordEncryptedId,
+    discordEncryptedUsername,
   } = (await req.json()) as {
     message: string;
     signature: Hex;
     address: Address;
     twitterEncryptedId: string | null;
     twitterEncryptedUsername: string | null;
+    discordEncryptedId: string | null;
+    discordEncryptedUsername: string | null;
   };
 
   const recoveredAddress = await recoverMessageAddress({
@@ -26,6 +30,8 @@ export const POST = async (req: NextRequest) => {
 
   let twitterId: string | null = null;
   let twitterUsername: string | null = null;
+  let discordId: string | null = null;
+  let discordUsername: string | null = null;
 
   if (twitterEncryptedId) {
     twitterId = await decodeData<string>(twitterEncryptedId);
@@ -33,6 +39,14 @@ export const POST = async (req: NextRequest) => {
 
   if (twitterEncryptedUsername) {
     twitterUsername = await decodeData<string>(twitterEncryptedUsername);
+  }
+
+  if (discordEncryptedId) {
+    discordId = await decodeData<string>(discordEncryptedId);
+  }
+
+  if (discordEncryptedUsername) {
+    discordUsername = await decodeData<string>(discordEncryptedUsername);
   }
 
   // Register the user, also store the signature
@@ -43,6 +57,8 @@ export const POST = async (req: NextRequest) => {
       signature,
       twitterId,
       twitterName: twitterUsername,
+      discordId,
+      discordName: discordUsername,
     })
     .onConflictDoNothing();
 

@@ -2214,6 +2214,11 @@ dijkstrajs@^1.0.1:
   resolved "https://registry.yarnpkg.com/dijkstrajs/-/dijkstrajs-1.0.3.tgz#4c8dbdea1f0f6478bff94d9c49c784d623e4fc23"
   integrity sha512-qiSlmBq9+BCdCA/L46dw8Uy93mloxsPSbwnm5yrKn2vMPiy8KyAskTF6zuV/j5BMsmOGZDPs7KjU+mjb670kfA==
 
+discord-oauth2@2.12.0:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/discord-oauth2/-/discord-oauth2-2.12.0.tgz#c3d84e3c14c4a21f1f9598656943110f3679d06c"
+  integrity sha512-95XsrTvuHUGndvkWmk7n3pgQyIheXLOdqx8WPS99FUyYOlne4unkT3N9t67zj33thJvvn6U/wzH8cauhDD8nhA==
+
 dlv@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/dlv/-/dlv-1.1.3.tgz#5c198a8a11453596e751494d49874bc7732f2e79"
