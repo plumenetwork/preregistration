@@ -204,7 +204,7 @@ export default function Home() {
               {signature ? (
                 <button
                   disabled
-                  className="px-6 py-4 rounded-full bg-[#D7FF30] text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40 flex items-center gap-1"
+                  className="px-6 py-4 rounded-full bg-[#D7FF30] text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40 flex items-center gap-2"
                 >
                   <Image
                     width={24}
