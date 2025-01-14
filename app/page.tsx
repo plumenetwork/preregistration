@@ -652,7 +652,13 @@ export default function Home() {
               ].map(({ image, title }, idx) => {
                 return (
                   <li className="flex gap-3 items-center" key={idx}>
-                    <Image alt="" src={image} width={32} height={32} />
+                    <Image
+                      alt=""
+                      src={image}
+                      width={32}
+                      height={32}
+                      className="w-8 h-8"
+                    />
                     <div className="text-[24px]">{title}</div>
                   </li>
                 );
