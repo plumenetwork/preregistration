@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { geolocation } from "@vercel/functions";
 import { get } from "@vercel/edge-config";
 
 const blockedCountries = [
@@ -27,9 +26,11 @@ const blockedCountries = [
 ];
 
 export async function middleware(request: NextRequest) {
-  const { country } = geolocation(request);
+  const geo =
+    request.headers.get("CF-IPCountry") ||
+    request.headers.get("X-Vercel-IP-Country ");
 
-  console.log(`country: ${country}`);
+  console.log(`country: ${geo}`);
 
   const isGeoBlockingEnabled = await get("isGeoBlockingEnabled");
   const isUrlRestricted = new URL(request.url).pathname.startsWith(
@@ -42,8 +43,8 @@ export async function middleware(request: NextRequest) {
     !isUrlRestricted &&
     !isImages &&
     isGeoBlockingEnabled &&
-    country &&
-    blockedCountries.includes(country)
+    geo &&
+    blockedCountries.includes(geo.toUpperCase())
   ) {
     if (isApiUrl) {
       return NextResponse.json(
