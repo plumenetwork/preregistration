@@ -82,7 +82,10 @@ export const PaneLayout = ({ content, image, invertImage }: Props) => {
             src={image}
             fill
             priority
-            className={clsx("object-cover", invertImage && "grayscale")}
+            className={clsx(
+              "object-cover transition-all",
+              invertImage && "grayscale"
+            )}
           />
         </div>
       </div>

@@ -509,7 +509,7 @@ export default function Home() {
           </div>
         }
         image="/images/plume-bg-2.avif"
-        invertImage
+        invertImage={!address}
       />
     );
   }
