@@ -67,6 +67,14 @@ export const PaneLayout = ({ content, image, invertImage }: Props) => {
 
   return (
     <>
+      {shouldShowNav && (
+        <div
+          className="fixed top-0 z-10 flex h-[6px] bg-[#D7FF30] transition-all"
+          style={{
+            width: `${((currentIndex + 1) / topNavPaneList.length) * 80}%`,
+          }}
+        />
+      )}
       <div className="flex flex-col lg:flex-row h-screen">
         <div className="lg:hidden p-4">{nav}</div>
         <div className="lg:hidden aspect-[394/226] relative mb-6">

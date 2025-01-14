@@ -150,7 +150,7 @@ export default function Home() {
         content={
           <div className="flex flex-col pb-[100px] mt-8 ">
             <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
-              Review and Sign the Terms of Service
+              Review and sign the Terms of Service
             </div>
             <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
               You&apos;ve confirmed that you&apos;ve read and agree with
@@ -165,46 +165,6 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-4">
-              {signature ? (
-                <button
-                  disabled
-                  className="px-6 py-4 rounded-full bg-[#D7FF30] text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40"
-                >
-                  Signed
-                </button>
-              ) : (
-                <button
-                  className="px-6 py-4 rounded-full bg-white text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
-                  disabled={isSigningMessage}
-                  onClick={async () => {
-                    const { message } = generateMessageToSign();
-                    try {
-                      const sig = await signMessageAsync({
-                        message,
-                      });
-
-                      setMessage(message);
-                      setSignature(sig);
-                      toast(<SignedMessageToast />);
-                    } catch (e) {
-                      console.error(e);
-                    }
-                  }}
-                >
-                  {isSigningMessage ? (
-                    <div className="flex gap-2 items-center">
-                      <Loader2Icon
-                        size={16}
-                        className="animate-spin text-[#1A1613]"
-                      />
-                      Signing
-                    </div>
-                  ) : (
-                    "Sign"
-                  )}
-                </button>
-              )}
-
               <button
                 className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-[#E7E7E7] disabled:text-[#1A1613]"
                 disabled={isPending || !address || !signature}
@@ -241,10 +201,55 @@ export default function Home() {
                   "Submit"
                 )}
               </button>
+              {signature ? (
+                <button
+                  disabled
+                  className="px-6 py-4 rounded-full bg-[#D7FF30] text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40 flex items-center gap-1"
+                >
+                  <Image
+                    width={24}
+                    height={24}
+                    alt=""
+                    src="/images/plume-logo-small.png"
+                  />
+                  Signed
+                </button>
+              ) : (
+                <button
+                  className="px-6 py-4 text-lg rounded-full bg-white text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+                  disabled={isSigningMessage}
+                  onClick={async () => {
+                    const { message } = generateMessageToSign();
+                    try {
+                      const sig = await signMessageAsync({
+                        message,
+                      });
+
+                      setMessage(message);
+                      setSignature(sig);
+                      toast(<SignedMessageToast />);
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  }}
+                >
+                  {isSigningMessage ? (
+                    <div className="flex gap-2 items-center">
+                      <Loader2Icon
+                        size={16}
+                        className="animate-spin text-[#1A1613]"
+                      />
+                      Signing
+                    </div>
+                  ) : (
+                    "Sign"
+                  )}
+                </button>
+              )}
             </div>
           </div>
         }
-        image="/images/plume-bg-2.avif"
+        image="/images/plume-bg-2.webp"
       />
     );
   }
@@ -508,7 +513,7 @@ export default function Home() {
             </div>
           </div>
         }
-        image="/images/plume-bg-2.avif"
+        image="/images/plume-bg-2.webp"
         invertImage={!address}
       />
     );
@@ -523,8 +528,8 @@ export default function Home() {
               You’re Registered
             </div>
             <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
-              Thank you for registering for the Plume Airdrop. Stay tuned for
-              news and updates as we approach our live release.
+              Thank you for registering for the Plume Airdrop. Further updates
+              will be shared on Plume&apos;s X account.
             </div>
             <div className="flex">
               <Link
@@ -539,7 +544,7 @@ export default function Home() {
             </div>
           </div>
         }
-        image="/images/plume-bg-1.avif"
+        image="/images/plume-bg-1.webp"
       />
     );
   }
@@ -550,11 +555,11 @@ export default function Home() {
         content={
           <div className="flex flex-col pb-[100px] mt-8 ">
             <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
-              Register for the Plume airdrop
+              Register for the <div className="uppercase">Plume airdrop</div>
             </div>
             <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
-              Plume&apos;s first official Airdrop rewards early contributors
-              who&apos;ve been a part of the journey thus far.
+              The first official Plume Airdrop rewards early contributors
+              who&apos;ve been a part of the journey with us thus far.
             </div>
             <div>
               <ConnectButton.Custom>
@@ -620,7 +625,7 @@ export default function Home() {
             </div>
           </div>
         }
-        image="/images/plume-bg-1.avif"
+        image="/images/plume-bg-1.webp"
       />
     );
   }
@@ -670,14 +675,6 @@ export default function Home() {
             </ul>
 
             <div className="flex items-center gap-4">
-              <Link
-                target="_blank"
-                href="https://plumenetwork.xyz/blog/plume-drop-faq"
-                className="font-[500] text-lg hover:opacity-80 bg-white/20 text-white rounded-full px-6 py-4"
-              >
-                About Plume
-              </Link>
-
               <button
                 className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={() => {
@@ -686,10 +683,18 @@ export default function Home() {
               >
                 Continue
               </button>
+
+              <Link
+                target="_blank"
+                href="https://plumenetwork.xyz/"
+                className="font-[500] text-lg hover:opacity-80 bg-white/20 text-white rounded-full px-6 py-4"
+              >
+                About Plume
+              </Link>
             </div>
           </div>
         }
-        image="/images/plume-bg-1.avif"
+        image="/images/plume-bg-1.webp"
       />
     );
   }
@@ -703,19 +708,12 @@ export default function Home() {
               The Plume Token
             </div>
             <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
-              Plume is designed to secure and power the Plume RWA Chain and
-              broader RWAfi ecosystem. The Plume Airdrop is the first official
-              drop of <span className="italic text-white">$PLUME</span>.
+              The Plume token is designed to secure and power the Plume chain
+              and broader RWAfi ecosystem. The Plume Airdrop is the first
+              official drop of $PLUME.{" "}
+              <span className="italic text-white">$PLUME</span>.
             </div>
             <div className="flex items-center gap-4">
-              <Link
-                target="_blank"
-                href="https://plumenetwork.xyz/blog/plume-drop-faq"
-                className="font-[500] text-lg hover:opacity-80 bg-white/20 text-white rounded-full px-6 py-4"
-              >
-                Read Announcement
-              </Link>
-
               <button
                 className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={() => {
@@ -724,10 +722,18 @@ export default function Home() {
               >
                 Continue
               </button>
+
+              <Link
+                target="_blank"
+                href="https://plumenetwork.xyz/blog/plume-drop-faq"
+                className="font-[500] text-lg hover:opacity-80 bg-white/20 text-white rounded-full px-6 py-4"
+              >
+                Read Announcement
+              </Link>
             </div>
           </div>
         }
-        image="/images/plume-bg-2.avif"
+        image="/images/plume-bg-2.webp"
       />
     );
   }
