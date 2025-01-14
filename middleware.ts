@@ -1,36 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { get } from "@vercel/edge-config";
 
-const blockedCountries = [
-  "AF", // Afghanistan
-  "BY", // Belarus
-  "CF", // Central African Republic
-  "CU", // Cuba
-  "CD", // Democratic Republic of Congo
-  "KP", // Democratic People’s Republic of North Korea
-  "UA", // Donetsk People's Republic (DNR) region of Ukraine (use Ukraine code)
-  "IR", // Islamic Republic of Iran
-  "LR", // Liberia
-  "MZ", // Mozambique
-  "MM", // Myanmar
-  "UA", // Luhansk People's Republic (LNR) region of Ukraine (use Ukraine code)
-  "RW", // Rwanda
-  "SO", // Somalia
-  "SS", // South Sudan
-  "SD", // Sudan (North)
-  "SY", // Syria
-  "UG", // Uganda
-  "UA", // The Crimea (use Ukraine code)
-  "ZW", // Zimbabwe
-  "US", // The United States of America
-];
-
 export async function middleware(request: NextRequest) {
-  const geo =
-    request.headers.get("CF-IPCountry") ||
-    request.headers.get("X-Vercel-IP-Country");
-
-  console.log(`country: ${geo}`);
+  const isBlocked = request.headers.get("X-Unauthorized") === "true";
 
   const isGeoBlockingEnabled = await get("isGeoBlockingEnabled");
   const isUrlRestricted = new URL(request.url).pathname.startsWith(
@@ -39,13 +11,7 @@ export async function middleware(request: NextRequest) {
   const isApiUrl = new URL(request.url).pathname.startsWith("/api");
   const isImages = new URL(request.url).pathname.startsWith("/images");
 
-  if (
-    !isUrlRestricted &&
-    !isImages &&
-    isGeoBlockingEnabled &&
-    geo &&
-    blockedCountries.includes(geo.toUpperCase())
-  ) {
+  if (!isUrlRestricted && !isImages && isGeoBlockingEnabled && isBlocked) {
     if (isApiUrl) {
       return NextResponse.json(
         { error: "This API is restricted in your country" },
