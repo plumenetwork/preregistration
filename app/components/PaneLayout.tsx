@@ -21,7 +21,7 @@ export const PaneLayout = ({ content, image, invertImage }: Props) => {
   const shouldShowNav = currentIndex !== -1;
 
   const nav = (
-    <div className="flex justify-between lg:mb-[100px] items-center">
+    <div className="flex justify-between lg:mb-[100px] items-center w-full">
       {/* eslint-disable-next-line */}
       <a href="/" className="flex items-center gap-2">
         <Image
@@ -68,14 +68,15 @@ export const PaneLayout = ({ content, image, invertImage }: Props) => {
   return (
     <>
       <div className="flex flex-col lg:flex-row h-screen">
+        <div className="lg:hidden p-4">{nav}</div>
         <div className="lg:hidden aspect-[394/226] relative mb-6">
           <Image className="object-cover" alt="" src={image} fill />
         </div>
-        <div className="h-full lg:basis-[50%] xl:basis-[45%] shrink-0 grow flex-col lg:justify-center lg:pt-16 px-3 lg:px-20 overflow-auto">
-          {nav}
+        <div className="h-full lg:basis-[55%] xl:basis-[45%] shrink-0 grow flex-col lg:justify-center lg:pt-16 px-3 lg:px-20 overflow-auto">
+          <div className="hidden lg:flex w-full">{nav}</div>
           <div className="max-w-[520px] w-full">{content}</div>
         </div>
-        <div className="lg:basis-[50%] xl:basis-[55%] shrink-0 grow relative hidden lg:flex">
+        <div className="lg:basis-[45%] xl:basis-[55%] shrink-0 grow relative hidden lg:flex">
           <Image
             alt=""
             src={image}
