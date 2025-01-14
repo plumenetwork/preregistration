@@ -725,7 +725,7 @@ export default function Home() {
 
               <Link
                 target="_blank"
-                href="https://plumenetwork.xyz/blog/plume-drop-faq"
+                href="https://plumenetwork.xyz/blog/airdrop"
                 className="font-[500] text-lg hover:opacity-80 bg-white/20 text-white rounded-full px-6 py-4"
               >
                 Read Announcement

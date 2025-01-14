@@ -21,7 +21,7 @@ const RestrictedPage = () => {
           </div>
           <div className="flex">
             <Link
-              href="https://plumenetwork.xyz/blog/plume-drop-faq"
+              href="https://plumenetwork.xyz/blog/airdrop"
               className="w-auto bg-white/20 py-4 px-6 rounded-full text-white hover:opacity-80 text-[20px] font-[600]"
               target="_blank"
             >
