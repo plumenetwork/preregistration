@@ -24,7 +24,7 @@ const TermsPage = () => {
           <div className="text-[#747474] text-[20px] font-[500] text-center">
             Last Updated: January 15, 2025
           </div>
-          <div className="uppercase text-[20px] font-[400]">
+          <div className="text-[20px] font-[400]">
             BY PARTICIPATING IN THE AIRDROP, INCLUDING BUT NOT LIMITED TO
             CONNECTING A WALLET (AS DEFINED BELOW) PURSUANT TO THE TERMS AND
             PROCESSES DESCRIBED HEREIN, PARTICIPANT ACKNOWLEDGES THAT THEY HAVE
