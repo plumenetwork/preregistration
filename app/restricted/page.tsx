@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { PaneLayout } from "../components/PaneLayout";
 
 export const metadata: Metadata = {
   title: "Plume Restricted Page",
@@ -9,40 +10,30 @@ export const metadata: Metadata = {
 
 const RestrictedPage = () => {
   return (
-    <div className="flex items-center justify-center">
-      <Image
-        src="/images/plume-bg.avif"
-        alt=""
-        width={1000}
-        height={500}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]"
-      />
-      <div className="flex flex-col gap-4 justify-center text-center max-w-[560px] w-full mt-[100px] border border-[#F0F0F0] bg-[#FFFFFF] rounded-[16px] p-10">
-        <Image
-          src="/images/plume-unavailable.avif"
-          className="mx-auto"
-          alt=""
-          width={48}
-          height={48}
-        />
-        <div className="font-semibold text-[20px]">
-          Plume Airdrop Unavailable
+    <PaneLayout
+      content={
+        <div className="flex flex-col pb-[100px] mt-8 ">
+          <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
+            Plume Airdrop is <span className="text-[#918C89]">Unavailable</span>
+          </div>
+          <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
+            This program is unavailable to users in your region due to
+            regulatory measures.
+          </div>
+          <div className="flex">
+            <Link
+              href="https://plumenetwork.xyz/blog/plume-drop-faq"
+              className="w-auto bg-white/20 py-4 px-6 rounded-full text-white hover:opacity-80 text-[20px] font-[600]"
+              target="_blank"
+            >
+              Learn more
+            </Link>
+          </div>
         </div>
-        <div className="text-[#515154]">
-          This program is unavailable to users in your region due to regulatory
-          measures.
-        </div>
-        <div>
-          <Link
-            href="https://plumenetwork.xyz/blog/plume-drop-faq"
-            className="font-[500] text-sm border border-[#F0F0F0] rounded-full py-2 px-4"
-            target="_blank"
-          >
-            Learn more
-          </Link>
-        </div>
-      </div>
-    </div>
+      }
+      image="/images/plume-bg-1.avif"
+      invertImage
+    />
   );
 };
 

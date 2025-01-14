@@ -9,14 +9,7 @@ export const metadata: Metadata = {
 const TermsPage = () => {
   return (
     <>
-      <Image
-        src="/images/plume-bg.avif"
-        alt=""
-        width={1200}
-        height={800}
-        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]"
-      />
-      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[720px] w-full mx-auto mt-16 bg-white">
+      <div className="p-12 rounded-[24px] border border-[#F0F0F0] flex flex-col gap-6 max-w-[720px] w-full mx-auto mt-16 text-[#918C89] bg-white bg-opacity-[0.02]">
         <Image
           src="/images/plume-about-logo.avif"
           alt=""
@@ -25,7 +18,7 @@ const TermsPage = () => {
           className="mx-auto"
         />
         <div className="flex flex-col gap-4">
-          <div className="text-[40px] font-bold text-center">
+          <div className="text-[40px] font-bold text-center font-reckless text-white">
             Airdrop Terms and Conditions
           </div>
           <div className="text-[#747474] text-[20px] font-[500] text-center">

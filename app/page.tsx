@@ -7,9 +7,8 @@ import { useMutation } from "@tanstack/react-query";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useIsUserRegistered } from "./hooks/useIsUserRegistered";
 import Link from "next/link";
-import { CheckCircleIcon, Loader2Icon, XIcon } from "lucide-react";
+import { CheckIcon, Loader2Icon, MoveUpRightIcon, XIcon } from "lucide-react";
 import { usePrevious } from "@uidotdev/usehooks";
-import { AnimatePresence, motion } from "motion/react";
 import { toast } from "react-toastify";
 import { SignedMessageToast } from "./components/SignedMessageToast";
 import { useTwitterConnect } from "./hooks/useTwitterConnect";
@@ -23,9 +22,10 @@ import { useShallow } from "zustand/react/shallow";
 import { PaneLayout } from "./components/PaneLayout";
 import { useDiscordConnect } from "./hooks/useDiscordConnect";
 import { useDiscordDisconnect } from "./hooks/useDiscordDisconnect";
+import Image from "next/image";
 
 export default function Home() {
-  const { signMessageAsync } = useSignMessage();
+  const { signMessageAsync, isPending: isSigningMessage } = useSignMessage();
   const { disconnect } = useDisconnect();
   const { address } = useAccount();
   const searchParams = useSearchParams();
@@ -38,6 +38,7 @@ export default function Home() {
   const discordEncryptedUsername = searchParams.get("dname");
   const discordUsername = searchParams.get("rdname");
   const discordError = searchParams.get("discordError");
+  const mounted = useIsMounted();
 
   const { mutateAsync: getTwitterConnectUrl, isPending: isFetchingTwitterUrl } =
     useTwitterConnect();
@@ -58,7 +59,13 @@ export default function Home() {
     useShallow((state) => [state.currentPane, state.setCurrentPane])
   );
   const [finishedRegistration, setFinishedRegistration] = useState(false);
-  const mounted = useIsMounted();
+
+  // useEffect(() => {
+  //   // Remove the step=twitter from url
+  //   if (shouldShowRegisterStep) {
+  //     window.history.replaceState(null, "", `?`);
+  //   }
+  // }, [shouldShowRegisterStep]);
 
   useEffect(() => {
     if (twitterError) {
@@ -133,260 +140,69 @@ export default function Home() {
     });
   }, [currentPane]);
 
-  if (
-    (shouldShowRegisterStep && !finishedRegistration) ||
-    currentPane === "REGISTER"
-  ) {
+  if (currentPane === "REGISTER_2") {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px] mt-8 lg:mt-[100px]">
-            <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
-              Request Form
+          <div className="flex flex-col pb-[100px] mt-8 ">
+            <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
+              Review and Sign the Terms of Service
             </div>
-            <div className="font-bold text-[42px] md:text-[48px] lg:text-[56px] mb-4">
-              Register to Claim
-            </div>
-            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px]">
-              To be able to claim, individuals must fill out this form and agree
-              to the Plume Airdrop Terms of Service.
-            </div>
-            <ul className="flex flex-col gap-3">
-              <li
-                className={
-                  "p-6 flex items-center gap-4 justify-between shadow-md rounded-[16px] border border-[#F0F0F0]"
-                }
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
+              You&apos;ve confirmed that you&apos;ve read and agree with
+              Plume&apos;s Airdrop{" "}
+              <Link
+                className="text-white whitespace-nowrap flex items-center gap-1"
+                href="/terms"
+                target="_blank"
               >
-                <div className="flex flex-col gap-1">
-                  <div className="font-[500] text-lg">Connect Wallet</div>
-                </div>
+                Terms of Service <MoveUpRightIcon size={22} />
+              </Link>
+            </div>
 
-                <ConnectButton.Custom>
-                  {({
-                    account,
-                    mounted,
-                    authenticationStatus,
-                    openConnectModal,
-                  }) => {
-                    if (!account || !mounted) {
-                      return (
-                        <button
-                          className="bg-[#111111] px-4 py-2 rounded-full text-[#F0F0F0]"
-                          disabled={
-                            !mounted || authenticationStatus === "loading"
-                          }
-                          onClick={() => {
-                            openConnectModal();
-                          }}
-                        >
-                          Connect wallet
-                        </button>
-                      );
-                    } else {
-                      return (
-                        <button
-                          className="border border-[#111111] flex items-center gap-2 rounded-full px-3 py-2 hover:bg-[#F0F0F0] h-10"
-                          onClick={() => {
-                            disconnect();
-                          }}
-                        >
-                          {account.address.slice(0, 6)}...
-                          {account.address.slice(-4)}
-                          <XIcon size={16} />
-                        </button>
-                      );
+            <div className="flex items-center gap-4">
+              {signature ? (
+                <button
+                  disabled
+                  className="px-6 py-4 rounded-full bg-[#D7FF30] text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40"
+                >
+                  Signed
+                </button>
+              ) : (
+                <button
+                  className="px-6 py-4 rounded-full bg-white text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+                  disabled={isSigningMessage}
+                  onClick={async () => {
+                    const { message } = generateMessageToSign();
+                    try {
+                      const sig = await signMessageAsync({
+                        message,
+                      });
+
+                      setMessage(message);
+                      setSignature(sig);
+                      toast(<SignedMessageToast />);
+                    } catch (e) {
+                      console.error(e);
                     }
                   }}
-                </ConnectButton.Custom>
-              </li>
-
-              <li className="p-6 flex items-center gap-4 justify-between shadow-md rounded-[16px] border border-[#F0F0F0]">
-                <div className="flex flex-col gap-1">
-                  <div className="font-[500] text-lg">Connect to X</div>
-                </div>
-                {!twitterUsername ? (
-                  <button
-                    className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
-                    disabled={isFetchingTwitterUrl}
-                    onClick={async () => {
-                      const { url } = await getTwitterConnectUrl();
-
-                      window.location.href = url;
-                    }}
-                  >
-                    {isFetchingTwitterUrl ? (
-                      <div className="flex gap-2 items-center justify-center">
-                        <Loader2Icon
-                          size={16}
-                          className="animate-spin text-[#111111]"
-                        />
-                        Connecting
-                      </div>
-                    ) : (
-                      "Connect X"
-                    )}
-                  </button>
-                ) : (
-                  <button
-                    className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
-                    onClick={async () => {
-                      await disconnectTwitter();
-
-                      const params = new URLSearchParams();
-
-                      if (discordEncryptedId) {
-                        params.set("did", discordEncryptedId);
-                      }
-
-                      if (discordEncryptedUsername) {
-                        params.set("dname", discordEncryptedUsername);
-                      }
-
-                      if (discordUsername) {
-                        params.set("rdname", discordUsername);
-                      }
-
-                      window.location.href = `/?step=twitter&${params.toString()}`;
-                    }}
-                  >
-                    {isDisconnectingFromTwitter ? (
-                      <div className="flex gap-2 items-center justify-center">
-                        <Loader2Icon
-                          size={16}
-                          className="animate-spin text-[#111111]"
-                        />
-                        Disconnecting
-                      </div>
-                    ) : (
-                      <div className="flex gap-2 items-center justify-center">
-                        {twitterUsername}
-                        <XIcon size={16} />
-                      </div>
-                    )}
-                  </button>
-                )}
-              </li>
-
-              <li className="p-6 flex items-center gap-4 justify-between shadow-md rounded-[16px] border border-[#F0F0F0]">
-                <div className="flex flex-col gap-1">
-                  <div className="font-[500] text-lg">Connect to Discord</div>
-                </div>
-                {!discordUsername ? (
-                  <button
-                    className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
-                    disabled={isFetchingDiscordUrl}
-                    onClick={async () => {
-                      const { url } = await getDiscordConnectUrl();
-
-                      window.location.href = url;
-                    }}
-                  >
-                    {isFetchingDiscordUrl ? (
-                      <div className="flex gap-2 items-center justify-center">
-                        <Loader2Icon
-                          size={16}
-                          className="animate-spin text-[#111111]"
-                        />
-                        Connecting
-                      </div>
-                    ) : (
-                      "Connect Discord"
-                    )}
-                  </button>
-                ) : (
-                  <button
-                    className="border border-[#F0F0F0] px-4 py-2 text-sm font-[500] rounded-full hover:bg-[#F0F0F0] hover:text-[#111111] disabled:opacity-80"
-                    onClick={async () => {
-                      await disconnectDiscord();
-
-                      const params = new URLSearchParams();
-
-                      if (twitterEncryptedId) {
-                        params.set("tid", twitterEncryptedId);
-                      }
-
-                      if (twitterEncryptedUsername) {
-                        params.set("tname", twitterEncryptedUsername);
-                      }
-
-                      if (twitterUsername) {
-                        params.set("rtname", twitterUsername);
-                      }
-
-                      window.location.href = `/?step=twitter&${params.toString()}`;
-                    }}
-                  >
-                    {isDisconnectingFromDiscord ? (
-                      <div className="flex gap-2 items-center justify-center">
-                        <Loader2Icon
-                          size={16}
-                          className="animate-spin text-[#111111]"
-                        />
-                        Disconnecting
-                      </div>
-                    ) : (
-                      <div className="flex gap-2 items-center justify-center">
-                        {discordUsername}
-                        <XIcon size={16} />
-                      </div>
-                    )}
-                  </button>
-                )}
-              </li>
-
-              <li className="p-6 flex items-center gap-4 justify-between shadow-md rounded-[16px] border border-[#F0F0F0]">
-                <div className="text-lg font-[500] text-[#747474]">
-                  I confirm that I&apos;ve read and agree with the
-                  PlumeDrop&apos;s{" "}
-                  <Link
-                    href="/terms"
-                    target="_blank"
-                    className="underline text-[#111111]"
-                  >
-                    Terms of Service
-                  </Link>
-                </div>
-                <AnimatePresence>
-                  {signature ? (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="bg-[#FFFFFF] text-[#111111] py-2 px-4 flex gap-1.5 items-center rounded-full"
-                    >
-                      <CheckCircleIcon size={12} /> Signed
-                    </motion.div>
+                >
+                  {isSigningMessage ? (
+                    <div className="flex gap-2 items-center">
+                      <Loader2Icon
+                        size={16}
+                        className="animate-spin text-[#1A1613]"
+                      />
+                      Signing
+                    </div>
                   ) : (
-                    <motion.button
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="bg-[#111111] text-[#F0F0F0] py-2 px-4 rounded-full h-10 hover:!opacity-80 disabled:!opacity-40 disabled:cursor-not-allowed"
-                      disabled={!mounted || !address}
-                      onClick={async () => {
-                        const { message } = generateMessageToSign();
-                        try {
-                          const sig = await signMessageAsync({
-                            message,
-                          });
-
-                          setMessage(message);
-                          setSignature(sig);
-                          toast(<SignedMessageToast />);
-                        } catch (e) {
-                          console.error(e);
-                        }
-                      }}
-                    >
-                      Sign
-                    </motion.button>
+                    "Sign"
                   )}
-                </AnimatePresence>
-              </li>
-            </ul>
-            <div className="mt-8">
+                </button>
+              )}
+
               <button
-                className="font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-[#E7E7E7] disabled:text-[#111111]"
+                className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-[#E7E7E7] disabled:text-[#1A1613]"
                 disabled={isPending || !address || !signature}
                 onClick={async () => {
                   if (!address) {
@@ -413,7 +229,7 @@ export default function Home() {
                   <div className="flex gap-2 items-center justify-center">
                     <Loader2Icon
                       size={16}
-                      className="animate-spin text-[#111111]"
+                      className="animate-spin text-[#1A1613]"
                     />
                     Submitting
                   </div>
@@ -422,21 +238,274 @@ export default function Home() {
                 )}
               </button>
             </div>
-            {/* <div className="text-[#747474] text-sm font-[500]">
-              <span className="text-[#111111]">Disclaimer</span>: Registering to
-              claim does not automatically make you eligible for rewards. Final
-              PlumeDrop allocation subject to eligibility verification.{" "}
-              <Link
-                target="_blank"
-                href="https://plumenetwork.xyz/blog/plume-drop-faq"
-                className="text-[#111111]"
-              >
-                Learn more
-              </Link>
-            </div> */}
           </div>
         }
-        image="/images/plume-bg-3.avif"
+        image="/images/plume-bg-2.avif"
+      />
+    );
+  }
+
+  if (
+    (shouldShowRegisterStep && !finishedRegistration) ||
+    currentPane === "REGISTER"
+  ) {
+    if (!mounted) {
+      return null;
+    }
+
+    return (
+      <PaneLayout
+        content={
+          <div className="flex flex-col pb-[100px] mt-8 ">
+            <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
+              Register to Claim
+            </div>
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
+              Fill out this form and agree to the Terms of Service to be able to
+              claim.
+            </div>
+            <ul className="flex flex-col gap-6">
+              <li>
+                <ConnectButton.Custom>
+                  {({
+                    account,
+                    mounted: mountedWallet,
+                    authenticationStatus,
+                    openConnectModal,
+                  }) => {
+                    return (
+                      <button
+                        disabled={
+                          !mountedWallet || authenticationStatus === "loading"
+                        }
+                        className={
+                          "w-full p-4 flex items-center gap-4 justify-between shadow-md rounded-full border border-white/25 bg-white/5 hover:opacity-80"
+                        }
+                        onClick={async () => {
+                          if (!account || !mountedWallet) {
+                            openConnectModal();
+                          } else {
+                            disconnect();
+                          }
+                        }}
+                      >
+                        <div className="flex gap-2 w-full items-center">
+                          <div className="w-[30px]">
+                            {address ? (
+                              <CheckIcon size={20} color="#D7FF30" />
+                            ) : (
+                              <Image
+                                alt=""
+                                src="/images/wallet-logo.png"
+                                width={28}
+                                height={16}
+                              />
+                            )}
+                          </div>
+                          <div className="text-lg w-full text-left">
+                            {address ? (
+                              <div className="flex items-center justify-between w-full">
+                                <div className="flex flex-col gap-1 text-left">
+                                  <div className="text-[24px]">
+                                    Wallet connected
+                                  </div>
+                                  <div className="text-[#D7FF30] text-[20px]">
+                                    {address.slice(0, 6)}...
+                                    {address.slice(-4)}
+                                  </div>
+                                </div>
+                                <div className="bg-[#2B2826] rounded-full p-1.5">
+                                  <XIcon size={16} />
+                                </div>
+                              </div>
+                            ) : (
+                              "Connect Wallet"
+                            )}
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  }}
+                </ConnectButton.Custom>
+              </li>
+
+              <li>
+                <button
+                  className={
+                    "w-full p-4 flex items-center gap-4 justify-between shadow-md rounded-full border border-white/25 bg-white/5 hover:opacity-80"
+                  }
+                  onClick={async () => {
+                    if (!twitterUsername) {
+                      const { url } = await getTwitterConnectUrl();
+
+                      window.location.href = url;
+                    } else {
+                      await disconnectTwitter();
+
+                      const params = new URLSearchParams();
+
+                      if (discordEncryptedId) {
+                        params.set("did", discordEncryptedId);
+                      }
+
+                      if (discordEncryptedUsername) {
+                        params.set("dname", discordEncryptedUsername);
+                      }
+
+                      if (discordUsername) {
+                        params.set("rdname", discordUsername);
+                      }
+
+                      window.location.href = `/?step=twitter&${params.toString()}`;
+                    }
+                  }}
+                >
+                  <div className="flex gap-2 w-full items-center">
+                    <div className="w-[30px]">
+                      {twitterUsername ? (
+                        <CheckIcon size={20} color="#D7FF30" />
+                      ) : (
+                        <Image
+                          alt=""
+                          src="/images/x-logo.png"
+                          width={28}
+                          height={16}
+                        />
+                      )}
+                    </div>
+                    <div className="text-lg w-full text-left">
+                      {isDisconnectingFromTwitter ? (
+                        <div className="flex gap-2 items-center">
+                          <Loader2Icon
+                            size={16}
+                            className="animate-spin text-white"
+                          />
+                          Disconnecting
+                        </div>
+                      ) : isFetchingTwitterUrl ? (
+                        <div className="flex gap-2 items-center">
+                          <Loader2Icon
+                            size={16}
+                            className="animate-spin text-white"
+                          />
+                          Connecting
+                        </div>
+                      ) : twitterUsername ? (
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex flex-col gap-1 text-left">
+                            <div className="text-[24px]">X connected</div>
+                            <div className="text-[#D7FF30] text-[20px]">
+                              {twitterUsername}
+                            </div>
+                          </div>
+                          <div className="bg-[#2B2826] rounded-full p-1.5">
+                            <XIcon size={16} />
+                          </div>
+                        </div>
+                      ) : (
+                        "Connect X"
+                      )}
+                    </div>
+                  </div>
+                </button>
+              </li>
+
+              <li>
+                <button
+                  className={
+                    "w-full p-4 flex items-center gap-4 justify-between shadow-md rounded-full border border-white/25 bg-white/5 hover:opacity-80"
+                  }
+                  onClick={async () => {
+                    if (!discordUsername) {
+                      const { url } = await getDiscordConnectUrl();
+
+                      window.location.href = url;
+                    } else {
+                      await disconnectDiscord();
+
+                      const params = new URLSearchParams();
+
+                      if (twitterEncryptedId) {
+                        params.set("tid", twitterEncryptedId);
+                      }
+
+                      if (twitterEncryptedUsername) {
+                        params.set("tname", twitterEncryptedUsername);
+                      }
+
+                      if (twitterUsername) {
+                        params.set("rtname", twitterUsername);
+                      }
+
+                      window.location.href = `/?step=twitter&${params.toString()}`;
+                    }
+                  }}
+                >
+                  <div className="flex gap-2 w-full items-center">
+                    <div className="w-[30px]">
+                      {discordUsername ? (
+                        <CheckIcon size={20} color="#D7FF30" />
+                      ) : (
+                        <Image
+                          alt=""
+                          src="/images/discord-logo.png"
+                          width={28}
+                          height={16}
+                        />
+                      )}
+                    </div>
+                    <div className="text-lg w-full text-left">
+                      {isDisconnectingFromDiscord ? (
+                        <div className="flex gap-2 items-center">
+                          <Loader2Icon
+                            size={16}
+                            className="animate-spin text-white"
+                          />
+                          Disconnecting
+                        </div>
+                      ) : isFetchingDiscordUrl ? (
+                        <div className="flex gap-2 items-center">
+                          <Loader2Icon
+                            size={16}
+                            className="animate-spin text-white"
+                          />
+                          Connecting
+                        </div>
+                      ) : discordUsername ? (
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex flex-col gap-1 text-left">
+                            <div className="text-[24px]">Discord connected</div>
+                            <div className="text-[#D7FF30] text-[20px]">
+                              {discordUsername}
+                            </div>
+                          </div>
+                          <div className="bg-[#2B2826] rounded-full p-1.5">
+                            <XIcon size={16} />
+                          </div>
+                        </div>
+                      ) : (
+                        "Connect Discord"
+                      )}
+                    </div>
+                  </div>
+                </button>
+              </li>
+            </ul>
+            <div className="flex items-center gap-4 mt-8">
+              <button
+                className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                onClick={() => {
+                  setCurrentPane("REGISTER_2");
+                }}
+                disabled={!address}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        }
+        image="/images/plume-bg-2.avif"
+        invertImage
       />
     );
   }
@@ -445,24 +514,21 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px]">
-            <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
-              You’re all set
+          <div className="flex flex-col pb-[100px] mt-8 ">
+            <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
+              You’re Registered
             </div>
-            <div className="font-bold text-[42px] md:text-[48px] lg:text-[56px] mb-4">
-              You&apos;re Registered
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
+              Thank you for registering for the Plume Airdrop. Stay tuned for
+              news and updates as we approach our live release.
             </div>
-            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px]">
-              Thank you for registering to the Plume Airdrop. Stay tuned for
-              updates as Plume approaches its live release.
-            </div>
-            <div>
+            <div className="flex">
               <Link
                 href="https://x.com/plumenetwork"
                 target="_blank"
                 rel="noopener noreferrer"
                 passHref
-                className="w-auto text-center justify-center font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="w-auto font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Follow Plume on X
               </Link>
@@ -478,16 +544,13 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px] mt-8 lg:mt-[100px]">
-            <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
-              Registration Form
+          <div className="flex flex-col pb-[100px] mt-8 ">
+            <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
+              Register for the Plume Airdrop
             </div>
-            <div className="font-bold text-[42px] md:text-[48px] lg:text-[56px] mb-4">
-              Plume Airdrop
-            </div>
-            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px]">
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
               Plume&apos;s first official Airdrop rewards early contributors
-              who’ve been a part of the journey thus far.
+              who&apos;ve been a part of the journey thus far.
             </div>
             <div>
               <ConnectButton.Custom>
@@ -498,39 +561,55 @@ export default function Home() {
                   authenticationStatus,
                 }) => {
                   return (
-                    <button
-                      className="font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 flex justify-center disabled:bg-[#E7E7E7] disabled:opacity-40 disabled:cursor-not-allowed disabled:text-[#111111]"
-                      disabled={
-                        !mounted ||
-                        authenticationStatus === "loading" ||
-                        isFetching ||
-                        isLoading
-                      }
-                      onClick={() => {
-                        if (account) {
-                          if (data?.registered) {
-                            setCurrentPane("FINISHED");
-                          } else {
-                            setCurrentPane("ABOUT");
-                          }
-                        } else {
-                          openConnectModal();
+                    <div className="flex items-center gap-4">
+                      <button
+                        className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+                        disabled={
+                          !mounted ||
+                          authenticationStatus === "loading" ||
+                          isFetching ||
+                          isLoading
                         }
-                      }}
-                    >
-                      {!mounted || isFetching || isLoading ? (
-                        <div className="h-[28px] flex items-center">
-                          <Loader2Icon
-                            size={16}
-                            className="animate-spin text-[#111111]"
-                          />
-                        </div>
-                      ) : account ? (
-                        "Get Started"
-                      ) : (
-                        "Connect Wallet"
+                        onClick={() => {
+                          if (account) {
+                            if (data?.registered) {
+                              setCurrentPane("FINISHED");
+                            } else {
+                              setCurrentPane("ABOUT");
+                            }
+                          } else {
+                            openConnectModal();
+                          }
+                        }}
+                      >
+                        {!mounted || isFetching || isLoading ? (
+                          <div className="h-[28px] flex items-center">
+                            <Loader2Icon
+                              size={16}
+                              className="animate-spin text-[#1A1613]"
+                            />
+                          </div>
+                        ) : account ? (
+                          "Get Started"
+                        ) : (
+                          "Connect Wallet"
+                        )}
+                      </button>
+                      {mounted && account?.address && (
+                        <button
+                          className="text-[#918C89] text-lg flex items-center gap-2 hover:underline"
+                          onClick={() => {
+                            disconnect();
+                          }}
+                        >
+                          <span>
+                            {account.address.slice(0, 6)}...
+                            {account.address?.slice(-4)}
+                          </span>
+                          <XIcon size={20} />
+                        </button>
                       )}
-                    </button>
+                    </div>
                   );
                 }}
               </ConnectButton.Custom>
@@ -546,29 +625,51 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px] mt-8 lg:mt-[100px]">
-            <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
-              About Plume
-            </div>
-            <div className="font-bold text-[42px] md:text-[48px] lg:text-[56px] mb-4">
+          <div className="flex flex-col pb-[100px] mt-8 ">
+            <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
               The L1 for RWAs
             </div>
-            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px]">
-              Plume is the first Layer 1 blockchain designed to unlock the full
-              potential of real-world assets (RWAs) by making them composable,
-              liquid, and accessible within a secure and compliant ecosystem.
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
+              Plume is the first Layer 1 blockchain designed exclusively to
+              unlock the full potential of real-world assets (RWAs) by making
+              them:
             </div>
+            <ul className="flex flex-col gap-6 mb-8">
+              {[
+                {
+                  image: "/images/plume-about-icon-1.png",
+                  title: "Composable",
+                },
+                {
+                  title: "Liquid",
+                  image: "/images/plume-about-icon-2.png",
+                },
+                {
+                  image: "/images/plume-about-icon-3.png",
+                  title:
+                    "Accessible within an ecosystem that is secure and compliant",
+                },
+              ].map(({ image, title }, idx) => {
+                return (
+                  <li className="flex gap-3 items-center" key={idx}>
+                    <Image alt="" src={image} width={32} height={32} />
+                    <div className="text-[24px]">{title}</div>
+                  </li>
+                );
+              })}
+            </ul>
+
             <div className="flex items-center gap-4">
               <Link
                 target="_blank"
                 href="https://plumenetwork.xyz/blog/plume-drop-faq"
-                className="font-[500] text-lg hover:opacity-80 bg-white text-[#111111] border border-[#F0F0F0] rounded-full py-4 px-8 flex justify-center disabled:bg-[#E7E7E7] disabled:opacity-40 disabled:cursor-not-allowed disabled:text-[#111111]"
+                className="font-[500] text-lg hover:opacity-80 bg-white/20 text-white rounded-full px-6 py-4"
               >
                 About Plume
               </Link>
 
               <button
-                className="font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 flex justify-center disabled:bg-[#E7E7E7] disabled:opacity-40 disabled:cursor-not-allowed disabled:text-[#111111]"
+                className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={() => {
                   setCurrentPane("MEET");
                 }}
@@ -578,7 +679,7 @@ export default function Home() {
             </div>
           </div>
         }
-        image="/images/plume-bg-2.avif"
+        image="/images/plume-bg-1.avif"
       />
     );
   }
@@ -587,26 +688,26 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px] mt-8 lg:mt-[100px]">
-            <div className="text-[16px] md:text-[18px] lg:text-[20px] text-[#FF3D00] font-[500] mb-2">
+          <div className="flex flex-col pb-[100px] mt-8 ">
+            <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
               The Plume Token
             </div>
-            <div className="font-bold text-[42px] md:text-[48px] lg:text-[56px] mb-4">
-              $PLUME is here
-            </div>
-            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px]">
-              $PLUME is designed to secure and power the Plume RWA Chain and
-              broader RWAfi.
-              <br />
-              <br />
-              <span className="text-[#922100]">
-                The Plume Airdrop will be the first official airdrop of $PLUME,
-                supporting our effort of building a unified RWAfi ecosystem.
-              </span>
+            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
+              Plume is designed to secure and power the Plume RWA Chain and
+              broader RWAfi ecosystem. The Plume Airdrop is the first official
+              drop of <span className="italic text-white">$PLUME</span>.
             </div>
             <div className="flex items-center gap-4">
+              <Link
+                target="_blank"
+                href="https://plumenetwork.xyz/blog/plume-drop-faq"
+                className="font-[500] text-lg hover:opacity-80 bg-white/20 text-white rounded-full px-6 py-4"
+              >
+                Read Announcement
+              </Link>
+
               <button
-                className="font-[500] text-lg hover:opacity-80 bg-[#111111] text-[#F0F0F0] rounded-full py-4 px-8 flex justify-center disabled:bg-[#E7E7E7] disabled:opacity-40 disabled:cursor-not-allowed disabled:text-[#111111]"
+                className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={() => {
                   setCurrentPane("REGISTER");
                 }}
@@ -616,7 +717,7 @@ export default function Home() {
             </div>
           </div>
         }
-        image="/images/plume-bg-3.avif"
+        image="/images/plume-bg-2.avif"
       />
     );
   }

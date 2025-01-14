@@ -5,6 +5,7 @@ const RegistrationPane = {
   ABOUT: "ABOUT",
   MEET: "MEET",
   REGISTER: "REGISTER",
+  REGISTER_2: "REGISTER_2",
   FINISHED: "FINISHED",
 } as const;
 
@@ -15,6 +16,7 @@ export const topNavPaneList: RegistrationPaneType[] = [
   RegistrationPane.ABOUT,
   RegistrationPane.MEET,
   RegistrationPane.REGISTER,
+  RegistrationPane.REGISTER_2,
 ];
 
 type PreregStore = {
