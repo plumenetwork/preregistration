@@ -72,7 +72,7 @@ export const PaneLayout = ({ content, image, invertImage }: Props) => {
         <div className="lg:hidden aspect-[394/226] relative mb-6">
           <Image className="object-cover" alt="" src={image} fill />
         </div>
-        <div className="h-full lg:basis-[55%] xl:basis-[45%] shrink-0 grow flex-col lg:justify-center lg:pt-16 px-3 lg:px-20 overflow-auto">
+        <div className="h-full lg:basis-[55%] xl:basis-[45%] shrink-0 grow flex-col lg:justify-center lg:pt-16 px-6 lg:px-20 overflow-auto">
           <div className="hidden lg:flex w-full">{nav}</div>
           <div className="max-w-[520px] w-full">{content}</div>
         </div>
