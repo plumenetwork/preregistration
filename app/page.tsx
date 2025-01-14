@@ -642,7 +642,7 @@ export default function Home() {
             </div>
             <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
               Plume is the first Layer 1 blockchain designed exclusively to
-              unlock the full potential of real-world assets (RWAs) by making
+              unlock the full potential of real world assets (RWAs) by making
               them:
             </div>
             <ul className="flex flex-col gap-6 mb-8">
