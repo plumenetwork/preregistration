@@ -13,7 +13,8 @@ const RestrictedPage = () => {
       content={
         <div className="flex flex-col pb-[100px] mt-8 ">
           <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
-            Plume Airdrop is <span className="text-[#918C89]">Unavailable</span>
+            Plume&apos;s Airdrop is{" "}
+            <span className="text-[#918C89]">Unavailable</span>
           </div>
           <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
             Plume&apos;s Airdrop is not available for users in your region due
