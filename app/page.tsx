@@ -249,7 +249,8 @@ export default function Home() {
             </div>
           </div>
         }
-        image="/images/plume-bg-2.webp"
+        image="/images/plume-bg-3.png"
+        imageClasses="absolute !left-auto lg:!right-[-50%] xl:!right-[-30%] overflow-visible"
       />
     );
   }
@@ -513,7 +514,8 @@ export default function Home() {
             </div>
           </div>
         }
-        image="/images/plume-bg-2.webp"
+        image="/images/plume-bg-3.png"
+        imageClasses="absolute !left-auto lg:!right-[-50%] xl:!right-[-30%] overflow-visible"
         invertImage={!address}
       />
     );
@@ -733,7 +735,8 @@ export default function Home() {
             </div>
           </div>
         }
-        image="/images/plume-bg-2.webp"
+        image="/images/plume-bg-3.png"
+        imageClasses="absolute !left-auto lg:!right-[-50%] xl:!right-[-30%] overflow-visible"
       />
     );
   }

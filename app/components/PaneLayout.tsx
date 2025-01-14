@@ -11,9 +11,15 @@ type Props = {
   content: ReactNode;
   image: string;
   invertImage?: boolean;
+  imageClasses?: string;
 };
 
-export const PaneLayout = ({ content, image, invertImage }: Props) => {
+export const PaneLayout = ({
+  imageClasses,
+  content,
+  image,
+  invertImage,
+}: Props) => {
   const [currentPane, setCurrentPane] = usePreregStore(
     useShallow((state) => [state.currentPane, state.setCurrentPane])
   );
@@ -84,15 +90,16 @@ export const PaneLayout = ({ content, image, invertImage }: Props) => {
           <div className="hidden lg:flex w-full">{nav}</div>
           <div className="max-w-[520px] w-full">{content}</div>
         </div>
-        <div className="lg:basis-[45%] xl:basis-[55%] shrink-0 grow relative hidden lg:flex">
+        <div className="lg:basis-[45%] xl:basis-[55%] shrink-0 grow relative hidden lg:flex overflow-hidden">
           <Image
             alt=""
             src={image}
             fill
             priority
             className={clsx(
-              "object-cover transition-all",
-              invertImage && "grayscale"
+              "object-cover",
+              invertImage && "grayscale",
+              imageClasses
             )}
           />
         </div>
