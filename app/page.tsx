@@ -710,8 +710,8 @@ export default function Home() {
             <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
               The Plume token is designed to secure and power the Plume chain
               and broader RWAfi ecosystem. The Plume Airdrop is the first
-              official drop of $PLUME.{" "}
-              <span className="italic text-white">$PLUME</span>.
+              official drop of <span className="italic text-white">$PLUME</span>
+              .
             </div>
             <div className="flex items-center gap-4">
               <button
