@@ -29,6 +29,8 @@ const blockedCountries = [
 export async function middleware(request: NextRequest) {
   const { country } = geolocation(request);
 
+  console.log(`country: ${country}`);
+
   const isGeoBlockingEnabled = await get("isGeoBlockingEnabled");
   const isUrlRestricted = new URL(request.url).pathname.startsWith(
     "/restricted"
