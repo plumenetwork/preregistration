@@ -60,12 +60,16 @@ export default function Home() {
   );
   const [finishedRegistration, setFinishedRegistration] = useState(false);
 
-  // useEffect(() => {
-  //   // Remove the step=twitter from url
-  //   if (shouldShowRegisterStep) {
-  //     window.history.replaceState(null, "", `?`);
-  //   }
-  // }, [shouldShowRegisterStep]);
+  useEffect(() => {
+    if (shouldShowRegisterStep) {
+      setCurrentPane("REGISTER");
+      const urlParams = new URLSearchParams(window.location.search);
+
+      urlParams.delete("step");
+
+      window.history.pushState(null, "", `?${urlParams.toString()}`);
+    }
+  }, [shouldShowRegisterStep]);
 
   useEffect(() => {
     if (twitterError) {
