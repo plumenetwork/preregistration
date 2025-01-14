@@ -148,7 +148,7 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px] mt-8 ">
+          <div className="flex flex-col pb-[100px] mt-8">
             <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
               Review and sign the Terms of Service
             </div>
@@ -156,7 +156,7 @@ export default function Home() {
               You&apos;ve confirmed that you&apos;ve read and agree with
               Plume&apos;s Airdrop{" "}
               <Link
-                className="text-white whitespace-nowrap flex items-center gap-1"
+                className="text-white whitespace-nowrap inline-flex items-center gap-1"
                 href="/terms"
                 target="_blank"
               >

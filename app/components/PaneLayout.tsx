@@ -86,9 +86,9 @@ export const PaneLayout = ({
         <div className="lg:hidden aspect-[394/226] relative mb-6">
           <Image className="object-cover" alt="" src={image} fill />
         </div>
-        <div className="h-full lg:basis-[55%] xl:basis-[45%] shrink-0 grow flex-col lg:justify-center lg:pt-16 px-6 lg:px-20 overflow-auto">
+        <div className="h-full lg:basis-[55%] xl:basis-[45%] shrink-0 grow flex-col lg:justify-center lg:pt-16 px-6 lg:pl-20 lg:pr-18 overflow-auto">
           <div className="hidden lg:flex w-full">{nav}</div>
-          <div className="max-w-[520px] w-full">{content}</div>
+          <div className="max-w-[530px] w-full">{content}</div>
         </div>
         <div className="lg:basis-[45%] xl:basis-[55%] shrink-0 grow relative hidden lg:flex overflow-hidden">
           <Image
