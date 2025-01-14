@@ -28,7 +28,7 @@ const blockedCountries = [
 export async function middleware(request: NextRequest) {
   const geo =
     request.headers.get("CF-IPCountry") ||
-    request.headers.get("X-Vercel-IP-Country ");
+    request.headers.get("X-Vercel-IP-Country");
 
   console.log(`country: ${geo}`);
 
