@@ -605,9 +605,9 @@ const TermsPage = () => {
               service. Accordingly, you understand and agree to assume full
               responsibility for all of the risks of accessing and using the
               Services. The only website for registering and participating in
-              the Plume Airdrop is _____. All other websites are fraudulent and
-              we are not responsible for any consequences of engaging with such
-              websites.
+              Plume&apos;s Airdrop is https://registration.plumenetwork.xyz/.
+              All other websites are fraudulent and we are not responsible for
+              any consequences of engaging with such websites.
               <br />
               <br /> <b>11.3 Tax and Regulatory Risks.</b> Without limiting the
               foregoing, you understand that there may be tax and regulatory

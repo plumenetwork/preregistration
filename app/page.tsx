@@ -530,8 +530,8 @@ export default function Home() {
               You’re Registered
             </div>
             <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
-              Thank you for registering for the Plume Airdrop. Further updates
-              will be shared on Plume&apos;s X account.
+              Thank you for registering for Plume&apos;s Airdrop. Further
+              updates will be shared on Plume&apos;s X account.
             </div>
             <div className="flex">
               <Link
@@ -557,7 +557,7 @@ export default function Home() {
         content={
           <div className="flex flex-col pb-[100px] mt-8 ">
             <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
-              Register for the Plume Airdrop
+              Register for Plume&apos;s Airdrop
             </div>
             <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
               The first official Plume Airdrop rewards early contributors
@@ -711,7 +711,7 @@ export default function Home() {
             </div>
             <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
               The Plume token is designed to secure and power the Plume chain
-              and broader RWAfi ecosystem. The Plume Airdrop is the first
+              and broader RWAfi ecosystem. Plume&apos;s Airdrop is the first
               official drop of <span className="italic text-white">$PLUME</span>
               .
             </div>
