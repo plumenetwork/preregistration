@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import DefaultBanner from "../public/images/default.avif";
+import DefaultBanner from "../public/images/banner.avif";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AppProviders } from "./components/AppProviders";
