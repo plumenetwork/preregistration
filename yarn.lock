@@ -335,6 +335,11 @@
   dependencies:
     "@lit-labs/ssr-dom-shim" "^1.0.0"
 
+"@marsidev/react-turnstile@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@marsidev/react-turnstile/-/react-turnstile-1.0.0.tgz#77d625e413b2b407a4a5d8009f56aa0a7d98e0d3"
+  integrity sha512-hmmG+GrSlomln1S+MooUSFH2va8HUxxdRnrSPcgVVR6sDNC9HjeMv6Ez6hBu1ubjXdaSEOV9M6HU1HL4jBP6hQ==
+
 "@metamask/eth-json-rpc-provider@^1.0.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@metamask/eth-json-rpc-provider/-/eth-json-rpc-provider-1.0.1.tgz#3fd5316c767847f4ca107518b611b15396a5a32c"
