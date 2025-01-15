@@ -12,7 +12,7 @@ export const TopNav = () => {
   const shouldShowNav = currentIndex !== -1;
 
   return (
-    <div className="max-w-[1200px] w-full flex py-4 lg:py-8 px-4 lg:px-8">
+    <div className="max-w-[1200px] w-full flex py-4 lg:py-8 px-4 lg:px-8 mx-auto">
       <div className="flex items-center gap-8 justify-between md:justify-start w-full">
         {/* eslint-disable-next-line */}
         <a href="/" className="flex items-center gap-2">

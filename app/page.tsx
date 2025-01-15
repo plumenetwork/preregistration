@@ -431,15 +431,24 @@ export default function Home() {
               Thank you for registering. Follow Plume on 𝕏 to stay tuned for
               updates.
             </div>
-            <div className="flex mt-8 justify-center">
+            <div className="flex flex-col md:flex-row mt-8 justify-center items-center gap-4">
               <Link
                 href="https://x.com/plumenetwork"
                 target="_blank"
                 rel="noopener noreferrer"
                 passHref
-                className="w-auto font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+                className="w-full md:w-auto font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Follow @plumenetwork
+              </Link>
+              <Link
+                href="https://x.com/plumefndn"
+                target="_blank"
+                rel="noopener noreferrer"
+                passHref
+                className="w-full md:w-auto font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Follow @plumefndn
               </Link>
             </div>
           </div>
@@ -452,7 +461,7 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col">
+          <div className="flex flex-col h-full grow">
             <div className="text-[36px] md:text-[48px] lg:text-[56px] leading-[1.2] font-reckless text-center mb-3">
               Claim Plume&apos;s Airdrop via{" "}
               <span className="italic">Centralized Exchange</span>
@@ -522,6 +531,13 @@ export default function Home() {
                   );
                 }}
               </ConnectButton.Custom>
+            </div>
+            <div className="text-[#918C89] mt-auto py-8">
+              <span className="text-white">Disclaimer</span>: Claiming your
+              airdrop through an exchange is optional. If you are eligible, this
+              method allows you to receive your airdrop early and with zero gas
+              fees. Please note that additional boosts are exclusively available
+              to on-chain claimers.
             </div>
           </div>
         }

@@ -16,7 +16,9 @@ export const GET = async (req: NextRequest) => {
     .select()
     .filter("walletAddress", "eq", address);
 
-  if ((users.data || []).length > 0) {
+  const firstUser = users.data?.[0];
+
+  if (firstUser && firstUser.cex) {
     return NextResponse.json({ registered: true }, { status: 200 });
   }
 

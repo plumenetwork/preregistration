@@ -116,7 +116,10 @@ export const CEXSelection = ({ cex, onClick }: Props) => {
             }}
           >
             <Image
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              className={clsx(
+                "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all",
+                cex && cex !== c && "grayscale"
+              )}
               alt={getLabelByCex(c)}
               src={getImageByCex(c)}
               width={getImageDimensionsByCex(c).width}
