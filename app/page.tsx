@@ -145,7 +145,7 @@ export default function Home() {
                   1. Add your details
                 </div>
                 <label className="flex flex-col gap-2">
-                  <div className="w-full flex-col md:flex-row md:items-center justify-between">
+                  <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
                     <div className="text-[18px]">User ID</div>
                     <Link
                       className="text-[18px] text-[#39BEB7] flex gap-1 items-center"
