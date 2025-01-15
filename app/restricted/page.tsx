@@ -10,29 +10,28 @@ export const metadata: Metadata = {
 const RestrictedPage = () => {
   return (
     <PaneLayout
+      invertedImage
       content={
-        <div className="flex flex-col pb-[100px] mt-8 ">
-          <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
-            Plume&apos;s Airdrop is{" "}
-            <span className="text-[#918C89]">Unavailable</span>
+        <div className="flex flex-col">
+          <div className="text-[36px] md:text-[48px] lg:text-[56px] leading-[1.2] font-reckless text-center mb-3">
+            Plume Airdrop{" "}
+            <span className="text-[#918C89] italic">Unavailable</span>
           </div>
-          <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
-            Plume&apos;s Airdrop is not available for users in your region due
-            to regulatory measures.
+          <div className="text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89] text-center">
+            This program is unavailable to users in your region due to
+            regulatory measures.
           </div>
-          <div className="flex">
+          <div className="justify-center flex mt-8">
             <Link
               href="https://plumenetwork.xyz/blog/airdrop"
-              className="w-auto bg-white/20 py-4 px-6 rounded-full text-white hover:opacity-80 text-[20px] font-[600]"
               target="_blank"
+              className="font-[600] text-lg hover:opacity-80 bg-white/20 text-white rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              Learn more
+              Learn More
             </Link>
           </div>
         </div>
       }
-      image="/images/plume-bg-1.avif"
-      invertImage
     />
   );
 };

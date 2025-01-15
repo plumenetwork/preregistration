@@ -5,6 +5,7 @@ import "./globals.css";
 import { AppProviders } from "./components/AppProviders";
 import { ToastContainer } from "react-toastify";
 import { Suspense } from "react";
+import { TopNav } from "./components/TopNav";
 
 const matter = localFont({
   src: [
@@ -94,6 +95,7 @@ export default function RootLayout({
         <div className="font-matter">
           <AppProviders>
             <Suspense>
+              <TopNav />
               {children}
               <ToastContainer
                 position="bottom-right"

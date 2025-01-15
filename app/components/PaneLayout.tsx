@@ -1,109 +1,26 @@
 "use client";
 
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import Image from "next/image";
-import { ReactNode } from "react";
-import { topNavPaneList, usePreregStore } from "../store";
-import { useShallow } from "zustand/react/shallow";
 import clsx from "clsx";
+import Image from "next/image";
+
+import { ReactNode } from "react";
 
 type Props = {
   content: ReactNode;
-  image: string;
-  invertImage?: boolean;
-  imageClasses?: string;
+  invertedImage?: boolean;
 };
 
-export const PaneLayout = ({
-  imageClasses,
-  content,
-  image,
-  invertImage,
-}: Props) => {
-  const [currentPane, setCurrentPane] = usePreregStore(
-    useShallow((state) => [state.currentPane, state.setCurrentPane])
-  );
-  const currentIndex = topNavPaneList.indexOf(currentPane);
-  const shouldShowNav = currentIndex !== -1;
-
-  const nav = (
-    <div className="flex justify-between lg:mb-[100px] items-center w-full">
-      {/* eslint-disable-next-line */}
-      <a href="/" className="flex items-center gap-2">
-        <Image
-          src="/images/plume-logo-new.png"
-          alt=""
-          width={32}
-          height={32}
-          className="lg:block"
-        />
-      </a>
-      {shouldShowNav && (
-        <div className="flex items-center gap-4 text-white">
-          <button
-            className="disabled:opacity-40"
-            disabled={currentIndex === 0}
-            onClick={() => {
-              const prevPane = topNavPaneList[currentIndex - 1];
-
-              if (prevPane) {
-                setCurrentPane(prevPane);
-              }
-            }}
-          >
-            <ChevronLeftIcon size={20} />
-          </button>
-          <button
-            className="disabled:opacity-40"
-            disabled={currentIndex === topNavPaneList.length - 1}
-            onClick={() => {
-              const nextPane = topNavPaneList[currentIndex + 1];
-
-              if (nextPane) {
-                setCurrentPane(nextPane);
-              }
-            }}
-          >
-            <ChevronRightIcon size={20} />
-          </button>
-        </div>
-      )}
-    </div>
-  );
-
+export const PaneLayout = ({ content, invertedImage }: Props) => {
   return (
-    <>
-      {shouldShowNav && (
-        <div
-          className="fixed top-0 z-10 flex h-[6px] bg-[#D7FF30] transition-all"
-          style={{
-            width: `${((currentIndex + 1) / topNavPaneList.length) * 80}%`,
-          }}
-        />
-      )}
-      <div className="flex flex-col lg:flex-row h-screen">
-        <div className="lg:hidden p-4">{nav}</div>
-        <div className="lg:hidden aspect-[394/226] relative mb-6">
-          <Image className="object-cover" alt="" src={image} fill />
-        </div>
-        <div className="h-full lg:basis-[55%] xl:basis-[45%] shrink-0 grow flex-col lg:justify-center lg:pt-16 px-6 lg:pl-20 lg:pr-18 overflow-auto">
-          <div className="hidden lg:flex w-full">{nav}</div>
-          <div className="max-w-[530px] w-full">{content}</div>
-        </div>
-        <div className="lg:basis-[45%] xl:basis-[55%] shrink-0 grow relative hidden lg:flex overflow-hidden">
-          <Image
-            alt=""
-            src={image}
-            fill
-            priority
-            className={clsx(
-              "object-cover",
-              invertImage && "grayscale",
-              imageClasses
-            )}
-          />
-        </div>
-      </div>
-    </>
+    <div className="px-6 lg:px-8 max-w-[680px] w-full mx-auto flex flex-col gap-6 lg:mt-[100px]">
+      <Image
+        alt=""
+        src="/images/plume-cex-home-logo.avif"
+        width={120}
+        height={120}
+        className={clsx("mx-auto", invertedImage && "grayscale")}
+      />
+      {content}
+    </div>
   );
 };
