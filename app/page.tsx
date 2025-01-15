@@ -19,6 +19,8 @@ import { PaneLayout } from "./components/PaneLayout";
 import {
   CEXSelection,
   CEXType,
+  getCexLinkDesktop,
+  getCexLinkMobile,
   getLabelByCex,
 } from "./components/CEXSelection";
 import { isAddress } from "viem";
@@ -49,6 +51,7 @@ export default function Home() {
   const [cexId, setCexId] = useState("");
   const [cexAddress, setCexAddress] = useState("");
   const [cexAddressError, setCexAddressError] = useState("");
+  const [userIdError, setUserIdError] = useState("");
 
   const { isPending, mutateAsync } = useMutation({
     mutationKey: ["sign"],
@@ -132,7 +135,7 @@ export default function Home() {
                   1. Add your details
                 </div>
                 <label className="flex flex-col gap-2">
-                  <div className="w-full flex items-center justify-between">
+                  <div className="w-full flex-col md:flex-row md:items-center justify-between">
                     <div className="text-[18px]">User ID</div>
                     <Link
                       className="text-[18px] text-[#39BEB7] flex gap-1 items-center"
@@ -148,12 +151,27 @@ export default function Home() {
                     placeholder="johndoe"
                     className="px-5 py-4 rounded-[8px] bg-white/5"
                     value={cexId}
-                    onChange={(e) => setCexId(e.target.value)}
+                    onChange={(e) => {
+                      setUserIdError("");
+                      setCexId(e.target.value);
+                    }}
+                    onBlur={() => {
+                      // If cex is bitget, the user id should be a number
+
+                      if (cex === "BITGET" && cexId.match(/^\d+$/) === null) {
+                        setUserIdError("Invalid User ID");
+                      }
+                    }}
                   />
+                  {userIdError && (
+                    <div className="text-[#FF3D00] text-[18px]">
+                      {userIdError}
+                    </div>
+                  )}
                 </label>
 
                 <label className="flex flex-col gap-2">
-                  <div className="w-full flex items-center justify-between">
+                  <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
                     <div className="text-[18px]">Plume Deposit Address</div>
                     <Link
                       className="text-[18px] text-[#39BEB7] flex gap-1 items-center"
@@ -194,8 +212,17 @@ export default function Home() {
                   </div>
 
                   <Link
-                    className="text-[18px] flex gap-1 items-center"
-                    href={getCexHelpArticle(cex)}
+                    className="text-[18px] flex md:hidden gap-1 items-center"
+                    href={getCexLinkMobile(cex)}
+                    target="_blank"
+                  >
+                    Create a {getLabelByCex(cex)} account
+                    <MoveUpRightIcon size={18} />
+                  </Link>
+
+                  <Link
+                    className="text-[18px] hidden md:flex gap-1 items-center"
+                    href={getCexLinkDesktop(cex)}
                     target="_blank"
                   >
                     Create a {getLabelByCex(cex)} account
@@ -314,7 +341,8 @@ export default function Home() {
                       isPending ||
                       isFetching ||
                       isLoading ||
-                      !!cexAddressError
+                      !!cexAddressError ||
+                      !!userIdError
                     }
                     onClick={async () => {
                       if (!address || !cex) {

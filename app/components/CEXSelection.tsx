@@ -34,6 +34,32 @@ export const getLabelByCex = (cex: CEXType) => {
   }
 };
 
+export const getCexLinkDesktop = (cex: CEXType) => {
+  switch (cex) {
+    case CEX.BITGET:
+      return "https://www.bitget.com/";
+    case CEX.BYBIT:
+      return "https://www.bybit.com/";
+    case CEX.KUCOIN:
+      return "https://www.kucoin.com/";
+    default:
+      return "";
+  }
+};
+
+export const getCexLinkMobile = (cex: CEXType) => {
+  switch (cex) {
+    case CEX.BITGET:
+      return "https://bitget.onelink.me/XqvW?af_xp=custom&pid=Plume";
+    case CEX.BYBIT:
+      return "https://www.bybit.com/en/download/";
+    case CEX.KUCOIN:
+      return "ttps://www.kucoin.com/download";
+    default:
+      return "";
+  }
+};
+
 const getImageByCex = (cex: CEXType) => {
   switch (cex) {
     case CEX.BITGET:
