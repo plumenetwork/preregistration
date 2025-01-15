@@ -75,7 +75,7 @@ const reckless = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Plume's Airdrop Registration",
+  title: "Plume's Airdrop CEX Claim",
   description: "Please register for Plume's Airdrop",
   openGraph: {
     images: [{ url: DefaultBanner.src }],
