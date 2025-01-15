@@ -104,7 +104,7 @@ export const CEXSelection = ({ cex, onClick }: Props) => {
       {Object.values(CEX).map((c) => (
         <li
           key={c}
-          className="lg:basis-[calc(33.33%-2rem)] md:basis-[calc(50%-2rem)] basis-full"
+          className="lg:basis-[calc(33.33%-21.34px)] md:basis-[calc(50%-2rem)] basis-full"
         >
           <button
             className={clsx(
