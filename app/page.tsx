@@ -458,8 +458,8 @@ export default function Home() {
               <span className="italic">Centralized Exchange</span>
             </div>
             <div className="text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89] text-center">
-              Submit this form to claim your Plume&apos;s Airdrop ahead of the
-              Plume live release via a centralized exchange.
+              Submit this form to claim Plume&apos;s Airdrop ahead of the Plume
+              live release via a centralized exchange.
             </div>
             <div className="mt-12">
               <ConnectButton.Custom>
