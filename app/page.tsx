@@ -22,6 +22,7 @@ import {
   getCexLinkDesktop,
   getCexLinkMobile,
   getLabelByCex,
+  getPlaceholderByCex,
 } from "./components/CEXSelection";
 import { isAddress } from "viem";
 
@@ -158,7 +159,7 @@ export default function Home() {
                   </div>
                   <input
                     type="text"
-                    placeholder="johndoe"
+                    placeholder={getPlaceholderByCex(cex)}
                     className="px-5 py-4 rounded-[8px] bg-white/5"
                     value={cexId}
                     onChange={(e) => {

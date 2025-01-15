@@ -34,6 +34,19 @@ export const getLabelByCex = (cex: CEXType) => {
   }
 };
 
+export const getPlaceholderByCex = (cex: CEXType) => {
+  switch (cex) {
+    case CEX.BITGET:
+      return "Bitget UID";
+    case CEX.BYBIT:
+      return "Bybit UID";
+    case CEX.KUCOIN:
+      return "KuCoin UID";
+    default:
+      return "";
+  }
+};
+
 export const getCexLinkDesktop = (cex: CEXType) => {
   switch (cex) {
     case CEX.BITGET:
