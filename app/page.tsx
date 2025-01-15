@@ -87,7 +87,7 @@ export default function Home() {
       });
     },
   });
-  const { isFetching, isLoading, data } = useIsUserRegistered(address);
+  const { isFetching, isLoading } = useIsUserRegistered(address);
 
   useEffect(() => {
     if (address !== previousAddress) {
@@ -491,11 +491,11 @@ export default function Home() {
                         }
                         onClick={() => {
                           if (account) {
-                            if (data?.registered) {
-                              setCurrentPane("FINISHED");
-                            } else {
-                              setCurrentPane("CEX_SELECTION");
-                            }
+                            // if (data?.registered) {
+                            //   setCurrentPane("FINISHED");
+                            // } else {
+                            setCurrentPane("CEX_SELECTION");
+                            // }
                           } else {
                             openConnectModal();
                           }

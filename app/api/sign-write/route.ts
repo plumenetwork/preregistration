@@ -69,7 +69,19 @@ export const POST = async (req: NextRequest) => {
       cexId,
       cexWalletAddress: cexAddress,
     })
-    .onConflictDoNothing();
+    .onConflictDoUpdate({
+      target: users.walletAddress,
+      set: {
+        signature,
+        twitterId,
+        twitterName: twitterUsername,
+        discordId,
+        discordName: discordUsername,
+        cex,
+        cexId,
+        cexWalletAddress: cexAddress,
+      },
+    });
 
   if (!isAddressEqual(recoveredAddress, address)) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
