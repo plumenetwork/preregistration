@@ -12,7 +12,7 @@ type Props = {
 
 export const PaneLayout = ({ content, invertedImage }: Props) => {
   return (
-    <div className="px-6 lg:px-8 max-w-[680px] w-full mx-auto flex flex-col gap-6 lg:mt-[100px]">
+    <div className="px-6 lg:px-8 max-w-[720px] w-full mx-auto flex flex-col gap-6 lg:mt-[100px]">
       <Image
         alt=""
         src="/images/plume-cex-home-logo.avif"
