@@ -17,7 +17,7 @@ type Props = {
   onClick: (_: CEXType) => void;
 };
 
-const getLabelByCex = (cex: CEXType) => {
+export const getLabelByCex = (cex: CEXType) => {
   switch (cex) {
     case CEX.BITGET:
       return "Bitget";

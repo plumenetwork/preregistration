@@ -1,21 +1,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAccount, useDisconnect } from "wagmi";
-// import { generateMessageToSign } from "./lib/shared/crypto";
-// import { useMutation } from "@tanstack/react-query";
+import Image from "next/image";
+import { useAccount, useDisconnect, useSignMessage } from "wagmi";
+import { generateMessageToSign } from "./lib/shared/crypto";
+import { useMutation } from "@tanstack/react-query";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useIsUserRegistered } from "./hooks/useIsUserRegistered";
 import Link from "next/link";
-import { Loader2Icon, XIcon } from "lucide-react";
-// import { usePrevious } from "@uidotdev/usehooks";
-// import { toast } from "react-toastify";
-// import { SignedMessageToast } from "./components/SignedMessageToast";
-// import { useIsMounted } from "./hooks/useIsMounted";
+import { Loader2Icon, MoveUpRightIcon, XIcon } from "lucide-react";
+import { usePrevious } from "@uidotdev/usehooks";
+import { toast } from "react-toastify";
+import { SignedMessageToast } from "./components/SignedMessageToast";
+import { useIsMounted } from "./hooks/useIsMounted";
 import { usePreregStore } from "./store";
 import { useShallow } from "zustand/react/shallow";
 import { PaneLayout } from "./components/PaneLayout";
-import { CEXSelection, CEXType } from "./components/CEXSelection";
+import {
+  CEXSelection,
+  CEXType,
+  getLabelByCex,
+} from "./components/CEXSelection";
+import { isAddress } from "viem";
 
 const getCexHelpArticle = (cex: CEXType) => {
   switch (cex) {
@@ -29,63 +35,62 @@ const getCexHelpArticle = (cex: CEXType) => {
 };
 
 export default function Home() {
-  // const { signMessageAsync, isPending: isSigningMessage } = useSignMessage();
+  const { signMessageAsync, isPending: isSigningMessage } = useSignMessage();
   const { disconnect } = useDisconnect();
   const { address } = useAccount();
-  // const mounted = useIsMounted();
-  // const [message, setMessage] = useState("");
-  // const [signature, setSignature] = useState("");
-  // const previousAddress = usePrevious(address);
+  const mounted = useIsMounted();
+  const [message, setMessage] = useState("");
+  const [signature, setSignature] = useState("");
+  const previousAddress = usePrevious(address);
   const [currentPane, setCurrentPane] = usePreregStore(
     useShallow((state) => [state.currentPane, state.setCurrentPane])
   );
   const [cex, setCex] = useState<CEXType | null>(null);
-  // const [finishedRegistration, setFinishedRegistration] = useState(false);
+  const [cexId, setCexId] = useState("");
+  const [cexAddress, setCexAddress] = useState("");
+  const [cexAddressError, setCexAddressError] = useState("");
 
-  // const { isPending, mutateAsync } = useMutation({
-  //   mutationKey: ["sign"],
-  //   mutationFn: async ({
-  //     message,
-  //     signature,
-  //     address,
-  //     twitterEncryptedId,
-  //     twitterEncryptedUsername,
-  //     discordEncryptedId,
-  //     discordEncryptedUsername,
-  //   }: {
-  //     message: string;
-  //     signature: string;
-  //     address: string;
-  //     twitterEncryptedId?: string | null;
-  //     twitterEncryptedUsername?: string | null;
-  //     discordEncryptedId?: string | null;
-  //     discordEncryptedUsername?: string | null;
-  //   }) => {
-  //     return fetch("/api/sign-write", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         message,
-  //         signature,
-  //         address,
-  //         twitterEncryptedUsername: twitterEncryptedUsername || null,
-  //         twitterEncryptedId: twitterEncryptedId || null,
-  //         discordEncryptedUsername: discordEncryptedUsername || null,
-  //         discordEncryptedId: discordEncryptedId || null,
-  //       }),
-  //     });
-  //   },
-  // });
+  const { isPending, mutateAsync } = useMutation({
+    mutationKey: ["sign"],
+    mutationFn: async ({
+      message,
+      signature,
+      address,
+      cex,
+      cexId,
+      cexAddress,
+    }: {
+      message: string;
+      signature: string;
+      address: string;
+      cex: CEXType;
+      cexId: string;
+      cexAddress: string;
+    }) => {
+      return fetch("/api/sign-write", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message,
+          signature,
+          address,
+          cex,
+          cexId,
+          cexAddress,
+        }),
+      });
+    },
+  });
   const { isFetching, isLoading, data } = useIsUserRegistered(address);
 
-  // useEffect(() => {
-  //   if (address !== previousAddress) {
-  //     setMessage("");
-  //     setSignature("");
-  //   }
-  // }, [previousAddress, address, currentPane]);
+  useEffect(() => {
+    if (address !== previousAddress) {
+      setMessage("");
+      setSignature("");
+    }
+  }, [previousAddress, address, currentPane]);
 
   useEffect(() => {
     // scroll to top
@@ -122,18 +127,226 @@ export default function Home() {
               />
             </div>
             {cex && (
-              <>
-                <div className="text-[28px]">1. Add your details</div>
+              <div className="mt-8 lg:mt-16 flex flex-col gap-8 pb-[200px]">
+                <div className="text-[28px] font-reckless">
+                  1. Add your details
+                </div>
                 <label className="flex flex-col gap-2">
-                  <div className="w-full flex items-center justify-center">
+                  <div className="w-full flex items-center justify-between">
                     <div className="text-[18px]">User ID</div>
-                    <Link className="text-[18px]" href={getCexHelpArticle(cex)}>
-                      What’s my User ID?
+                    <Link
+                      className="text-[18px] text-[#39BEB7] flex gap-1 items-center"
+                      href={getCexHelpArticle(cex)}
+                      target="_blank"
+                    >
+                      What&apos;s my User ID?{" "}
+                      <MoveUpRightIcon size={18} color="#39BEB7" />
                     </Link>
                   </div>
-                  <input type="text" placeholder="johndoe" />
+                  <input
+                    type="text"
+                    placeholder="johndoe"
+                    className="px-5 py-4 rounded-[8px] bg-white/5"
+                    value={cexId}
+                    onChange={(e) => setCexId(e.target.value)}
+                  />
                 </label>
-              </>
+
+                <label className="flex flex-col gap-2">
+                  <div className="w-full flex items-center justify-between">
+                    <div className="text-[18px]">Plume Deposit Address</div>
+                    <Link
+                      className="text-[18px] text-[#39BEB7] flex gap-1 items-center"
+                      href={getCexHelpArticle(cex)}
+                      target="_blank"
+                    >
+                      Where&apos;s my Plume address?{" "}
+                      <MoveUpRightIcon size={18} color="#39BEB7" />
+                    </Link>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="0x123"
+                    className="px-5 py-4 rounded-[8px] bg-white/5"
+                    value={cexAddress}
+                    onChange={(e) => {
+                      setCexAddressError("");
+                      setCexAddress(e.target.value);
+                    }}
+                    onBlur={() => {
+                      if (!isAddress(cexAddress)) {
+                        setCexAddressError(
+                          "Please specify a valid EVM address"
+                        );
+                      }
+                    }}
+                  />
+                  {cexAddressError && (
+                    <div className="text-[#FF3D00] text-[18px]">
+                      {cexAddressError}
+                    </div>
+                  )}
+                </label>
+
+                <div className="flex flex-col gap-1">
+                  <div className="text-[#918C89] text-[18px]">
+                    Don&apos;t have an account?
+                  </div>
+
+                  <Link
+                    className="text-[18px] flex gap-1 items-center"
+                    href={getCexHelpArticle(cex)}
+                    target="_blank"
+                  >
+                    Create a {getLabelByCex(cex)} account
+                    <MoveUpRightIcon size={18} />
+                  </Link>
+                </div>
+
+                <div className="border-t border-[#2C2A29]" />
+
+                <div className="text-[28px] font-reckless">
+                  2. Sign the Terms of Service
+                </div>
+                <div className="text-[18px] text-[#918C89]">
+                  By signing below, you confirm that you&apos;ve read and agree
+                  with the Plume Airdrop{" "}
+                  <Link
+                    className="text-[18px] inline-flex gap-1 items-center text-white"
+                    href="/terms"
+                    target="_blank"
+                  >
+                    Terms of Service
+                    <MoveUpRightIcon size={18} />
+                  </Link>
+                </div>
+
+                <ConnectButton.Custom>
+                  {({ account, openConnectModal, authenticationStatus }) => {
+                    return (
+                      <button
+                        className="rounded-[24px] border border-dashed border-[#2C2A29] py-[60px] flex items-center justify-center hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+                        disabled={
+                          !mounted ||
+                          authenticationStatus === "loading" ||
+                          isSigningMessage ||
+                          !!signature
+                        }
+                        onClick={async () => {
+                          if (account) {
+                            const { message } = generateMessageToSign();
+                            try {
+                              const sig = await signMessageAsync({
+                                message,
+                              });
+
+                              setMessage(message);
+                              setSignature(sig);
+                              toast(<SignedMessageToast />);
+                            } catch (e) {
+                              console.error(e);
+                            }
+                          } else {
+                            openConnectModal();
+                          }
+                        }}
+                      >
+                        {mounted && (
+                          <div className="font-reckless flex items-center gap-2 text-[18px]">
+                            {account ? (
+                              <>
+                                <span>
+                                  <Image
+                                    alt=""
+                                    src="/images/plume-logo.png"
+                                    width={16}
+                                    height={16}
+                                  />
+                                </span>
+                                {signature ? (
+                                  <span>Signed</span>
+                                ) : isSigningMessage ? (
+                                  <span>Signing</span>
+                                ) : (
+                                  <span>
+                                    Sign <span className="italic">here</span>
+                                  </span>
+                                )}
+                              </>
+                            ) : (
+                              <>
+                                <Image
+                                  alt=""
+                                  src="/images/wallet-logo.png"
+                                  width={32}
+                                  height={20}
+                                />
+                                Connect Wallet
+                              </>
+                            )}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  }}
+                </ConnectButton.Custom>
+
+                <div className="border-t border-[#2C2A29]" />
+
+                <div className="text-[28px] font-reckless">
+                  3. Submit the form
+                </div>
+
+                <div className="text-[#918C89]">
+                  By submitting this form, you acknowledge that you have
+                  reviewed and agree to the Plume Airdrop Terms of Service,
+                  including the{" "}
+                  <span className="text-white">
+                    forfeiture of additional boosts
+                  </span>{" "}
+                  offered to onchain claimers.
+                </div>
+                <div className="mt-6 justify-center flex">
+                  <button
+                    className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+                    disabled={
+                      !signature ||
+                      isPending ||
+                      isFetching ||
+                      isLoading ||
+                      !!cexAddressError
+                    }
+                    onClick={async () => {
+                      if (!address || !cex) {
+                        return;
+                      }
+
+                      await mutateAsync({
+                        message,
+                        signature,
+                        address,
+                        cex,
+                        cexId,
+                        cexAddress,
+                      });
+
+                      setCurrentPane("FINISHED");
+                    }}
+                  >
+                    {isPending ? (
+                      <div className="flex gap-2 items-center justify-center">
+                        <Loader2Icon
+                          size={16}
+                          className="animate-spin text-[#1A1613]"
+                        />
+                        Submitting
+                      </div>
+                    ) : (
+                      "Submit"
+                    )}
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         }
@@ -172,15 +385,15 @@ export default function Home() {
     return (
       <PaneLayout
         content={
-          <div className="flex flex-col pb-[100px] mt-8 ">
-            <div className="font-[500] text-[42px] md:text-[48px] lg:text-[56px] mb-4 font-reckless italic">
-              You’re Registered
+          <div className="flex flex-col">
+            <div className="text-[36px] md:text-[48px] lg:text-[56px] leading-[1.2] font-reckless text-center mb-3">
+              Form Submitted
             </div>
-            <div className="mb-8 font-[500] text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89]">
-              Thank you for registering for Plume&apos;s Airdrop. Further
-              updates will be shared on Plume&apos;s X account.
+            <div className="text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89] text-center">
+              Thank you for registering. Follow Plume on 𝕏 to stay tuned for
+              updates.
             </div>
-            <div className="flex">
+            <div className="flex mt-8 justify-center">
               <Link
                 href="https://x.com/plumenetwork"
                 target="_blank"
@@ -188,7 +401,7 @@ export default function Home() {
                 passHref
                 className="w-auto font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                Follow Plume on X
+                Follow @plumenetwork
               </Link>
             </div>
           </div>

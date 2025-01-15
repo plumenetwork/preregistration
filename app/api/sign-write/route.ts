@@ -13,6 +13,9 @@ export const POST = async (req: NextRequest) => {
     twitterEncryptedUsername,
     discordEncryptedId,
     discordEncryptedUsername,
+    cex,
+    cexId,
+    cexAddress,
   } = (await req.json()) as {
     message: string;
     signature: Hex;
@@ -21,6 +24,9 @@ export const POST = async (req: NextRequest) => {
     twitterEncryptedUsername: string | null;
     discordEncryptedId: string | null;
     discordEncryptedUsername: string | null;
+    cex: string | null;
+    cexId: string | null;
+    cexAddress: string | null;
   };
 
   const recoveredAddress = await recoverMessageAddress({
@@ -59,6 +65,9 @@ export const POST = async (req: NextRequest) => {
       twitterName: twitterUsername,
       discordId,
       discordName: discordUsername,
+      cex,
+      cexId,
+      cexWalletAddress: cexAddress,
     })
     .onConflictDoNothing();
 
