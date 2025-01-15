@@ -97,15 +97,22 @@ export default function Home() {
 
   useEffect(() => {
     // scroll to top
-
     if (currentPane === "DEFAULT") {
       return;
     }
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    if (currentPane === "FORM") {
+      const cexFormElement = document.getElementById("cexform");
+
+      if (cexFormElement) {
+        cexFormElement.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
   }, [currentPane]);
 
   if (currentPane === "FORM") {
@@ -130,7 +137,10 @@ export default function Home() {
               />
             </div>
             {cex && (
-              <div className="mt-8 lg:mt-16 flex flex-col gap-8 pb-[200px]">
+              <div
+                className="mt-8 lg:mt-16 flex flex-col gap-8 pb-[200px]"
+                id="cexform"
+              >
                 <div className="text-[28px] font-reckless">
                   1. Add your details
                 </div>
