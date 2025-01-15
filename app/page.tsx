@@ -247,7 +247,7 @@ export default function Home() {
                 </div>
                 <div className="text-[18px] text-[#918C89]">
                   By signing below, you confirm that you&apos;ve read and agree
-                  with the Plume Airdrop{" "}
+                  with Plume&apos;Airdrop{" "}
                   <Link
                     className="text-[18px] inline-flex gap-1 items-center text-white"
                     href="/terms"
@@ -336,7 +336,7 @@ export default function Home() {
 
                 <div className="text-[#918C89]">
                   By submitting this form, you acknowledge that you have
-                  reviewed and agree to the Plume Airdrop Terms of Service,
+                  reviewed and agree to Plume&apos;Airdrop Terms of Service,
                   including the{" "}
                   <span className="text-white">
                     forfeiture of additional boosts
@@ -454,12 +454,12 @@ export default function Home() {
         content={
           <div className="flex flex-col">
             <div className="text-[36px] md:text-[48px] lg:text-[56px] leading-[1.2] font-reckless text-center mb-3">
-              Claim Plume Airdrop via{" "}
+              Claim Plume&apos;Airdrop via{" "}
               <span className="italic">Centralized Exchange</span>
             </div>
             <div className="text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89] text-center">
-              Submit this form to claim your Plume Airdrop ahead of the Plume
-              live release via a centralized exchange.
+              Submit this form to claim your Plume&apos;Airdrop ahead of the
+              Plume live release via a centralized exchange.
             </div>
             <div className="mt-12">
               <ConnectButton.Custom>

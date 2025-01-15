@@ -14,7 +14,7 @@ const RestrictedPage = () => {
       content={
         <div className="flex flex-col">
           <div className="text-[36px] md:text-[48px] lg:text-[56px] leading-[1.2] font-reckless text-center mb-3">
-            Plume Airdrop{" "}
+            Plume&apos;s Airdrop{" "}
             <span className="text-[#918C89] italic">Unavailable</span>
           </div>
           <div className="text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89] text-center">
