@@ -1,81 +1,91 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAccount, useDisconnect, useSignMessage } from "wagmi";
-import { generateMessageToSign } from "./lib/shared/crypto";
-import { useMutation } from "@tanstack/react-query";
+import { useAccount, useDisconnect } from "wagmi";
+// import { generateMessageToSign } from "./lib/shared/crypto";
+// import { useMutation } from "@tanstack/react-query";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useIsUserRegistered } from "./hooks/useIsUserRegistered";
 import Link from "next/link";
-import { CheckIcon, Loader2Icon, MoveUpRightIcon, XIcon } from "lucide-react";
-import { usePrevious } from "@uidotdev/usehooks";
-import { toast } from "react-toastify";
-import { SignedMessageToast } from "./components/SignedMessageToast";
-import { useIsMounted } from "./hooks/useIsMounted";
+import { Loader2Icon, XIcon } from "lucide-react";
+// import { usePrevious } from "@uidotdev/usehooks";
+// import { toast } from "react-toastify";
+// import { SignedMessageToast } from "./components/SignedMessageToast";
+// import { useIsMounted } from "./hooks/useIsMounted";
 import { usePreregStore } from "./store";
 import { useShallow } from "zustand/react/shallow";
 import { PaneLayout } from "./components/PaneLayout";
-import Image from "next/image";
 import { CEXSelection, CEXType } from "./components/CEXSelection";
 
+const getCexHelpArticle = (cex: CEXType) => {
+  switch (cex) {
+    case "BITGET":
+      return "https://plume-network.notion.site/plume-bitget";
+    case "BYBIT":
+      return "https://plume-network.notion.site/plume-bybit";
+    case "KUCOIN":
+      return "https://plume-network.notion.site/plume-kucoin";
+  }
+};
+
 export default function Home() {
-  const { signMessageAsync, isPending: isSigningMessage } = useSignMessage();
+  // const { signMessageAsync, isPending: isSigningMessage } = useSignMessage();
   const { disconnect } = useDisconnect();
   const { address } = useAccount();
-  const mounted = useIsMounted();
-  const [message, setMessage] = useState("");
-  const [signature, setSignature] = useState("");
-  const previousAddress = usePrevious(address);
+  // const mounted = useIsMounted();
+  // const [message, setMessage] = useState("");
+  // const [signature, setSignature] = useState("");
+  // const previousAddress = usePrevious(address);
   const [currentPane, setCurrentPane] = usePreregStore(
     useShallow((state) => [state.currentPane, state.setCurrentPane])
   );
   const [cex, setCex] = useState<CEXType | null>(null);
-  const [finishedRegistration, setFinishedRegistration] = useState(false);
+  // const [finishedRegistration, setFinishedRegistration] = useState(false);
 
-  const { isPending, mutateAsync } = useMutation({
-    mutationKey: ["sign"],
-    mutationFn: async ({
-      message,
-      signature,
-      address,
-      twitterEncryptedId,
-      twitterEncryptedUsername,
-      discordEncryptedId,
-      discordEncryptedUsername,
-    }: {
-      message: string;
-      signature: string;
-      address: string;
-      twitterEncryptedId?: string | null;
-      twitterEncryptedUsername?: string | null;
-      discordEncryptedId?: string | null;
-      discordEncryptedUsername?: string | null;
-    }) => {
-      return fetch("/api/sign-write", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message,
-          signature,
-          address,
-          twitterEncryptedUsername: twitterEncryptedUsername || null,
-          twitterEncryptedId: twitterEncryptedId || null,
-          discordEncryptedUsername: discordEncryptedUsername || null,
-          discordEncryptedId: discordEncryptedId || null,
-        }),
-      });
-    },
-  });
+  // const { isPending, mutateAsync } = useMutation({
+  //   mutationKey: ["sign"],
+  //   mutationFn: async ({
+  //     message,
+  //     signature,
+  //     address,
+  //     twitterEncryptedId,
+  //     twitterEncryptedUsername,
+  //     discordEncryptedId,
+  //     discordEncryptedUsername,
+  //   }: {
+  //     message: string;
+  //     signature: string;
+  //     address: string;
+  //     twitterEncryptedId?: string | null;
+  //     twitterEncryptedUsername?: string | null;
+  //     discordEncryptedId?: string | null;
+  //     discordEncryptedUsername?: string | null;
+  //   }) => {
+  //     return fetch("/api/sign-write", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         message,
+  //         signature,
+  //         address,
+  //         twitterEncryptedUsername: twitterEncryptedUsername || null,
+  //         twitterEncryptedId: twitterEncryptedId || null,
+  //         discordEncryptedUsername: discordEncryptedUsername || null,
+  //         discordEncryptedId: discordEncryptedId || null,
+  //       }),
+  //     });
+  //   },
+  // });
   const { isFetching, isLoading, data } = useIsUserRegistered(address);
 
-  useEffect(() => {
-    if (address !== previousAddress) {
-      setMessage("");
-      setSignature("");
-    }
-  }, [previousAddress, address, currentPane]);
+  // useEffect(() => {
+  //   if (address !== previousAddress) {
+  //     setMessage("");
+  //     setSignature("");
+  //   }
+  // }, [previousAddress, address, currentPane]);
 
   useEffect(() => {
     // scroll to top
@@ -111,7 +121,20 @@ export default function Home() {
                 }}
               />
             </div>
-            <div>Form</div>
+            {cex && (
+              <>
+                <div className="text-[28px]">1. Add your details</div>
+                <label className="flex flex-col gap-2">
+                  <div className="w-full flex items-center justify-center">
+                    <div className="text-[18px]">User ID</div>
+                    <Link className="text-[18px]" href={getCexHelpArticle(cex)}>
+                      What’s my User ID?
+                    </Link>
+                  </div>
+                  <input type="text" placeholder="johndoe" />
+                </label>
+              </>
+            )}
           </div>
         }
       />
@@ -170,7 +193,6 @@ export default function Home() {
             </div>
           </div>
         }
-        image="/images/plume-bg-1.webp"
       />
     );
   }
