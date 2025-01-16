@@ -11,6 +11,7 @@ export default {
       fontFamily: {
         matter: ["var(--font-matter)", "sans-serif"],
         reckless: ["var(--font-reckless)", "sans-serif"],
+        lufga: ["var(--font-lufga)", "sans-serif"],
       },
       colors: {
         background: "var(--background)",

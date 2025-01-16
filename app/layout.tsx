@@ -6,6 +6,42 @@ import { AppProviders } from "./components/AppProviders";
 import { ToastContainer } from "react-toastify";
 import { Suspense } from "react";
 
+const lufga = localFont({
+  src: [
+    {
+      path: "./fonts/Lufga-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Lufga-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Lufga-SemiBold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Lufga-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Lufga-ExtraBold.woff2",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Lufga-Black.woff2",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-lufga",
+});
+
 const matter = localFont({
   src: [
     {
@@ -89,7 +125,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${matter.variable} ${reckless.variable} antialiased bg-[#1A1613] text-white`}
+        className={`${matter.variable} ${reckless.variable} ${lufga.variable} antialiased bg-[#1A1613] text-white`}
       >
         <div className="font-matter">
           <AppProviders>
