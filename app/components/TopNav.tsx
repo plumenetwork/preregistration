@@ -1,15 +1,15 @@
 "use client";
 import Image from "next/image";
-import { topNavPaneList, usePreregStore } from "../store";
-import { useShallow } from "zustand/react/shallow";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+// import { topNavPaneList, usePreregStore } from "../store";
+// import { useShallow } from "zustand/react/shallow";
+// import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 export const TopNav = () => {
-  const [currentPane, setCurrentPane] = usePreregStore(
-    useShallow((state) => [state.currentPane, state.setCurrentPane])
-  );
-  const currentIndex = topNavPaneList.indexOf(currentPane);
-  const shouldShowNav = currentIndex !== -1;
+  // const [currentPane, setCurrentPane] = usePreregStore(
+  //   useShallow((state) => [state.currentPane, state.setCurrentPane])
+  // );
+  // const currentIndex = topNavPaneList.indexOf(currentPane);
+  // const shouldShowNav = currentIndex !== -1;
 
   return (
     <div className="max-w-[1200px] w-full flex py-4 lg:py-8 px-4 lg:px-8 mx-auto">
@@ -25,7 +25,7 @@ export const TopNav = () => {
           />
         </a>
 
-        {shouldShowNav && (
+        {/* {shouldShowNav && (
           <div className="flex items-center gap-4 text-white">
             <button
               className="disabled:opacity-40"
@@ -54,7 +54,7 @@ export const TopNav = () => {
               <ChevronRightIcon size={20} />
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
