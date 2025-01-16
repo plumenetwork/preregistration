@@ -82,7 +82,7 @@ export const PaneLayout = ({
           }}
         />
       )}
-      <div className="flex flex-col lg:flex-row h-screen">
+      <div className="flex flex-col lg:flex-row min-h-screen">
         <div className="lg:hidden p-4">{nav}</div>
         <div className="lg:hidden aspect-[394/226] relative mb-6">
           <Image className="object-cover" alt="" src={image} fill />
@@ -105,7 +105,7 @@ export const PaneLayout = ({
           />
         </div>
       </div>
-      <div className="py-6 lg:text-center px-6 text-[#918C89] max-w-[900px] mx-auto pt-10">
+      <div className="py-6 lg:text-center px-6 text-[#918C89] max-w-[900px] mx-auto mt-10">
         <span className="text-white">Disclaimer</span>: Terms of Service apply.
         Plume&apos;s Airdrop is available globally, excluding the United States
         and OFAC-sanctioned countries, in accordance with regulatory and
