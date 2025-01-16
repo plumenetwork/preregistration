@@ -190,7 +190,7 @@ export default function Home() {
 
                 <label className="flex flex-col gap-2">
                   <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
-                    <div className="text-[18px]">Plume Deposit Address</div>
+                    <div className="text-[18px]">$PLUME Deposit Address</div>
                     <Link
                       className="text-[18px] text-[#39BEB7] flex gap-1 items-center"
                       href={getCexHelpArticle(cex)}
@@ -202,7 +202,7 @@ export default function Home() {
                   </div>
                   <input
                     type="text"
-                    placeholder="0x123"
+                    placeholder="0x0000000000000000000000000000000000000000"
                     className="px-5 py-4 rounded-[8px] bg-white/5"
                     value={cexAddress}
                     onChange={(e) => {
