@@ -1,7 +1,6 @@
 import { db } from "@/app/drizzle/drizzle";
 import { users } from "@/app/drizzle/schema";
 import { decodeData } from "@/app/lib/server/twitter";
-import { get } from "@vercel/edge-config";
 import { NextRequest, NextResponse } from "next/server";
 import { Address, Hex, isAddressEqual, recoverMessageAddress } from "viem";
 
@@ -14,7 +13,6 @@ export const POST = async (req: NextRequest) => {
     twitterEncryptedUsername,
     discordEncryptedId,
     discordEncryptedUsername,
-    CFToken,
   } = (await req.json()) as {
     message: string;
     signature: Hex;
@@ -23,35 +21,7 @@ export const POST = async (req: NextRequest) => {
     twitterEncryptedUsername: string | null;
     discordEncryptedId: string | null;
     discordEncryptedUsername: string | null;
-    CFToken: string | null;
   };
-
-  const isCFTurnstileEnabled = await get("isCFTurnstileEnabled");
-
-  if (isCFTurnstileEnabled) {
-    try {
-      const response = await fetch(
-        "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-        {
-          body: JSON.stringify({
-            response: CFToken,
-            secret: process.env.CF_SECRET_KEY!,
-          }),
-        }
-      );
-      const jsonResponse = await response.json();
-
-      if (jsonResponse.data.success) {
-        // Do nothing successful
-      } else {
-        throw new Error("Invalid CF token");
-      }
-    } catch (e) {
-      console.error(e);
-
-      return NextResponse.json({ error: "Invalid CF token" }, { status: 400 });
-    }
-  }
 
   const recoveredAddress = await recoverMessageAddress({
     message,

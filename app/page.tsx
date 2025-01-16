@@ -23,8 +23,6 @@ import { PaneLayout } from "./components/PaneLayout";
 import { useDiscordConnect } from "./hooks/useDiscordConnect";
 import { useDiscordDisconnect } from "./hooks/useDiscordDisconnect";
 import Image from "next/image";
-import { Turnstile } from "@marsidev/react-turnstile";
-import { GenericErrorMessageToast } from "./components/GenericErrorMessageToast";
 
 export default function Home() {
   const { signMessageAsync, isPending: isSigningMessage } = useSignMessage();
@@ -40,7 +38,6 @@ export default function Home() {
   const discordEncryptedUsername = searchParams.get("dname");
   const discordUsername = searchParams.get("rdname");
   const discordError = searchParams.get("discordError");
-  const [CFToken, setCFToken] = useState("");
   const mounted = useIsMounted();
 
   const { mutateAsync: getTwitterConnectUrl, isPending: isFetchingTwitterUrl } =
@@ -103,7 +100,7 @@ export default function Home() {
       discordEncryptedId?: string | null;
       discordEncryptedUsername?: string | null;
     }) => {
-      const res = await fetch("/api/sign-write", {
+      return fetch("/api/sign-write", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -116,11 +113,8 @@ export default function Home() {
           twitterEncryptedId: twitterEncryptedId || null,
           discordEncryptedUsername: discordEncryptedUsername || null,
           discordEncryptedId: discordEncryptedId || null,
-          CFToken,
         }),
       });
-
-      return await res.json();
     },
   });
   const { isFetching, isLoading, data } = useIsUserRegistered(address);
@@ -170,116 +164,88 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-4">
-                <button
-                  className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-[#E7E7E7] disabled:text-[#1A1613]"
-                  disabled={isPending || !address || !signature}
-                  onClick={async () => {
-                    if (!address) {
-                      return;
-                    }
+            <div className="flex items-center gap-4">
+              <button
+                className="font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-[#E7E7E7] disabled:text-[#1A1613]"
+                disabled={isPending || !address || !signature}
+                onClick={async () => {
+                  if (!address) {
+                    return;
+                  }
 
+                  await mutateAsync({
+                    message,
+                    signature,
+                    address,
+                    twitterEncryptedId: twitterEncryptedId || null,
+                    twitterEncryptedUsername: twitterEncryptedUsername || null,
+                    discordEncryptedId: discordEncryptedId || null,
+                    discordEncryptedUsername: discordEncryptedUsername || null,
+                  });
+
+                  // Once done we can move to final step
+
+                  setFinishedRegistration(true);
+                  setCurrentPane("FINISHED");
+                }}
+              >
+                {isPending ? (
+                  <div className="flex gap-2 items-center justify-center">
+                    <Loader2Icon
+                      size={16}
+                      className="animate-spin text-[#1A1613]"
+                    />
+                    Submitting
+                  </div>
+                ) : (
+                  "Submit"
+                )}
+              </button>
+              {signature ? (
+                <button
+                  disabled
+                  className="px-6 py-4 rounded-full bg-[#D7FF30] text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40 flex items-center gap-2"
+                >
+                  <Image
+                    width={24}
+                    height={24}
+                    alt=""
+                    src="/images/plume-logo-small.png"
+                  />
+                  Signed
+                </button>
+              ) : (
+                <button
+                  className="px-6 py-4 text-lg rounded-full bg-white text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+                  disabled={isSigningMessage}
+                  onClick={async () => {
+                    const { message } = generateMessageToSign();
                     try {
-                      const response = await mutateAsync({
+                      const sig = await signMessageAsync({
                         message,
-                        signature,
-                        address,
-                        twitterEncryptedId: twitterEncryptedId || null,
-                        twitterEncryptedUsername:
-                          twitterEncryptedUsername || null,
-                        discordEncryptedId: discordEncryptedId || null,
-                        discordEncryptedUsername:
-                          discordEncryptedUsername || null,
                       });
 
-                      if (response.error) {
-                        throw new Error(response.error);
-                      }
-
-                      // Once done we can move to final step
-
-                      setFinishedRegistration(true);
-                      setCurrentPane("FINISHED");
+                      setMessage(message);
+                      setSignature(sig);
+                      toast(<SignedMessageToast />);
                     } catch (e) {
                       console.error(e);
-
-                      toast(
-                        <GenericErrorMessageToast
-                          error={(e as Error).message || "An error occurred"}
-                        />
-                      );
                     }
                   }}
                 >
-                  {isPending ? (
-                    <div className="flex gap-2 items-center justify-center">
+                  {isSigningMessage ? (
+                    <div className="flex gap-2 items-center">
                       <Loader2Icon
                         size={16}
                         className="animate-spin text-[#1A1613]"
                       />
-                      Submitting
+                      Signing
                     </div>
                   ) : (
-                    "Submit"
+                    "Sign"
                   )}
                 </button>
-                {signature ? (
-                  <button
-                    disabled
-                    className="px-6 py-4 rounded-full bg-[#D7FF30] text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40 flex items-center gap-2"
-                  >
-                    <Image
-                      width={24}
-                      height={24}
-                      alt=""
-                      src="/images/plume-logo-small.png"
-                    />
-                    Signed
-                  </button>
-                ) : (
-                  <button
-                    className="px-6 py-4 text-lg rounded-full bg-white text-[#1A1613] font-[600] hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
-                    disabled={isSigningMessage}
-                    onClick={async () => {
-                      const { message } = generateMessageToSign();
-                      try {
-                        const sig = await signMessageAsync({
-                          message,
-                        });
-
-                        setMessage(message);
-                        setSignature(sig);
-                        toast(<SignedMessageToast />);
-                      } catch (e) {
-                        console.error(e);
-                      }
-                    }}
-                  >
-                    {isSigningMessage ? (
-                      <div className="flex gap-2 items-center">
-                        <Loader2Icon
-                          size={16}
-                          className="animate-spin text-[#1A1613]"
-                        />
-                        Signing
-                      </div>
-                    ) : (
-                      "Sign"
-                    )}
-                  </button>
-                )}
-              </div>
-              <Turnstile
-                siteKey="0x4AAAAAAAViEapSHoQXHmzu"
-                options={{
-                  size: "compact",
-                  appearance: "interaction-only",
-                }}
-                onSuccess={(token) => {
-                  setCFToken(token);
-                }}
-              />
+              )}
             </div>
           </div>
         }
