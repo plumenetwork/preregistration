@@ -105,7 +105,7 @@ export const PaneLayout = ({
           />
         </div>
       </div>
-      <div className="py-6 lg:text-center px-6 text-[#918C89] max-w-[900px] mx-auto mt-10">
+      <div className="py-6 lg:text-center px-6 text-[#918C89] max-w-[900px] mx-auto pt-10">
         <span className="text-white">Disclaimer</span>: Terms of Service apply.
         Plume&apos;s Airdrop is available globally, excluding the United States
         and OFAC-sanctioned countries, in accordance with regulatory and
