@@ -50,7 +50,7 @@ export const getPlaceholderByCex = (cex: CEXType) => {
 export const getCexLinkDesktop = (cex: CEXType) => {
   switch (cex) {
     case CEX.BITGET:
-      return "https://www.bitget.com/";
+      return "https://bitget.onelink.me/XqvW?af_xp=custom&pid=Plume";
     case CEX.BYBIT:
       return "https://www.bybit.com/";
     case CEX.KUCOIN:
