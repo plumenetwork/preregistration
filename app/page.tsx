@@ -169,7 +169,14 @@ export default function Home() {
                     onBlur={() => {
                       // If cex is bitget, the user id should be a number
 
-                      if (cex === "BITGET" && cexId.match(/^\d+$/) === null) {
+                      if (cexId === "") {
+                        setUserIdError("");
+                      } else if (
+                        cex === "BITGET" &&
+                        (cexId.match(/^\d+$/) === null ||
+                          cexId.length < 9 ||
+                          cexId.length > 11)
+                      ) {
                         setUserIdError("Invalid User ID");
                       }
                     }}
@@ -203,7 +210,9 @@ export default function Home() {
                       setCexAddress(e.target.value);
                     }}
                     onBlur={() => {
-                      if (!isAddress(cexAddress)) {
+                      if (cexAddress === "") {
+                        setCexAddressError("");
+                      } else if (!isAddress(cexAddress)) {
                         setCexAddressError(
                           "Please specify a valid EVM address"
                         );
@@ -353,7 +362,9 @@ export default function Home() {
                       isFetching ||
                       isLoading ||
                       !!cexAddressError ||
-                      !!userIdError
+                      !!userIdError ||
+                      !cexId ||
+                      !cexAddress
                     }
                     onClick={async () => {
                       if (!address || !cex) {
@@ -535,10 +546,11 @@ export default function Home() {
             </div>
             <div className="text-[#918C89] mt-auto py-8">
               <span className="text-white">Disclaimer</span>: Claiming your
-              airdrop through an exchange is optional. If you are eligible, this
-              method allows you to receive your airdrop early and with zero gas
-              fees. Please note that additional boosts are exclusively available
-              to on-chain claimers.
+              airdrop through an exchange is optional. If eligible, this method
+              allows you to receive part of your airdrop early without gas fees.
+              However, claiming through an exchange will limit your future
+              airdrop boosts, while onchain claims will retain access to the
+              full range of boosts.
             </div>
           </div>
         }
