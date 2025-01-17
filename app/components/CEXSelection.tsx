@@ -111,17 +111,34 @@ const getImageDimensionsByCex = (cex: CEXType) => {
   }
 };
 
+export const getSubtitleByCEX = (cex: CEXType) => {
+  switch (cex) {
+    case CEX.BITGET:
+      return "Unlock 5-100 $PLUME for depositing on Bitget, no gas fees (first-come, first-serve)";
+    case CEX.BYBIT:
+      return "No gas fees for $PLUME deposits";
+    case CEX.KUCOIN:
+      return "Share a 1.25M $PLUME rewards pool for depositing on KuCoin";
+    // case CEX.BINANCE:
+    //   return "Trade to earn rewards";
+    // case CEX.UPBIT:
+    //   return "Trade to earn rewards";
+    // case CEX.BITHUMB:
+    //   return "Trade to earn rewards";
+    default: {
+      return "";
+    }
+  }
+};
+
 export const CEXSelection = ({ cex, onClick }: Props) => {
   return (
     <ul className="flex flex-wrap gap-8">
       {Object.values(CEX).map((c) => (
-        <li
-          key={c}
-          className="lg:basis-[calc(33.33%-21.34px)] md:basis-[calc(50%-2rem)] basis-full"
-        >
+        <li key={c} className="basis-full">
           <button
             className={clsx(
-              "rounded-[12px] p-4 border-[2px] flex w-full aspect-[200/112] hover:opacity-80 items-center justify-center relative transition-all",
+              "rounded-[12px] p-4 border-[2px] flex flex-col w-full py-8 px-6 hover:opacity-80 relative transition-all",
               cex === c ? "border-[#39BEB7]" : "border-[#403E3C]"
             )}
             onClick={() => {
@@ -130,7 +147,7 @@ export const CEXSelection = ({ cex, onClick }: Props) => {
           >
             <Image
               className={clsx(
-                "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all",
+                "transition-all",
                 cex && cex !== c && "grayscale"
               )}
               alt={getLabelByCex(c)}
@@ -142,6 +159,9 @@ export const CEXSelection = ({ cex, onClick }: Props) => {
                 height: getImageDimensionsByCex(c).height,
               }}
             />
+            <div className="text-[#918C89] italic font-[600] mt-3">
+              {getSubtitleByCEX(c)}
+            </div>
           </button>
         </li>
       ))}

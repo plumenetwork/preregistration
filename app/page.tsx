@@ -416,7 +416,7 @@ export default function Home() {
               Select your preferred exchange and follow the instructions to link
               your account.
             </div>
-            <div className="mt-12">
+            <div className="mt-12 pb-[200px]">
               <CEXSelection
                 cex={cex}
                 onClick={(cex) => {
