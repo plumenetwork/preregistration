@@ -21,6 +21,7 @@ import {
   CEXType,
   getCexLinkDesktop,
   getCexLinkMobile,
+  getDepositLabelByCEX,
   getLabelByCex,
   getPlaceholderByCex,
 } from "./components/CEXSelection";
@@ -190,7 +191,9 @@ export default function Home() {
 
                 <label className="flex flex-col gap-2">
                   <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
-                    <div className="text-[18px]">$ETH Deposit Address</div>
+                    <div className="text-[18px]">
+                      {getDepositLabelByCEX(cex)}
+                    </div>
                     <Link
                       className="text-[18px] text-[#39BEB7] flex gap-1 items-center"
                       href={getCexHelpArticle(cex)}

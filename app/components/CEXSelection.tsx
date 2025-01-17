@@ -131,6 +131,21 @@ export const getSubtitleByCEX = (cex: CEXType) => {
   }
 };
 
+export const getDepositLabelByCEX = (cex: CEXType) => {
+  switch (cex) {
+    case CEX.KUCOIN: {
+      return "$ETH Deposit Address";
+    }
+    case CEX.BYBIT:
+    case CEX.BITGET: {
+      return "$PLUME Deposit Address";
+    }
+    default: {
+      return "";
+    }
+  }
+};
+
 export const CEXSelection = ({ cex, onClick }: Props) => {
   return (
     <ul className="flex flex-wrap gap-8">
