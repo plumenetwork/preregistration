@@ -545,7 +545,8 @@ export default function Home() {
               </ConnectButton.Custom>
             </div>
             <div className="text-[#918C89] mt-auto py-8">
-              <span className="text-white">🚨Disclaimer🚨</span>: Claiming your
+              <div className="text-[32px] mx-auto text-center mb-3">⚠️</div>
+              <span className="text-white">Disclaimer</span>: Claiming your
               airdrop through an exchange is optional. If eligible, this method
               allows you to receive part of your airdrop early without gas fees.
               However, claiming through an exchange will limit your future
