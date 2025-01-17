@@ -189,45 +189,47 @@ export default function Home() {
                   )}
                 </label>
 
-                <label className="flex flex-col gap-2">
-                  <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
-                    <div className="text-[18px]">
-                      {getDepositLabelByCEX(cex)}
+                {cex !== "BYBIT" && (
+                  <label className="flex flex-col gap-2">
+                    <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
+                      <div className="text-[18px]">
+                        {getDepositLabelByCEX(cex)}
+                      </div>
+                      <Link
+                        className="text-[18px] text-[#39BEB7] flex gap-1 items-center"
+                        href={getCexHelpArticle(cex)}
+                        target="_blank"
+                      >
+                        Where&apos;s my Plume address?{" "}
+                        <MoveUpRightIcon size={18} color="#39BEB7" />
+                      </Link>
                     </div>
-                    <Link
-                      className="text-[18px] text-[#39BEB7] flex gap-1 items-center"
-                      href={getCexHelpArticle(cex)}
-                      target="_blank"
-                    >
-                      Where&apos;s my Plume address?{" "}
-                      <MoveUpRightIcon size={18} color="#39BEB7" />
-                    </Link>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="0x0000000000000000000000000000000000000000"
-                    className="px-5 py-4 rounded-[8px] bg-white/5"
-                    value={cexAddress}
-                    onChange={(e) => {
-                      setCexAddressError("");
-                      setCexAddress(e.target.value);
-                    }}
-                    onBlur={() => {
-                      if (cexAddress === "") {
+                    <input
+                      type="text"
+                      placeholder="0x0000000000000000000000000000000000000000"
+                      className="px-5 py-4 rounded-[8px] bg-white/5"
+                      value={cexAddress}
+                      onChange={(e) => {
                         setCexAddressError("");
-                      } else if (!isAddress(cexAddress)) {
-                        setCexAddressError(
-                          "Please specify a valid EVM address"
-                        );
-                      }
-                    }}
-                  />
-                  {cexAddressError && (
-                    <div className="text-[#FF3D00] text-[18px]">
-                      {cexAddressError}
-                    </div>
-                  )}
-                </label>
+                        setCexAddress(e.target.value);
+                      }}
+                      onBlur={() => {
+                        if (cexAddress === "") {
+                          setCexAddressError("");
+                        } else if (!isAddress(cexAddress)) {
+                          setCexAddressError(
+                            "Please specify a valid EVM address"
+                          );
+                        }
+                      }}
+                    />
+                    {cexAddressError && (
+                      <div className="text-[#FF3D00] text-[18px]">
+                        {cexAddressError}
+                      </div>
+                    )}
+                  </label>
+                )}
 
                 <div className="flex flex-col gap-1">
                   <div className="text-[#918C89] text-[18px]">
@@ -367,7 +369,7 @@ export default function Home() {
                       !!cexAddressError ||
                       !!userIdError ||
                       !cexId ||
-                      !cexAddress
+                      (!cexAddress && cex !== "BYBIT")
                     }
                     onClick={async () => {
                       if (!address || !cex) {
