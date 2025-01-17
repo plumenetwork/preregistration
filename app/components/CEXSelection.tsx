@@ -116,7 +116,7 @@ export const getSubtitleByCEX = (cex: CEXType) => {
     case CEX.BITGET:
       return "Unlock 5-100 $PLUME for depositing on Bitget, no gas fees (first-come, first-serve)";
     case CEX.BYBIT:
-      return "No gas fees for $PLUME deposits";
+      return "No gas fees for depositing $PLUME on bybit";
     case CEX.KUCOIN:
       return "Share a 1.25M $PLUME rewards pool for depositing on KuCoin";
     // case CEX.BINANCE:
