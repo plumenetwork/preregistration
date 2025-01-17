@@ -190,7 +190,7 @@ export default function Home() {
 
                 <label className="flex flex-col gap-2">
                   <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
-                    <div className="text-[18px]">$PLUME Deposit Address</div>
+                    <div className="text-[18px]">$ETH Deposit Address</div>
                     <Link
                       className="text-[18px] text-[#39BEB7] flex gap-1 items-center"
                       href={getCexHelpArticle(cex)}
@@ -545,7 +545,7 @@ export default function Home() {
               </ConnectButton.Custom>
             </div>
             <div className="text-[#918C89] mt-auto py-8">
-              <span className="text-white">Disclaimer</span>: Claiming your
+              <span className="text-white">🚨Disclaimer🚨</span>: Claiming your
               airdrop through an exchange is optional. If eligible, this method
               allows you to receive part of your airdrop early without gas fees.
               However, claiming through an exchange will limit your future
