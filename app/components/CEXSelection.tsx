@@ -54,7 +54,7 @@ export const getCexLinkDesktop = (cex: CEXType) => {
     case CEX.BYBIT:
       return "https://www.bybit.com/";
     case CEX.KUCOIN:
-      return "https://www.kucoin.com/";
+      return "https://www.kucoin.com/ucenter/signup?utm_source=j_airdrop";
     default:
       return "";
   }
@@ -67,7 +67,7 @@ export const getCexLinkMobile = (cex: CEXType) => {
     case CEX.BYBIT:
       return "https://www.bybit.com/en/download/";
     case CEX.KUCOIN:
-      return "ttps://www.kucoin.com/download";
+      return "https://www.kucoin.com/ucenter/signup?utm_source=j_airdrop";
     default:
       return "";
   }
