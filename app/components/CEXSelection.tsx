@@ -174,7 +174,7 @@ export const CEXSelection = ({ cex, onClick }: Props) => {
                 height: getImageDimensionsByCex(c).height,
               }}
             />
-            <div className="text-[#918C89] italic font-[600] mt-3">
+            <div className="text-[#918C89] italic font-[600] mt-3 text-left">
               {getSubtitleByCEX(c)}
             </div>
           </button>
