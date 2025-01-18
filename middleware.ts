@@ -11,6 +11,17 @@ export async function middleware(request: NextRequest) {
   const isApiUrl = new URL(request.url).pathname.startsWith("/api");
   const isImages = new URL(request.url).pathname.startsWith("/images");
 
+  if (isApiUrl) {
+    return NextResponse.json(
+      {
+        error: "Registration is over",
+      },
+      {
+        status: 403,
+      }
+    );
+  }
+
   if (!isUrlRestricted && !isImages && isGeoBlockingEnabled && isBlocked) {
     if (isApiUrl) {
       return NextResponse.json(
