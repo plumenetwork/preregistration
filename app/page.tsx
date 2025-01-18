@@ -117,7 +117,7 @@ export default function Home() {
     }
   }, [currentPane]);
 
-  if (true) {
+  if (Date.now() > 1) {
     return (
       <PaneLayout
         invertedImage
