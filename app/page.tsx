@@ -117,6 +117,45 @@ export default function Home() {
     }
   }, [currentPane]);
 
+  if (Date.now() >= 1737219600000) {
+    return (
+      <PaneLayout
+        invertedImage
+        content={
+          <div className="flex flex-col">
+            <div className="text-[36px] md:text-[48px] lg:text-[56px] leading-[1.2] font-reckless text-center mb-3">
+              Submissions <span className="text-[#918C89] italic">Closed</span>
+            </div>
+            <div className="text-[18px] md:text-[20px] lg:text-[24px] text-[#918C89] text-center">
+              The submissions period for CEX claims for Plume&apos;s Airdrop is
+              now officially closed. Stay tuned for updates.
+            </div>
+            <div className="flex flex-col md:flex-row mt-8 justify-center items-center gap-4">
+              <Link
+                href="https://x.com/plumenetwork"
+                target="_blank"
+                rel="noopener noreferrer"
+                passHref
+                className="w-full md:w-auto font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Follow @plumenetwork
+              </Link>
+              <Link
+                href="https://x.com/plumefndn"
+                target="_blank"
+                rel="noopener noreferrer"
+                passHref
+                className="w-full md:w-auto font-[600] text-lg hover:opacity-80 bg-white text-[#1A1613] rounded-full py-4 px-8 flex justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Follow @plumefndn
+              </Link>
+            </div>
+          </div>
+        }
+      />
+    );
+  }
+
   if (currentPane === "FORM") {
     return (
       <PaneLayout
