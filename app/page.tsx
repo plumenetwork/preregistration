@@ -117,7 +117,7 @@ export default function Home() {
     }
   }, [currentPane]);
 
-  if (Date.now() >= 1737219600000) {
+  if (Date.now() >= 1737306000000) {
     return (
       <PaneLayout
         invertedImage
