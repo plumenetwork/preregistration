@@ -114,7 +114,7 @@ const getImageDimensionsByCex = (cex: CEXType) => {
 export const getSubtitleByCEX = (cex: CEXType) => {
   switch (cex) {
     case CEX.BITGET:
-      return "Unlock 5-100 $PLUME for depositing on Bitget (first come first serve)";
+      return "Zero gas fees. Unlock $5-$100 $PLUME for depositing on Bitget, share in a $179,000 $PLUME prize pool (first come, first serve)";
     case CEX.BYBIT:
       return "No gas fees for depositing $PLUME on Bybit";
     case CEX.KUCOIN:
