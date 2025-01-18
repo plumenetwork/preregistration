@@ -144,7 +144,7 @@ export default function Home() {
     });
   }, [currentPane]);
 
-  if (Date.now() >= 1737306000000) {
+  if (true) {
     return (
       <PaneLayout
         content={
