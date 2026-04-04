@@ -33,8 +33,8 @@ const TermsPage = () => {
             FOR MAKING YOUR OWN DECISION ABOUT PARTICIPATING IN THE AIRDROP AND
             RECEIVING ANY TOKENS. PARTICIPATING IN THE AIRDROP IS ENTIRELY AT
             YOUR OWN RISK, AND IT IS YOUR SOLE RESPONSIBILITY TO GET APPROPRIATE
-            PROFESSIONAL, LEGAL, TAX, AND OTHER ADVICE ABOUT THE AIRDROP AND
-            THE TOKENS BEFORE YOU PARTICIPATE OR RECEIVE ANY TOKENS.
+            PROFESSIONAL, LEGAL, TAX, AND OTHER ADVICE ABOUT THE AIRDROP AND THE
+            TOKENS BEFORE YOU PARTICIPATE OR RECEIVE ANY TOKENS.
             <br />
             <br />
             BY PARTICIPATING IN THE AIRDROP, YOU EXPRESSLY ACKNOWLEDGE AND
@@ -74,16 +74,16 @@ const TermsPage = () => {
               Airdrop Terms and Conditions are supplemental to, and incorporate
               by reference, our general Terms of Service available at{" "}
               <a
-                href="https://docs.plumenetwork.xyz/plume/community-and-support/terms-of-service"
+                href="https://plumenetwork.xyz/terms-of-service"
                 className="underline"
               >
                 [LINK]
               </a>{" "}
               (the &ldquo;General TOS&rdquo; and together with these Airdrop
               Terms and Conditions, the &ldquo;Terms&rdquo;). Defined terms used
-              but not defined here have the meaning set forth in the General TOS.
-              The Airdrop, and your participation in it, is a Service as defined
-              in the General TOS.
+              but not defined here have the meaning set forth in the General
+              TOS. The Airdrop, and your participation in it, is a Service as
+              defined in the General TOS.
               <br />
               <br />
               <b>1.2 Agreement:</b> By participating in the Airdrop, you
@@ -98,8 +98,8 @@ const TermsPage = () => {
               <br />
               <b>1.3 Acting on Behalf of an Entity:</b> If you are participating
               in the Airdrop on behalf of a company or other organization, you
-              are agreeing to these Terms for that entity and confirming that you
-              have the authority to bind that entity to these Terms. In that
+              are agreeing to these Terms for that entity and confirming that
+              you have the authority to bind that entity to these Terms. In that
               case, the words &ldquo;you&rdquo; and &ldquo;your&rdquo; refer to
               that entity.
               <br />
@@ -108,8 +108,8 @@ const TermsPage = () => {
               part of these Terms at any time in our sole discretion. If we do,
               we will post the updated Terms on our website and note the new
               &ldquo;Last Updated&rdquo; date at the top. Your continued use of
-              our Services after the changes take effect means you accept the new
-              Terms. If you do not agree to the updated Terms, you must stop
+              our Services after the changes take effect means you accept the
+              new Terms. If you do not agree to the updated Terms, you must stop
               using the Airdrop website and Services. We will not be liable to
               you or anyone else for any losses caused by these changes.
               <br />
@@ -138,10 +138,10 @@ const TermsPage = () => {
               <br />
               <b>2.4 Legal Compliance:</b> You are solely responsible for
               understanding and following all laws that apply to you in your
-              jurisdiction. We may ask for additional information
-              from you and share it with a third-party screening service to check
-              for money-laundering, sanctions, or other risks. You agree to
-              provide complete and accurate information.
+              jurisdiction. We may ask for additional information from you and
+              share it with a third-party screening service to check for
+              money-laundering, sanctions, or other risks. You agree to provide
+              complete and accurate information.
               <br />
               <br />
               <b>2.5 Residency Restrictions:</b> You confirm that you are not
@@ -152,15 +152,15 @@ const TermsPage = () => {
               <b>2.6 Risk Screening:</b> We use a risk-based screening program.
               Wallets are checked by an independent blockchain analytics
               provider. We also use geo-location and proxy-detection tools. We
-              may block any wallet, IP address, or person that appears to present
-              heightened risk or is in a prohibited jurisdiction.
+              may block any wallet, IP address, or person that appears to
+              present heightened risk or is in a prohibited jurisdiction.
               <br />
               <br />
               <b>2.7 Agreement to Screening:</b> By participating, you agree
               that your wallet address and IP address may be screened and
               excluded if they trigger our risk criteria. Prohibited
-              jurisdictions can change at our discretion without notice. We block
-              VPNs and proxies to prevent circumvention.
+              jurisdictions can change at our discretion without notice. We
+              block VPNs and proxies to prevent circumvention.
               <br />
               <br />
               <b>3. Participation Requirements</b> <br />
@@ -184,16 +184,16 @@ const TermsPage = () => {
               <br />
               <b>3.4 Wallet Disclaimers:</b> Your participation is at your own
               risk. You must follow the terms of your wallet provider. We do not
-              control your wallet or private keys and are not responsible for any
-              loss of access, hacks, or technical problems with the wallet or
-              blockchain. If you cannot claim Tokens for any reason (bugs, gas
-              fees, lost keys, etc.), you have no claim against us.
+              control your wallet or private keys and are not responsible for
+              any loss of access, hacks, or technical problems with the wallet
+              or blockchain. If you cannot claim Tokens for any reason (bugs,
+              gas fees, lost keys, etc.), you have no claim against us.
               <br />
               <br />
               <b>3.5 Lock-Up Period:</b> The Tokens you receive will be subject
               to a transfer restriction period (&ldquo;Lock-Up&rdquo;) that may
-              be enforced by smart contract. You agree to follow the Lock-Up, and
-              we may extend or modify it in our sole discretion.
+              be enforced by smart contract. You agree to follow the Lock-Up,
+              and we may extend or modify it in our sole discretion.
               <br />
               <br />
               <b>4. Distribution of Tokens</b> <br />
@@ -240,16 +240,15 @@ const TermsPage = () => {
               <br />
               <b>5.4 No Payment or Expectation:</b> You understand that the
               Airdrop involves no payment or consideration from you to us (other
-              than possible gas fees or taxes). You were not promised Tokens, did
-              not rely on any third-party points or metrics, and have no claim
-              based on any third-party publications or services.
+              than possible gas fees or taxes). You were not promised Tokens,
+              did not rely on any third-party points or metrics, and have no
+              claim based on any third-party publications or services.
               <br />
               <br />
-              <b>5.5 &ldquo;As-Is&rdquo; Disclaimer:</b> The Airdrop is
-              provided &ldquo;as is.&rdquo; We make no promises about its
-              performance, security, accuracy, or that it will meet your
-              expectations. We disclaim all warranties to the maximum extent
-              permitted by law.
+              <b>5.5 &ldquo;As-Is&rdquo; Disclaimer:</b> The Airdrop is provided
+              &ldquo;as is.&rdquo; We make no promises about its performance,
+              security, accuracy, or that it will meet your expectations. We
+              disclaim all warranties to the maximum extent permitted by law.
               <br />
               <br />
               <b>6. Prohibited Activities</b>
@@ -260,15 +259,16 @@ const TermsPage = () => {
               <br />
               <div className="pl-4">
                 &bull; Violating any laws (including financial,
-                anti-money-laundering, sanctions, or intellectual-property laws).
+                anti-money-laundering, sanctions, or intellectual-property
+                laws).
                 <br />
                 <br />
                 &bull; Hiding your identity or using proxies for illegal
                 purposes.
                 <br />
                 <br />
-                &bull; Introducing viruses, malware, or attempting to disrupt the
-                Services.
+                &bull; Introducing viruses, malware, or attempting to disrupt
+                the Services.
                 <br />
                 <br />
                 &bull; Using automated tools to scrape or copy the website
@@ -329,9 +329,9 @@ const TermsPage = () => {
               <br />
               <br />
               We may suspend or end your participation at any time in our sole
-              discretion if we believe you have breached these Terms or that your
-              participation poses a risk. We may also modify, suspend, or end the
-              entire Airdrop program at any time without notice.
+              discretion if we believe you have breached these Terms or that
+              your participation poses a risk. We may also modify, suspend, or
+              end the entire Airdrop program at any time without notice.
               <br />
               <br />
               <b>10. Intellectual Property Rights</b>
@@ -340,8 +340,8 @@ const TermsPage = () => {
               We (or our licensors) own all intellectual property rights in the
               Tokens, the Plume protocol, the website, and all related content
               (including art, code, designs, and branding). Your receipt of
-              Tokens does not give you any ownership or additional rights in that
-              content. You may not reproduce, copy, or use our trademarks
+              Tokens does not give you any ownership or additional rights in
+              that content. You may not reproduce, copy, or use our trademarks
               without our prior written consent.
               <br />
               <br />
@@ -349,8 +349,8 @@ const TermsPage = () => {
               <br />
               <br />
               Claiming, holding, or using the Tokens involves significant risk,
-              including risks not listed here. You should consult your own legal,
-              tax, and financial advisors. Key risks include:
+              including risks not listed here. You should consult your own
+              legal, tax, and financial advisors. Key risks include:
               <br />
               <br />
               <b>11.1 Blockchain Risks:</b> Cryptocurrency markets are volatile.
@@ -399,15 +399,16 @@ const TermsPage = () => {
               <br />
               <br />
               <b>13.2 Arbitration:</b> Any dispute arising from these Terms or
-              the Airdrop must be resolved by binding arbitration administered by
-              the Cayman International Mediation and Arbitration Centre (CI-MAC)
-              in the Cayman Islands. The arbitration will be conducted by a
-              single arbitrator appointed by us, in English. You waive any right
-              to participate in class actions or representative proceedings.
+              the Airdrop must be resolved by binding arbitration administered
+              by the Cayman International Mediation and Arbitration Centre
+              (CI-MAC) in the Cayman Islands. The arbitration will be conducted
+              by a single arbitrator appointed by us, in English. You waive any
+              right to participate in class actions or representative
+              proceedings.
               <br />
               <br />
-              <b>13.3 Other Provisions:</b> Our failure to enforce any right does
-              not waive it. If any provision is invalid, the rest remain in
+              <b>13.3 Other Provisions:</b> Our failure to enforce any right
+              does not waive it. If any provision is invalid, the rest remain in
               effect. Any claim must be filed within one year or it is
               permanently barred.
               <br />
