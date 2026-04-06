@@ -22,7 +22,7 @@ const TermsPage = () => {
             Airdrop Terms and Conditions
           </div>
           <div className="text-[#747474] text-[20px] font-[500] text-center">
-            Last Updated: April ___, 2026
+            Last Updated: April 6, 2026
           </div>
           <div className="text-[20px] font-[400]">
             BY PARTICIPATING IN THE AIRDROP, INCLUDING BUT NOT LIMITED TO
