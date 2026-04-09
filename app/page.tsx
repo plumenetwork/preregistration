@@ -22,7 +22,7 @@ const TermsPage = () => {
             Airdrop Terms and Conditions
           </div>
           <div className="text-[#747474] text-[20px] font-[500] text-center">
-            Last Updated: April 6, 2026
+            Last Updated: April 8, 2026
           </div>
           <div className="text-[20px] font-[400]">
             BY PARTICIPATING IN THE AIRDROP, INCLUDING BUT NOT LIMITED TO
@@ -74,7 +74,7 @@ const TermsPage = () => {
               Airdrop Terms and Conditions are supplemental to, and incorporate
               by reference, our general Terms of Service available at{" "}
               <a
-                href="https://plumenetwork.xyz/terms-of-service"
+                href="https://plume.org/terms-of-service"
                 className="underline"
               >
                 [LINK]
@@ -111,7 +111,9 @@ const TermsPage = () => {
               our Services after the changes take effect means you accept the
               new Terms. If you do not agree to the updated Terms, you must stop
               using the Airdrop website and Services. We will not be liable to
-              you or anyone else for any losses caused by these changes.
+              you or anyone else for any losses caused by these changes. For
+              material changes, we will provide at least thirty (30) days&rsquo;
+              advance notice before such changes take effect.
               <br />
               <br />
               <b>2. Eligibility</b>
@@ -298,7 +300,9 @@ const TermsPage = () => {
               use of the Airdrop or Tokens. This includes damages caused by
               technical issues, third-party services, or inability to claim
               Tokens. In places where some limitations are not allowed, our
-              liability is limited as much as the law permits.
+              liability is limited as much as the law permits. Notwithstanding
+              the foregoing, nothing in this Section shall exclude or limit
+              liability for fraud, gross negligence, or willful misconduct.
               <br />
               <br />
               <b>7.2 Release:</b> You waive and release us and all related
@@ -359,9 +363,8 @@ const TermsPage = () => {
               <br />
               <br />
               <b>11.2 Scams and Fraud:</b> Fake tokens and websites exist. The
-              only official registration site is
-              https://registration.plumenetwork.xyz/. We are not responsible for
-              losses from fraudulent sites.
+              only official registration site is https://tally.so/r/VLVoPy. We
+              are not responsible for losses from fraudulent sites.
               <br />
               <br />
               <b>11.3 Tax and Regulatory Risks:</b> Taxes and regulations may
@@ -387,8 +390,14 @@ const TermsPage = () => {
               <br />
               We may collect and use limited personal information to verify
               eligibility and distribute Tokens. We handle data in accordance
-              with applicable privacy laws and our Privacy Policy (if any). By
-              participating, you consent to this collection and use.
+              with applicable privacy laws and our{" "}
+              <a
+                href="https://plume.org/privacy-policy"
+                className="underline"
+              >
+                Privacy Policy
+              </a>
+              . By participating, you consent to this collection and use.
               <br />
               <br />
               <b>13. Governing Law and Dispute Resolution</b>
@@ -402,9 +411,9 @@ const TermsPage = () => {
               the Airdrop must be resolved by binding arbitration administered
               by the Cayman International Mediation and Arbitration Centre
               (CI-MAC) in the Cayman Islands. The arbitration will be conducted
-              by a single arbitrator appointed by us, in English. You waive any
-              right to participate in class actions or representative
-              proceedings.
+              by a single arbitrator appointed by CI-MAC in accordance with its
+              rules, in English. You waive any right to participate in class
+              actions or representative proceedings.
               <br />
               <br />
               <b>13.3 Other Provisions:</b> Our failure to enforce any right
